@@ -48,5 +48,39 @@
 <br><br>
 
 <a href="index.html">Back Home</a>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  try {
+    await addDoc(collection(db, "listings"), {
+      itemName: document.getElementById("itemName").value,
+      brand: document.getElementById("brand").value,
+      size: document.getElementById("size").value,
+      price: document.getElementById("price").value
+    });
+
+    alert("Listing uploaded!");
+  } catch (error) {
+    alert(error.message);
+  }
+});
+</script>
+
 </body>
 </html>
