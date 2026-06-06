@@ -6,7 +6,8 @@
 <body style="background:#111;color:white;font-family:Arial;padding:30px;">
 
 <h1>Seller Dashboard</h1>
-
+<button id="logoutBtn">Logout</button>
+<br><br>
 <div>
     <h2>My Listings</h2>
     <p>No listings yet.</p>
@@ -52,7 +53,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
   authDomain: "refresh-7b0b7.firebaseapp.com",
@@ -65,7 +66,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  signOut(auth).then(() => {
+    window.location.href = "login.html";
+  });
+});
 document.getElementById("uploadBtn").addEventListener("click", async () => {
   try {
     await addDoc(collection(db, "listings"), {
