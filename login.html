@@ -16,7 +16,7 @@
 <a href="index.html">Back Home</a>
 
 <script type="module">
-  alert("Login script loaded");
+ 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -32,8 +32,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-document.getElementById("loginBtn").addEventListener("click", () => {
+  document.getElementById("loginBtn").addEventListener("click", () => {
+  alert("Login button clicked");
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
