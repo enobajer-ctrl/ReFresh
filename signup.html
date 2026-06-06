@@ -42,6 +42,7 @@ const auth = getAuth(app);
   const db = getFirestore(app);
 
 document.getElementById("signupBtn").addEventListener("click", () => {
+  alert("Create button clicked");
   const username = document.getElementById("username").value;
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
