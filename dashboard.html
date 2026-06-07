@@ -76,9 +76,14 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 document.getElementById("uploadBtn").addEventListener("click", async () => {
   try {
     await addDoc(collection(db, "listings"), {
-   const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
-const sellerName = userSnap.data().username;
+ let sellerName = "Unknown Seller";
 
+if (auth.currentUser) {
+  const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
+  if (userSnap.exists()) {
+    sellerName = userSnap.data().username;
+  }
+}
 await addDoc(collection(db, "listings"), {
   itemName: document.getElementById("itemName").value,
   brand: document.getElementById("brand").value,
