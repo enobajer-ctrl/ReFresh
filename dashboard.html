@@ -76,12 +76,16 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 document.getElementById("uploadBtn").addEventListener("click", async () => {
   try {
     await addDoc(collection(db, "listings"), {
-      itemName: document.getElementById("itemName").value,
-      brand: document.getElementById("brand").value,
-      size: document.getElementById("size").value,
-      price: document.getElementById("price").value
-    });
+   const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
+const sellerName = userSnap.data().username;
 
+await addDoc(collection(db, "listings"), {
+  itemName: document.getElementById("itemName").value,
+  brand: document.getElementById("brand").value,
+  size: document.getElementById("size").value,
+  price: document.getElementById("price").value,
+  sellerName: sellerName
+});
     alert("Listing uploaded!");
   } catch (error) {
     alert(error.message);
