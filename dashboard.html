@@ -74,6 +74,8 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
   });
 });
 document.getElementById("uploadBtn").addEventListener("click", async () => {
+  alert("Upload button clicked");
+
   try {
     await addDoc(collection(db, "listings"), {
  let sellerName = "Unknown Seller";
