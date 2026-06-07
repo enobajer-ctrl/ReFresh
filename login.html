@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login - ReFresh</title>
+<title>Login - ReFresh</title>
 </head>
+
 <body style="background:#111;color:white;font-family:Arial;padding:30px;">
 
 <h1>Login</h1>
@@ -16,11 +17,11 @@
 <a href="index.html">Back Home</a>
 
 <script type="module">
- 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 const firebaseConfig = {
- apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
   authDomain: "refresh-7b0b7.firebaseapp.com",
   projectId: "refresh-7b0b7",
   storageBucket: "refresh-7b0b7.firebasestorage.app",
@@ -32,18 +33,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-  document.getElementById("loginBtn").addEventListener("click", () => {
- 
+document.getElementById("loginBtn").addEventListener("click", () => {
+  alert("Login clicked");
+
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {
       alert("Logged in!");
-     setTimeout(() => {
-  window.location.href = "dashboard.html";
-}, 1000);
-  
+      window.location.href = "dashboard.html";
+    })
     .catch((error) => {
       alert(error.message);
     });
