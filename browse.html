@@ -2,12 +2,68 @@
 <html>
 <head>
   <title>Browse ReFresh</title>
+
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #3B82F6;
+      font-size: 40px;
+    }
+
+    a {
+      color: #3B82F6;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .card h3 {
+      color: white;
+      font-size: 24px;
+    }
+
+    .price {
+      color: #3B82F6;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .rentBtn {
+      background: #3B82F6;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      width: 100%;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
-<body style="background:#111;color:white;font-family:Arial;padding:30px;">
+<body>
 
 <h1>Browse ReFresh</h1>
-<h2>Available Rentals</h2>
+<p>Available rentals from ReFresh sellers.</p>
 
 <div id="listings">Loading listings...</div>
 
@@ -40,12 +96,13 @@ querySnapshot.forEach((doc) => {
   const item = doc.data();
 
   listingsDiv.innerHTML += `
-    <div style="background:#1a1a1a;padding:20px;margin:15px 0;border-radius:12px;border:1px solid #333;">
+    <div class="card">
       <h3>${item.itemName || "Untitled Item"}</h3>
       <p>Brand: ${item.brand || "N/A"}</p>
       <p>Size: ${item.size || "N/A"}</p>
-      <p>$${item.price || "0"}/day</p>
-      <p><strong>Posted by: ${item.sellerName || "Unknown Seller"}</strong></p>
+      <p class="price">$${item.price || "0"}/day</p>
+      <p>Posted by: ${item.sellerName || "Seller"}</p>
+      <button class="rentBtn">Rent Now</button>
     </div>
   `;
 });
