@@ -60,7 +60,7 @@ body{
   border:1px solid #333;
   border-radius:20px;
   padding:30px;
-  margin-bottom:30px;
+  margin-bottom:25px;
   box-shadow:0 0 25px rgba(59,130,246,.18);
 }
 
@@ -72,6 +72,25 @@ body{
 
 .hero p{
   color:#bbb;
+}
+
+.search-box{
+  margin-bottom:25px;
+}
+
+.search-box input{
+  width:100%;
+  padding:16px;
+  border-radius:12px;
+  border:1px solid #333;
+  background:#1a1a1a;
+  color:white;
+  font-size:16px;
+  outline:none;
+}
+
+.search-box input:focus{
+  border-color:#3B82F6;
 }
 
 #listings{
@@ -86,6 +105,18 @@ body{
   border-radius:18px;
   padding:22px;
   box-shadow:0 0 20px rgba(59,130,246,.12);
+}
+
+.fake-img{
+  height:170px;
+  background:linear-gradient(135deg,#222,#333);
+  border-radius:14px;
+  margin-bottom:18px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#3B82F6;
+  font-size:42px;
 }
 
 .card h3{
@@ -111,16 +142,31 @@ body{
   font-size:14px;
 }
 
-.rentBtn{
-  width:100%;
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.rentBtn,
+.favoriteBtn{
+  flex:1;
   padding:13px;
-  background:#3B82F6;
-  color:white;
   border:none;
   border-radius:12px;
   font-weight:bold;
-  margin-top:15px;
   cursor:pointer;
+}
+
+.rentBtn{
+  background:#3B82F6;
+  color:white;
+}
+
+.favoriteBtn{
+  background:#222;
+  color:white;
+  border:1px solid #444;
 }
 
 .empty{
@@ -137,6 +183,10 @@ body{
   .nav a{
     display:inline-block;
     margin:8px;
+  }
+
+  .actions{
+    flex-direction:column;
   }
 }
 </style>
@@ -155,13 +205,18 @@ body{
     <div class="nav">
       <a href="index.html">Home</a>
       <a href="dashboard.html">Sell</a>
+      <a href="profile.html">Profile</a>
       <a href="login.html">Login</a>
     </div>
   </div>
 
   <div class="hero">
     <h2>Browse Listings</h2>
-    <p>Rent clothing, shoes, accessories, watches, bags, and more from ReFresh sellers.</p>
+    <p>Search rentals from ReFresh sellers.</p>
+  </div>
+
+  <div class="search-box">
+    <input id="searchInput" type="text" placeholder="Search by item, brand, size, seller...">
   </div>
 
   <div id="listings">
@@ -172,7 +227,8 @@ body{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -186,30 +242,93 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const listingsDiv = document.getElementById("listings");
-listingsDiv.innerHTML = "";
+const searchInput = document.getElementById("searchInput");
 
-const querySnapshot = await getDocs(collection(db, "listings"));
+let allListings = [];
 
-if (querySnapshot.empty) {
-  listingsDiv.innerHTML = "<p class='empty'>No listings yet.</p>";
+async function loadListings(){
+  listingsDiv.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "listings"));
+
+  allListings = [];
+
+  querySnapshot.forEach((doc) => {
+    allListings.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+
+  displayListings(allListings);
 }
 
-querySnapshot.forEach((doc) => {
-  const item = doc.data();
+function displayListings(listings){
+  listingsDiv.innerHTML = "";
 
-  listingsDiv.innerHTML += `
-    <div class="card">
-      <h3>${item.itemName || "Untitled Item"}</h3>
-      <p>Brand: ${item.brand || "N/A"}</p>
-      <p>Size: ${item.size || "N/A"}</p>
-      <p class="price">$${item.price || "0"}/day</p>
-      <p class="seller">Posted by: ${item.sellerName || "Seller"}</p>
-      <button class="rentBtn">Rent Now</button>
-    </div>
-  `;
+  if(listings.length === 0){
+    listingsDiv.innerHTML = "<p class='empty'>No listings found.</p>";
+    return;
+  }
+
+  listings.forEach((item) => {
+    listingsDiv.innerHTML += `
+      <div class="card">
+        <div class="fake-img">👕</div>
+        <h3>${item.itemName || "Untitled Item"}</h3>
+        <p>Brand: ${item.brand || "N/A"}</p>
+        <p>Size: ${item.size || "N/A"}</p>
+        <p class="price">$${item.price || "0"}/day</p>
+        <p class="seller">Posted by: ${item.sellerName || "Seller"}</p>
+
+        <div class="actions">
+          <button class="rentBtn" onclick="alert('Rent feature coming soon!')">Rent Now</button>
+          <button class="favoriteBtn" data-id="${item.id}">♡ Save</button>
+        </div>
+      </div>
+    `;
+  });
+
+  document.querySelectorAll(".favoriteBtn").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const user = auth.currentUser;
+
+      if(!user){
+        alert("Please log in to save favorites.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      await addDoc(collection(db, "favorites"), {
+        userId: user.uid,
+        listingId: button.dataset.id
+      });
+
+      button.innerText = "Saved ✓";
+      alert("Saved to favorites!");
+    });
+  });
+}
+
+searchInput.addEventListener("input", () => {
+  const searchTerm = searchInput.value.toLowerCase();
+
+  const filtered = allListings.filter((item) => {
+    return (
+      (item.itemName || "").toLowerCase().includes(searchTerm) ||
+      (item.brand || "").toLowerCase().includes(searchTerm) ||
+      (item.size || "").toLowerCase().includes(searchTerm) ||
+      (item.sellerName || "").toLowerCase().includes(searchTerm)
+    );
+  });
+
+  displayListings(filtered);
 });
+
+loadListings();
 </script>
 
 </body>
