@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Item Details | ReFresh</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#111;
+  color:white;
+  min-height:100vh;
+  padding:25px;
+}
+
+.page{
+  max-width:900px;
+  margin:auto;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:30px;
+}
+
+.logo img{
+  width:70px;
+}
+
+.logo h1{
+  color:#3B82F6;
+}
+
+.card{
+  background:#1a1a1a;
+  border:1px solid #333;
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 0 25px rgba(59,130,246,.18);
+}
+
+.fake-img{
+  height:280px;
+  background:linear-gradient(135deg,#222,#333);
+  border-radius:18px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#3B82F6;
+  font-size:70px;
+  margin-bottom:25px;
+}
+
+h2{
+  color:#3B82F6;
+  font-size:32px;
+  margin-bottom:15px;
+}
+
+p{
+  color:#ccc;
+  margin:10px 0;
+}
+
+.price{
+  font-size:24px;
+  color:#3B82F6;
+  font-weight:bold;
+}
+
+button{
+  width:100%;
+  padding:15px;
+  background:#3B82F6;
+  color:white;
+  border:none;
+  border-radius:12px;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:20px;
+}
+
+a{
+  color:#3B82F6;
+  display:inline-block;
+  margin-top:25px;
+  text-decoration:none;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="logo">
+    <img src="image-1.jpg" alt="ReFresh Logo">
+    <h1>ReFresh</h1>
+  </div>
+
+  <div class="card">
+    <div class="fake-img">👕</div>
+
+    <h2 id="itemName">Loading item...</h2>
+    <p id="brand"></p>
+    <p id="size"></p>
+    <p class="price" id="price"></p>
+    <p id="seller"></p>
+
+    <button onclick="alert('Rental checkout coming soon!')">Request To Rent</button>
+
+    <a href="browse.html">← Back to Browse</a>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const params = new URLSearchParams(window.location.search);
+const itemId = params.get("id");
+
+async function loadItem(){
+  if(!itemId){
+    document.getElementById("itemName").innerText = "Item not found";
+    return;
+  }
+
+  const itemRef = doc(db, "listings", itemId);
+  const itemSnap = await getDoc(itemRef);
+
+  if(itemSnap.exists()){
+    const item = itemSnap.data();
+
+    document.getElementById("itemName").innerText = item.itemName || "Untitled Item";
+    document.getElementById("brand").innerText = "Brand: " + (item.brand || "N/A");
+    document.getElementById("size").innerText = "Size: " + (item.size || "N/A");
+    document.getElementById("price").innerText = "$" + (item.price || "0") + "/day";
+    document.getElementById("seller").innerText = "Posted by: " + (item.sellerName || "Seller");
+  } else {
+    document.getElementById("itemName").innerText = "Item not found";
+  }
+}
+
+loadItem();
+</script>
+
+</body>
+</html>
