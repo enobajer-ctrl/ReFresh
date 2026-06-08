@@ -1,43 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Seller Dashboard - ReFresh</title>
+  <title>Seller Dashboard - ReFresh</title>
 </head>
+
 <body style="background:#111;color:white;font-family:Arial;padding:30px;">
 
 <h1 id="welcome">Seller Dashboard</h1>
+
 <button id="logoutBtn">Logout</button>
+
 <br><br>
+
 <div>
-    <h2>My Listings</h2>
-    <p>No listings yet.</p>
+  <h2>My Listings</h2>
+  <p>No listings yet.</p>
 </div>
 
 <hr>
 
 <div>
-    <h2>Active Rentals</h2>
-    <p>0 active rentals</p>
+  <h2>Active Rentals</h2>
+  <p>0 active rentals</p>
 </div>
 
 <hr>
 
 <div>
-    <h2>Total Earnings</h2>
-    <p>$0.00</p>
+  <h2>Total Earnings</h2>
+  <p>$0.00</p>
 </div>
 
 <hr>
 
 <div>
-    <h2>Add New Listing</h2>
+  <h2>Add New Listing</h2>
 
-   <input id="itemName" placeholder="Item Name"><br><br>
-<input id="brand" placeholder="Brand"><br><br>
-<input id="size" placeholder="Size"><br><br>
-<input id="price" placeholder="Rental Price"><br><br>
+  <input id="itemName" placeholder="Item Name"><br><br>
+  <input id="brand" placeholder="Brand"><br><br>
+  <input id="size" placeholder="Size"><br><br>
+  <input id="price" placeholder="Rental Price"><br><br>
 
-<button id="uploadBtn">Upload Listing</button>
+  <button id="uploadBtn">Upload Listing</button>
 </div>
 
 <br><br>
@@ -53,7 +57,8 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
   authDomain: "refresh-7b0b7.firebaseapp.com",
@@ -73,26 +78,30 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
     window.location.href = "login.html";
   });
 });
+
 document.getElementById("uploadBtn").addEventListener("click", async () => {
   alert("Upload button clicked");
 
   try {
-    await addDoc(collection(db, "listings"), {
- let sellerName = "Unknown Seller";
+    let sellerName = "Unknown Seller";
 
-if (auth.currentUser) {
-  const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
-  if (userSnap.exists()) {
-    sellerName = userSnap.data().username;
-  }
-}
-await addDoc(collection(db, "listings"), {
-  itemName: document.getElementById("itemName").value,
-  brand: document.getElementById("brand").value,
-  size: document.getElementById("size").value,
-  price: document.getElementById("price").value,
-  sellerName: sellerName
-});
+    if (auth.currentUser) {
+      const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
+
+      if (userSnap.exists()) {
+        sellerName = userSnap.data().username;
+        document.getElementById("welcome").innerText = "Welcome, " + sellerName;
+      }
+    }
+
+    await addDoc(collection(db, "listings"), {
+      itemName: document.getElementById("itemName").value,
+      brand: document.getElementById("brand").value,
+      size: document.getElementById("size").value,
+      price: document.getElementById("price").value,
+      sellerName: sellerName
+    });
+
     alert("Listing uploaded!");
   } catch (error) {
     alert(error.message);
@@ -102,3 +111,4 @@ await addDoc(collection(db, "listings"), {
 
 </body>
 </html>
+
