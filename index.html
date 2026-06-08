@@ -1,340 +1,481 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Refresh | Refresh Your Style</title>
+<title>ReFresh | Refresh Your Style</title>
+
 <style>
-*{ 
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
 }
 
 body{
-    background:#111111;
-    color:white;
+  background:#111;
+  color:white;
+}
+
+.top-bar{
+  background:#000;
+  text-align:center;
+  padding:10px;
+  font-size:14px;
+  letter-spacing:1px;
+  color:#ddd;
 }
 
 header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 8%;
-    background:#000;
-    position:sticky;
-    top:0;
+  background:#fff;
+  color:#111;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 7%;
+  position:sticky;
+  top:0;
+  z-index:10;
+  border-bottom:2px solid #3B82F6;
 }
 
-.logo{
-    font-size:2rem;
-    font-weight:bold;
+.menu-icon{
+  font-size:34px;
+  cursor:pointer;
+  color:#111;
 }
 
-.logo span{
-    color:#3B82F6;
+.logo-wrap{
+  text-align:center;
 }
 
-nav a{
-    color:white;
-    text-decoration:none;
-    margin-left:25px;
+.logo-img{
+  height:65px;
+  max-width:150px;
+  object-fit:contain;
+}
+
+.logo-text{
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.logo-text span{
+  color:#3B82F6;
+}
+
+.header-actions{
+  display:flex;
+  gap:18px;
+  align-items:center;
+}
+
+.header-actions a{
+  color:#111;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:15px;
 }
 
 .hero{
-    min-height:90vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:30px;
+  min-height:82vh;
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.75)),
+    linear-gradient(135deg,#111,#000,#1b1b1b);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px 25px;
 }
 
 .hero h1{
-    font-size:4rem;
-    margin-bottom:15px;
+  font-size:54px;
+  letter-spacing:5px;
+  margin-bottom:18px;
+}
+
+.hero h1 span{
+  color:#3B82F6;
 }
 
 .hero p{
-    max-width:700px;
-    font-size:1.2rem;
-    color:#ccc;
-    margin-bottom:30px;
+  max-width:750px;
+  color:#ddd;
+  font-size:20px;
+  line-height:1.6;
+  margin-bottom:30px;
+}
+
+.btn-row{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:15px;
 }
 
 .btn{
-    background:#3B82F6;
-    color:white;
-    text-decoration:none;
-    padding:15px 30px;
-    border-radius:30px;
-    margin:10px;
-    display:inline-block;
+  background:#3B82F6;
+  color:white;
+  text-decoration:none;
+  padding:15px 28px;
+  border-radius:0;
+  font-weight:bold;
+  letter-spacing:2px;
+  display:inline-block;
 }
 
-.btn-outline{
-    border:2px solid white;
-    color:white;
-    text-decoration:none;
-    padding:15px 30px;
-    border-radius:30px;
+.btn-dark{
+  background:#111;
+  color:white;
+  text-decoration:none;
+  padding:15px 28px;
+  border:1px solid white;
+  font-weight:bold;
+  letter-spacing:2px;
+  display:inline-block;
 }
 
 .section{
-    padding:80px 8%;
+  padding:70px 8%;
+  background:white;
+  color:#111;
+}
+
+.section.dark{
+  background:#111;
+  color:white;
+}
+
+.section.gray{
+  background:#d9d9d9;
+  color:white;
+  min-height:300px;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
 }
 
 .section h2{
-    text-align:center;
-    margin-bottom:40px;
+  font-size:28px;
+  letter-spacing:4px;
+  margin-bottom:30px;
+  text-transform:uppercase;
+  border-bottom:2px solid #ccc;
+  padding-bottom:18px;
 }
 
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
 }
 
 .card{
-    background:#1a1a1a;
-    padding:25px;
-    border-radius:15px;
-    text-align:center;
+  background:#f5f5f5;
+  color:#111;
+  padding:25px;
+  min-height:150px;
+  text-align:center;
+  border:1px solid #ddd;
+}
+
+.dark .card{
+  background:#1a1a1a;
+  color:white;
+  border:1px solid #333;
+}
+
+.card h3{
+  margin-bottom:12px;
+  font-size:22px;
+}
+
+.card p{
+  color:#777;
+  line-height:1.5;
+}
+
+.dark .card p{
+  color:#ccc;
+}
+
+.feature-card{
+  background:white;
+  text-align:center;
+}
+
+.placeholder-img{
+  height:260px;
+  background:#eee;
+  margin-bottom:18px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#aaa;
+  font-size:42px;
 }
 
 .price{
-    border:2px solid #3B82F6;
+  color:#3B82F6;
+  font-weight:bold;
+  font-size:20px;
+}
+
+.partner-box{
+  text-align:right;
+}
+
+.partner-box h2{
+  border:none;
+  color:white;
 }
 
 footer{
-    text-align:center;
-    padding:30px;
-    border-top:1px solid #333;
+  background:#111;
+  color:#ccc;
+  padding:60px 8%;
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:35px;
+}
+
+footer h3{
+  color:white;
+  letter-spacing:3px;
+  margin-bottom:18px;
+}
+
+footer a, footer p{
+  color:#ccc;
+  text-decoration:none;
+  display:block;
+  margin-bottom:12px;
+}
+
+.mobile-menu{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:85%;
+  height:100vh;
+  background:white;
+  color:#111;
+  z-index:99;
+  padding:35px;
+}
+
+.mobile-menu a{
+  display:block;
+  color:#111;
+  text-decoration:none;
+  font-size:24px;
+  margin:28px 0;
+}
+
+.close-menu{
+  font-size:36px;
+  cursor:pointer;
+  margin-bottom:40px;
+}
+
+@media(max-width:700px){
+  .hero h1{
+    font-size:38px;
+  }
+
+  .hero p{
+    font-size:17px;
+  }
+
+  .header-actions a{
+    font-size:13px;
+  }
+
+  .logo-img{
+    height:50px;
+  }
+
+  .section{
+    padding:55px 6%;
+  }
 }
 </style>
-
 </head>
 
 <body>
 
-<header>
-<div class="logo"><span>R</span>EFRESH</div>
+<div class="top-bar">
+  REFRESH YOUR STYLE • RENT BEFORE YOU BUY
+</div>
 
-<nav>
-]<a href="#home">Home</a>
-<a href="browse.html">Browse</a>
-<a href="#memberships">Memberships</a>
-<a href="https://form.typeform.com/to/DqectVrL" target="_blank">Sell</a>
-<a href="#contact">Contact</a>
-<a href="login.html">Login</a>
-<a href="signup.html">Sign Up</a>
-    <a href="profile.html">Profile</a>
-<a href="dashboard.html">Sell</a>
-    <a href="dashboard.html">Seller Dashboard</a><br><br>
-</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="close-menu" onclick="closeMenu()">×</div>
+  <a href="browse.html">Browse Listings</a>
+  <a href="signup.html">Create Account</a>
+  <a href="login.html">Login</a>
+  <a href="dashboard.html">Seller Dashboard</a>
+  <a href="profile.html">Profile</a>
+  <a href="https://form.typeform.com/to/DqectVrL" target="_blank">Apply To Sell</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<header>
+  <div class="menu-icon" onclick="openMenu()">☰</div>
+
+  <div class="logo-wrap">
+    <img src="image-1.jpg" class="logo-img" alt="ReFresh Logo">
+    <div class="logo-text"><span>RE</span>FRESH</div>
+  </div>
+
+  <div class="header-actions">
+    <a href="login.html">Login</a>
+    <a href="signup.html">Sign Up</a>
+  </div>
 </header>
 
 <section class="hero" id="home">
-<h1>REFRESH YOUR STYLE</h1>
+  <h1><span>REFRESH</span> YOUR STYLE</h1>
+  <p>
+    Rent clothing, shoes, bags, belts, watches, jewelry and accessories from trusted sellers.
+  </p>
 
-<p>
-Rent fashion, shoes, bags, belts, watches,
-jewelry and accessories from trusted sellers
-and boutiques.
-</p>
-
-<div>
-<a href="#browse" class="btn">Start Renting</a>
-<a href="#sell" class="btn-outline">Become a Seller</a>
-</div>
+  <div class="btn-row">
+    <a href="browse.html" class="btn">START RENTING</a>
+    <a href="https://form.typeform.com/to/DqectVrL" target="_blank" class="btn-dark">APPLY TO SELL</a>
+    <a href="dashboard.html" class="btn-dark">SELLER DASHBOARD</a>
+  </div>
 </section>
-
-<section class="section" id="browse">
-<h2>Shop Categories</h2>
-
-<div class="grid">
-<div class="card">👔 Clothing</div>
-<div class="card">👟 Shoes</div>
-<div class="card">👜 Bags</div>
-<div class="card">👔 Belts</div>
-<div class="card">⌚ Watches</div>
-<div class="card">💍 Jewelry</div>
-<div class="card">🕶️ Sunglasses</div>
-<div class="card">🧢 Hats</div>
-</div>
-</section>
-<section class="section">
-<h2>Featured Items</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>Jordan 4 Retro</h3>
-<p>Listed by seller</p>
-</div>
-
-<div class="card">
-<h3>Ray-Ban Sunglasses</h3>
-<p>Listed by seller</p>
-</div>
-
-<div class="card">
-<h3>Designer Hoodie</h3>
-<p>Listed by seller</p>
-</div>
-
-<div class="card">
-<h3>Luxury Watch</h3>
-<p>Listed by seller</p>
-</div>
-
-</div>
-</section>
-<section class="section" id="browse">
-<h2>How Refresh Works</h2>
-
-<div class="grid">
-<div class="card">
-<h3>For Buyers</h3>
-<p>Pay $8.99/month to access the marketplace and rent items.</p>
-</div>
-
-<div class="card">
-<h3>For Sellers</h3>
-<p>List clothing, shoes, bags, watches and accessories for free.</p>
-</div>
-
-<div class="card">
-<h3>Earn Money</h3>
-<p>Sellers set their own prices and earn money whenever items are rented.</p>
-</div>
-
-<div class="card">
-<h3>Refresh Fee</h3>
-<p>Refresh takes a simple 10% commission on every completed rental.</p>
-</div>
-</div>
-</section>
-
-<section class="section" id="memberships">
-<h2>Membership Plans</h2>
-
-<div class="grid">
-
-<div class="card price">
-<h3>Buyer Membership</h3>
-<p>$8.99 / Month</p>
-<p>Access the marketplace and rent items from sellers.</p>
-</div>
-
-<div class="card price">
-<h3>Seller Plan</h3>
-<p>Free</p>
-<p>List items for free. Refresh takes 10% from completed rentals.</p>
-</div>
-
 
 <section class="section">
-<h2>Why Join Refresh?</h2>
+  <h2>Latest Rentals</h2>
 
-<div class="card">
-<h3>Men's Fashion</h3>
-<p>Browse premium menswear, sneakers, belts, and accessories.</p>
-</div>
-
-<div class="card">
-<h3>Women's Fashion</h3>
-<p>Discover dresses, handbags, jewelry, and luxury pieces.</p>
-</div>
-
-<div class="card">
-<h3>Seller Friendly</h3>
-<p>List items for free and set your own prices.</p>
-</div>
-
-<div class="card">
-<h3>No Seller Subscription</h3>
-<p>Sellers keep control of pricing and inventory without monthly fees.</p>
-</div>
-
-</section>
-
-<section class="section" id="sell">
-<h2>Become A Seller</h2>
-
-<div class="card">
-<h3>No Subscription Required</h3>
-
-<p>
-List clothing, shoes, bags, belts,
-watches and accessories for free.
-Earn money every time your items are rented.
-</p>
-</div>
-    <a href="https://form.typeform.com/to/DqectVrL" target="_blank" class="btn">
-
-    Apply To Sell
-
-</a>
-</section>
-<section class="section" id="apply">
-    <h2>Apply To Sell</h2>
-
-    <div class="card">
-        <h3>Free To Join</h3>
-        <p>
-            Create a seller account and list your items for free.
-        </p>
+  <div class="grid">
+    <div class="feature-card">
+      <div class="placeholder-img">👟</div>
+      <h3>Jordan 4 Retro</h3>
+      <p class="price">$15/day</p>
     </div>
 
-<a href="https://form.typeform.com/to/DqectVrL" target="_blank" class="btn">
-    Apply Now
-</a>
+    <div class="feature-card">
+      <div class="placeholder-img">🧥</div>
+      <h3>Designer Hoodie</h3>
+      <p class="price">$12/day</p>
+    </div>
 
+    <div class="feature-card">
+      <div class="placeholder-img">⌚</div>
+      <h3>Luxury Watch</h3>
+      <p class="price">$20/day</p>
+    </div>
+  </div>
+
+  <br><br>
+  <center>
+    <a href="browse.html" class="btn">SEE MORE</a>
+  </center>
 </section>
-<section class="section" id="login">
-  <h2>Login</h2>
 
-  <div class="card">
-    <input type="email" placeholder="Email">
-    <br><br>
-    <input type="password" placeholder="Password">
-    <br><br>
-    <a href="#" class="btn">Login</a>
+<section class="section dark">
+  <h2>Shop Categories</h2>
+
+  <div class="grid">
+    <div class="card">👔 Clothing</div>
+    <div class="card">👟 Shoes</div>
+    <div class="card">👜 Bags</div>
+    <div class="card">👔 Belts</div>
+    <div class="card">⌚ Watches</div>
+    <div class="card">💍 Jewelry</div>
+    <div class="card">🕶️ Sunglasses</div>
+    <div class="card">🧢 Hats</div>
   </div>
 </section>
 
-<section class="section" id="signup">
-  <h2>Create Account</h2>
+<section class="section">
+  <h2>How ReFresh Works</h2>
 
-  <div class="card">
-    <input type="text" placeholder="Full Name">
-    <br><br>
-    <input type="email" placeholder="Email">
-    <br><br>
-    <input type="password" placeholder="Password">
-    <br><br>
-    <a href="#" class="btn">Create Account</a>
+  <div class="grid">
+    <div class="card">
+      <h3>For Buyers</h3>
+      <p>Pay $8.99/month to access the marketplace and rent items.</p>
+    </div>
+
+    <div class="card">
+      <h3>For Sellers</h3>
+      <p>List clothing, shoes, bags, watches and accessories for free.</p>
+    </div>
+
+    <div class="card">
+      <h3>Earn Money</h3>
+      <p>Sellers set their own prices and earn money whenever items are rented.</p>
+    </div>
+
+    <div class="card">
+      <h3>ReFresh Fee</h3>
+      <p>ReFresh takes a simple 10% commission on every completed rental.</p>
+    </div>
   </div>
 </section>
 
-<section class="section" id="contact">
-<h2>Contact Refresh</h2>
-
-<div class="card">
-<h3>Need Help?</h3>
-<p>Email: support@refreshstyle.shop</p>
-<p>For sellers, partnerships, and buyer support.</p>
-</div>
-
+<section class="section gray">
+  <div class="partner-box">
+    <h2>Want To Sell?</h2>
+    <a href="https://form.typeform.com/to/DqectVrL" target="_blank" class="btn-dark">BECOME A SELLER</a>
+  </div>
 </section>
+
+<section class="section dark" id="contact">
+  <h2>Contact ReFresh</h2>
+
+  <div class="card">
+    <h3>Need Help?</h3>
+    <p>Email: support@refreshstyle.shop</p>
+    <p>For sellers, partnerships, and buyer support.</p>
+  </div>
+</section>
+
 <footer>
-© 2026 Refresh. All Rights Reserved.
+  <div class="footer-grid">
+    <div>
+      <h3>Main Menu</h3>
+      <a href="#home">Home</a>
+      <a href="browse.html">Browse Listings</a>
+      <a href="https://form.typeform.com/to/DqectVrL" target="_blank">Apply To Sell</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div>
+      <h3>Account</h3>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">Seller Dashboard</a>
+    </div>
+
+    <div>
+      <h3>Contact</h3>
+      <p>support@refreshstyle.shop</p>
+      <p>© 2026 ReFresh</p>
+    </div>
+  </div>
 </footer>
+
+<script>
+function openMenu(){
+  document.getElementById("mobileMenu").style.display = "block";
+}
+
+function closeMenu(){
+  document.getElementById("mobileMenu").style.display = "none";
+}
+</script>
 
 </body>
 </html>
-
