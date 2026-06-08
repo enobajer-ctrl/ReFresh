@@ -7,10 +7,9 @@
 <body style="background:#111;color:white;font-family:Arial;padding:30px;">
 
 <h1>Browse ReFresh</h1>
-
 <h2>Available Rentals</h2>
 
-<div id="listings"></div>
+<div id="listings">Loading listings...</div>
 
 <br><br>
 <a href="index.html">← Back Home</a>
@@ -33,6 +32,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const listingsDiv = document.getElementById("listings");
+listingsDiv.innerHTML = "";
 
 const querySnapshot = await getDocs(collection(db, "listings"));
 
@@ -40,12 +40,12 @@ querySnapshot.forEach((doc) => {
   const item = doc.data();
 
   listingsDiv.innerHTML += `
-    <div style="background:#1a1a1a;padding:20px;margin:15px 0;border-radius:12px;">
-      <h3>${item.itemName}</h3>
-      <p>Brand: ${item.brand}</p>
-      <p>Size: ${item.size}</p>
-      <p>$${item.price}/day</p>
-      <p>Posted by: ${item.sellerName || "Unknown Seller"}</p>
+    <div style="background:#1a1a1a;padding:20px;margin:15px 0;border-radius:12px;border:1px solid #333;">
+      <h3>${item.itemName || "Untitled Item"}</h3>
+      <p>Brand: ${item.brand || "N/A"}</p>
+      <p>Size: ${item.size || "N/A"}</p>
+      <p>$${item.price || "0"}/day</p>
+      <p><strong>Posted by: ${item.sellerName || "Unknown Seller"}</strong></p>
     </div>
   `;
 });
