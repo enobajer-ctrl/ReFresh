@@ -285,7 +285,9 @@ function displayListings(listings){
         <p class="seller">Posted by: ${item.sellerName || "Seller"}</p>
 
         <div class="actions">
-          <button class="rentBtn" onclick="alert('Rent feature coming soon!')">Rent Now</button>
+         <button class="rentBtn" onclick="window.location.href='item.html?id=${item.id}'">
+  Rent Now
+</button>
           <button class="favoriteBtn" data-id="${item.id}">♡ Save</button>
         </div>
       </div>
