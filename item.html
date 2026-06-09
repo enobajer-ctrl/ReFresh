@@ -88,8 +88,13 @@ button{
   border-radius:12px;
   font-weight:bold;
   font-size:16px;
-  margin-top:20px;
+  margin-top:15px;
   cursor:pointer;
+}
+
+.messageBtn{
+  background:#222;
+  border:1px solid #3B82F6;
 }
 
 a{
@@ -117,10 +122,13 @@ a{
     <h2 id="itemName">Loading item...</h2>
     <p id="brand"></p>
     <p id="size"></p>
+    <p id="condition"></p>
+    <p id="description"></p>
     <p class="price" id="price"></p>
     <p id="seller"></p>
 
     <button id="requestBtn">Request To Rent</button>
+    <button id="messageBtn" class="messageBtn">Message Seller</button>
 
     <a href="browse.html">← Back to Browse</a>
   </div>
@@ -166,6 +174,8 @@ async function loadItem(){
     document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
     document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
     document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
+    document.getElementById("condition").innerText = "Condition: " + (currentItem.condition || "N/A");
+    document.getElementById("description").innerText = "Description: " + (currentItem.description || "No description yet.");
     document.getElementById("price").innerText = "$" + (currentItem.price || "0") + "/day";
     document.getElementById("seller").innerText = "Posted by: " + (currentItem.sellerName || "Seller");
   } else {
@@ -205,6 +215,15 @@ document.getElementById("requestBtn").addEventListener("click", async () => {
   } catch(error){
     alert(error.message);
   }
+});
+
+document.getElementById("messageBtn").addEventListener("click", () => {
+  if(!itemId){
+    alert("Item not loaded.");
+    return;
+  }
+
+  window.location.href = "messaging.html?listingId=" + itemId;
 });
 
 loadItem();
