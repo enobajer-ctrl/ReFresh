@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | ReFresh</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+body{
+  background:#f4f7fb;
+  color:#111;
+  min-height:100vh;
+  padding:25px;
+}
+
+.page{
+  max-width:1100px;
+  margin:auto;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo img{
+  width:65px;
+}
+
+.logo h1{
+  color:#3B82F6;
+}
+
+.nav a{
+  color:#3B82F6;
+  text-decoration:none;
+  font-weight:bold;
+  margin-left:15px;
+}
+
+.checkout{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:25px;
+}
+
+.box{
+  background:white;
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+  margin-bottom:22px;
+}
+
+.box h2{
+  color:#3B82F6;
+  margin-bottom:18px;
+}
+
+.item-img{
+  height:250px;
+  background:linear-gradient(135deg,#e5e7eb,#dbeafe);
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
+  color:#3B82F6;
+  margin-bottom:20px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  margin:12px 0;
+  color:#444;
+}
+
+.total{
+  border-top:1px solid #ddd;
+  margin-top:15px;
+  padding-top:15px;
+  font-size:22px;
+  font-weight:bold;
+  color:#3B82F6;
+}
+
+input,select{
+  width:100%;
+  padding:14px;
+  margin-bottom:14px;
+  border:1px solid #d1d5db;
+  border-radius:12px;
+  font-size:15px;
+}
+
+input:focus,select:focus{
+  outline:none;
+  border-color:#3B82F6;
+}
+
+button{
+  width:100%;
+  padding:16px;
+  background:#3B82F6;
+  color:white;
+  border:none;
+  border-radius:14px;
+  font-weight:bold;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.badge{
+  display:inline-block;
+  background:#e0edff;
+  color:#3B82F6;
+  padding:7px 10px;
+  border-radius:10px;
+  font-size:13px;
+  margin:5px 5px 10px 0;
+  font-weight:bold;
+}
+
+.small{
+  color:#666;
+  font-size:13px;
+  margin-top:10px;
+}
+
+.check{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  margin:15px 0;
+  color:#444;
+}
+
+.check input{
+  width:auto;
+  margin-top:3px;
+}
+
+.progress{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:25px;
+}
+
+.step{
+  background:white;
+  color:#3B82F6;
+  padding:10px 14px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:bold;
+  box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+@media(max-width:850px){
+  .checkout{grid-template-columns:1fr}
+  .top{flex-direction:column;gap:15px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="top">
+    <div class="logo">
+      <img src="image-1.jpg" alt="ReFresh Logo">
+      <h1>ReFresh Checkout</h1>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="browse.html">Browse</a>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="step">1. Review Item</div>
+    <div class="step">2. Rental Info</div>
+    <div class="step">3. Checkout</div>
+  </div>
+
+  <div class="checkout">
+
+    <div>
+
+      <div class="box">
+        <h2>Rental Item</h2>
+        <div class="item-img">👕</div>
+
+        <span class="badge" id="categoryBadge">Category</span>
+        <span class="badge" id="conditionBadge">Condition</span>
+
+        <h2 id="itemName">Loading item...</h2>
+        <p id="brand"></p>
+        <p id="size"></p>
+        <p id="seller"></p>
+      </div>
+
+      <div class="box">
+        <h2>Buyer Information</h2>
+
+        <input id="buyerName" placeholder="Full Name">
+        <input id="buyerEmail" type="email" placeholder="Email">
+        <input id="buyerPhone" placeholder="Phone Number">
+
+        <select id="rentalMethod">
+          <option value="">Pickup or Delivery?</option>
+          <option>Pickup</option>
+          <option>Delivery</option>
+        </select>
+
+        <input id="address" placeholder="Delivery address or pickup notes">
+      </div>
+
+    </div>
+
+    <div>
+
+      <div class="box">
+        <h2>Order Summary</h2>
+
+        <div class="row">
+          <span>Price Per Day</span>
+          <strong id="dailyPrice">$0</strong>
+        </div>
+
+        <div class="row">
+          <span>Rental Days</span>
+          <input id="daysInput" type="number" min="1" value="1" style="width:90px;margin:0;">
+        </div>
+
+        <div class="row">
+          <span>Subtotal</span>
+          <strong id="subtotal">$0</strong>
+        </div>
+
+        <div class="row">
+          <span>ReFresh Service Fee</span>
+          <strong id="serviceFee">$0</strong>
+        </div>
+
+        <div class="row">
+          <span>Rental Protection</span>
+          <strong id="protectionFee">$2.00</strong>
+        </div>
+
+        <div class="row total">
+          <span>Total</span>
+          <strong id="totalPrice">$0</strong>
+        </div>
+
+        <div class="row">
+          <span>Estimated Seller Payout</span>
+          <strong id="sellerPayout">$0</strong>
+        </div>
+
+        <input id="promoCode" placeholder="Promo Code">
+
+        <div class="check">
+          <input id="terms" type="checkbox">
+          <label>I agree to the ReFresh rental terms and understand checkout is not live yet.</label>
+        </div>
+
+        <button id="checkoutBtn">Proceed to Checkout</button>
+
+        <p class="small">Secure checkout powered by Stripe will be added later.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const params = new URLSearchParams(window.location.search);
+const itemId = params.get("id");
+
+let currentItem = null;
+let dailyPrice = 0;
+
+const daysInput = document.getElementById("daysInput");
+
+async function loadItem(){
+  if(!itemId){
+    document.getElementById("itemName").innerText = "Item not found";
+    return;
+  }
+
+  const itemRef = doc(db, "listings", itemId);
+  const itemSnap = await getDoc(itemRef);
+
+  if(itemSnap.exists()){
+    currentItem = itemSnap.data();
+    dailyPrice = Number(currentItem.price || 0);
+
+    document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
+    document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
+    document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
+    document.getElementById("seller").innerText = "Seller: " + (currentItem.sellerName || "Seller");
+    document.getElementById("categoryBadge").innerText = currentItem.category || "General";
+    document.getElementById("conditionBadge").innerText = currentItem.condition || "Condition N/A";
+
+    updateTotals();
+  } else {
+    document.getElementById("itemName").innerText = "Item not found";
+  }
+}
+
+function updateTotals(){
+  const days = Number(daysInput.value || 1);
+  const subtotal = dailyPrice * days;
+  const serviceFee = subtotal * 0.10;
+  const protectionFee = 2;
+  const total = subtotal + serviceFee + protectionFee;
+  const sellerPayout = subtotal * 0.90;
+
+  document.getElementById("dailyPrice").innerText = "$" + dailyPrice.toFixed(2);
+  document.getElementById("subtotal").innerText = "$" + subtotal.toFixed(2);
+  document.getElementById("serviceFee").innerText = "$" + serviceFee.toFixed(2);
+  document.getElementById("totalPrice").innerText = "$" + total.toFixed(2);
+  document.getElementById("sellerPayout").innerText = "$" + sellerPayout.toFixed(2);
+}
+
+daysInput.addEventListener("input", updateTotals);
+
+document.getElementById("checkoutBtn").addEventListener("click", async () => {
+  if(!currentItem){
+    alert("Item not loaded.");
+    return;
+  }
+
+  if(!document.getElementById("terms").checked){
+    alert("Please agree to the rental terms first.");
+    return;
+  }
+
+  const days = Number(daysInput.value || 1);
+  const subtotal = dailyPrice * days;
+  const serviceFee = subtotal * 0.10;
+  const protectionFee = 2;
+  const total = subtotal + serviceFee + protectionFee;
+
+  await addDoc(collection(db, "checkoutIntents"), {
+    listingId: itemId,
+    itemName: currentItem.itemName || "",
+    sellerName: currentItem.sellerName || "",
+    buyerName: document.getElementById("buyerName").value,
+    buyerEmail: document.getElementById("buyerEmail").value,
+    buyerPhone: document.getElementById("buyerPhone").value,
+    rentalMethod: document.getElementById("rentalMethod").value,
+    address: document.getElementById("address").value,
+    days: days,
+    subtotal: subtotal,
+    serviceFee: serviceFee,
+    protectionFee: protectionFee,
+    total: total,
+    status: "checkout preview"
+  });
+
+  alert("Checkout preview saved! Stripe checkout coming soon.");
+});
+
+loadItem();
+</script>
+
+</body>
+</html>
