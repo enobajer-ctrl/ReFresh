@@ -332,15 +332,17 @@ async function loadMessages(){
 
   snapshot.forEach((messageDoc) => {
     const msg = messageDoc.data();
-
-    messagesDiv.innerHTML += `
-      <div class="message">
-        <h3>${msg.itemName || "Message"}</h3>
-        <p>From: ${msg.senderEmail || "Unknown"}</p>
-        <p>${msg.message || ""}</p>
-        <p>Status: New</p>
-      </div>
-    `;
+messagesDiv.innerHTML += `
+  <div class="message">
+    <h3>${msg.itemName || "Message"}</h3>
+    <p>From: ${msg.senderEmail || "Unknown"}</p>
+    <p>${msg.message || ""}</p>
+    <p>Status: New</p>
+    <button onclick="window.location.href='messaging.html?listingId=${msg.listingId}'">
+      Reply
+    </button>
+  </div>
+`;
   });
 }
 
