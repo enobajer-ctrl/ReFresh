@@ -116,7 +116,7 @@ button{
   </div>
 
   <h2>Welcome Back</h2>
-  <p class="subtitle">Log in to manage rentals and listings.</p>
+  <p class="subtitle">Log in to rent, save, and manage listings.</p>
 
   <input id="email" type="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
@@ -134,10 +134,10 @@ button{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey:  "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
   authDomain: "refresh-7b0b7.firebaseapp.com",
   projectId: "refresh-7b0b7",
   storageBucket: "refresh-7b0b7.firebasestorage.app",
@@ -153,9 +153,13 @@ document.getElementById("loginBtn").addEventListener("click", () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  signInWithEmailAndPassword(auth, email, password)
+  setPersistence(auth, browserLocalPersistence)
     .then(() => {
-      window.location.href = "dashboard.html";
+      return signInWithEmailAndPassword(auth, email, password);
+    })
+    .then(() => {
+      alert("Logged in!");
+      window.location.href = "browse.html";
     })
     .catch((error) => {
       alert(error.message);
