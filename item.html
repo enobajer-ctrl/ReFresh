@@ -220,6 +220,7 @@ button,.btn{
         <button id="favoriteBtn" class="secondary">♡ Save Item</button>
         <button id="messageBtn" class="secondary">Message Seller</button>
         <button id="reviewBtn" class="danger">Leave Review</button>
+        <button id="checkoutBtn">Checkout</button>
       </div>
 
       <br>
@@ -382,7 +383,14 @@ document.getElementById("reviewBtn").addEventListener("click", () => {
 
   window.location.href = "reviews.html?seller=" + encodeURIComponent(currentItem.sellerName || "Seller");
 });
+document.getElementById("checkoutBtn").addEventListener("click", () => {
+  if(!itemId){
+    alert("Item not loaded.");
+    return;
+  }
 
+  window.location.href = "checkout.html?id=" + itemId;
+});
 loadItem();
 </script>
 
