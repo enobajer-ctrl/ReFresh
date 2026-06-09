@@ -39,6 +39,7 @@ body{
 
 .logo h1{
   color:#3B82F6;
+  letter-spacing:3px;
 }
 
 .card{
@@ -88,6 +89,7 @@ button{
   font-weight:bold;
   font-size:16px;
   margin-top:20px;
+  cursor:pointer;
 }
 
 a{
@@ -118,7 +120,7 @@ a{
     <p class="price" id="price"></p>
     <p id="seller"></p>
 
-    <button onclick="alert('Rental checkout coming soon!')">Request To Rent</button>
+    <button id="requestBtn">Request To Rent</button>
 
     <a href="browse.html">← Back to Browse</a>
   </div>
@@ -127,7 +129,8 @@ a{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -141,9 +144,12 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const params = new URLSearchParams(window.location.search);
 const itemId = params.get("id");
+
+let currentItem = null;
 
 async function loadItem(){
   if(!itemId){
@@ -155,17 +161,51 @@ async function loadItem(){
   const itemSnap = await getDoc(itemRef);
 
   if(itemSnap.exists()){
-    const item = itemSnap.data();
+    currentItem = itemSnap.data();
 
-    document.getElementById("itemName").innerText = item.itemName || "Untitled Item";
-    document.getElementById("brand").innerText = "Brand: " + (item.brand || "N/A");
-    document.getElementById("size").innerText = "Size: " + (item.size || "N/A");
-    document.getElementById("price").innerText = "$" + (item.price || "0") + "/day";
-    document.getElementById("seller").innerText = "Posted by: " + (item.sellerName || "Seller");
+    document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
+    document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
+    document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
+    document.getElementById("price").innerText = "$" + (currentItem.price || "0") + "/day";
+    document.getElementById("seller").innerText = "Posted by: " + (currentItem.sellerName || "Seller");
   } else {
     document.getElementById("itemName").innerText = "Item not found";
   }
 }
+
+document.getElementById("requestBtn").addEventListener("click", async () => {
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("Please log in to request this item.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if(!currentItem){
+    alert("Item not loaded yet.");
+    return;
+  }
+
+  try{
+    await addDoc(collection(db, "rentalRequests"), {
+      listingId: itemId,
+      itemName: currentItem.itemName || "",
+      brand: currentItem.brand || "",
+      size: currentItem.size || "",
+      price: currentItem.price || "",
+      sellerName: currentItem.sellerName || "Seller",
+      buyerId: user.uid,
+      buyerEmail: user.email,
+      status: "pending",
+      createdAt: new Date().toISOString()
+    });
+
+    alert("Rental request sent!");
+  } catch(error){
+    alert(error.message);
+  }
+});
 
 loadItem();
 </script>
