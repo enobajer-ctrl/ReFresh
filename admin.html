@@ -77,6 +77,11 @@ body{
   margin-bottom:12px;
 }
 
+.item h3{
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
 .item p{
   color:#ccc;
   margin:5px 0;
@@ -110,6 +115,7 @@ body{
       <a href="index.html">Home</a>
       <a href="browse.html">Browse</a>
       <a href="dashboard.html">Seller</a>
+      <a href="notifications.html">Notifications</a>
     </div>
   </div>
 
@@ -125,12 +131,22 @@ body{
     </div>
 
     <div class="card">
+      <h2>Total Messages</h2>
+      <p id="messageCount">0</p>
+    </div>
+
+    <div class="card">
+      <h2>Total Reviews</h2>
+      <p id="reviewCount">0</p>
+    </div>
+
+    <div class="card">
       <h2>Total Favorites</h2>
       <p id="favoriteCount">0</p>
     </div>
 
     <div class="card">
-      <h2>Estimated Revenue</h2>
+      <h2>Estimated ReFresh Revenue</h2>
       <p id="revenue">$0.00</p>
     </div>
   </div>
@@ -145,6 +161,20 @@ body{
   <div class="box">
     <h2>Rental Requests</h2>
     <div id="requests">Loading requests...</div>
+  </div>
+
+  <br>
+
+  <div class="box">
+    <h2>Recent Messages</h2>
+    <div id="messages">Loading messages...</div>
+  </div>
+
+  <br>
+
+  <div class="box">
+    <h2>Recent Reviews</h2>
+    <div id="reviews">Loading reviews...</div>
   </div>
 
 </div>
@@ -169,15 +199,21 @@ const db = getFirestore(app);
 async function loadAdmin(){
   const listingsSnap = await getDocs(collection(db, "listings"));
   const requestsSnap = await getDocs(collection(db, "rentalRequests"));
+  const messagesSnap = await getDocs(collection(db, "messages"));
+  const reviewsSnap = await getDocs(collection(db, "reviews"));
   const favoritesSnap = await getDocs(collection(db, "favorites"));
 
   document.getElementById("listingCount").innerText = listingsSnap.size;
   document.getElementById("requestCount").innerText = requestsSnap.size;
+  document.getElementById("messageCount").innerText = messagesSnap.size;
+  document.getElementById("reviewCount").innerText = reviewsSnap.size;
   document.getElementById("favoriteCount").innerText = favoritesSnap.size;
 
   let revenue = 0;
+
   requestsSnap.forEach((doc) => {
     const r = doc.data();
+
     if(r.status === "accepted"){
       revenue += Number(r.price || 0) * 0.10;
     }
@@ -221,6 +257,45 @@ async function loadAdmin(){
         <p>Buyer: ${request.buyerEmail || "Unknown"}</p>
         <p>Seller: ${request.sellerName || "Seller"}</p>
         <p>Status: ${request.status || "pending"}</p>
+      </div>
+    `;
+  });
+
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML = "";
+
+  if(messagesSnap.empty){
+    messagesDiv.innerHTML = "<p>No messages yet.</p>";
+  }
+
+  messagesSnap.forEach((doc) => {
+    const msg = doc.data();
+
+    messagesDiv.innerHTML += `
+      <div class="item">
+        <h3>${msg.itemName || "Message"}</h3>
+        <p>From: ${msg.senderEmail || "Unknown"}</p>
+        <p>${msg.message || ""}</p>
+      </div>
+    `;
+  });
+
+  const reviewsDiv = document.getElementById("reviews");
+  reviewsDiv.innerHTML = "";
+
+  if(reviewsSnap.empty){
+    reviewsDiv.innerHTML = "<p>No reviews yet.</p>";
+  }
+
+  reviewsSnap.forEach((doc) => {
+    const review = doc.data();
+    const stars = "★".repeat(review.rating || 0) + "☆".repeat(5 - (review.rating || 0));
+
+    reviewsDiv.innerHTML += `
+      <div class="item">
+        <h3>${review.sellerName || "Seller"}</h3>
+        <p>${stars}</p>
+        <p>${review.review || ""}</p>
       </div>
     `;
   });
