@@ -7,12 +7,7 @@
 <title>Browse Listings | ReFresh</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
   background:#111;
@@ -22,7 +17,7 @@ body{
 }
 
 .page{
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
 }
 
@@ -30,7 +25,7 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:35px;
+  margin-bottom:30px;
 }
 
 .logo{
@@ -45,7 +40,6 @@ body{
 
 .logo h1{
   color:#3B82F6;
-  letter-spacing:3px;
 }
 
 .nav a{
@@ -74,28 +68,35 @@ body{
   color:#bbb;
 }
 
-.search-box{
-  margin-bottom:25px;
-}
-
-.search-box input{
-  width:100%;
-  padding:16px;
-  border-radius:12px;
-  border:1px solid #333;
+.filters{
   background:#1a1a1a;
-  color:white;
-  font-size:16px;
-  outline:none;
+  border:1px solid #333;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:25px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
 }
 
-.search-box input:focus{
+input,select{
+  width:100%;
+  padding:14px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  color:white;
+  font-size:15px;
+}
+
+input:focus,select:focus{
+  outline:none;
   border-color:#3B82F6;
 }
 
 #listings{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
 }
 
@@ -108,7 +109,7 @@ body{
 }
 
 .fake-img{
-  height:170px;
+  height:180px;
   background:linear-gradient(135deg,#222,#333);
   border-radius:14px;
   margin-bottom:18px;
@@ -116,7 +117,7 @@ body{
   justify-content:center;
   align-items:center;
   color:#3B82F6;
-  font-size:42px;
+  font-size:48px;
 }
 
 .card h3{
@@ -136,10 +137,20 @@ body{
   margin-top:12px;
 }
 
-.seller{
-  margin-top:12px;
-  color:#aaa;
-  font-size:14px;
+.seller a{
+  color:#3B82F6;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.badge{
+  display:inline-block;
+  background:#222;
+  color:#3B82F6;
+  padding:5px 9px;
+  border-radius:8px;
+  font-size:13px;
+  margin:4px 4px 8px 0;
 }
 
 .actions{
@@ -148,8 +159,7 @@ body{
   margin-top:15px;
 }
 
-.rentBtn,
-.favoriteBtn{
+.rentBtn,.favoriteBtn{
   flex:1;
   padding:13px;
   border:none;
@@ -174,20 +184,15 @@ body{
   margin-top:20px;
 }
 
+.count{
+  color:#aaa;
+  margin-bottom:15px;
+}
+
 @media(max-width:650px){
-  .top{
-    flex-direction:column;
-    gap:18px;
-  }
-
-  .nav a{
-    display:inline-block;
-    margin:8px;
-  }
-
-  .actions{
-    flex-direction:column;
-  }
+  .top{flex-direction:column;gap:18px}
+  .nav a{display:inline-block;margin:8px}
+  .actions{flex-direction:column}
 }
 </style>
 </head>
@@ -205,6 +210,7 @@ body{
     <div class="nav">
       <a href="index.html">Home</a>
       <a href="dashboard.html">Sell</a>
+      <a href="favorites.html">Favorites</a>
       <a href="profile.html">Profile</a>
       <a href="login.html">Login</a>
     </div>
@@ -212,12 +218,42 @@ body{
 
   <div class="hero">
     <h2>Browse Listings</h2>
-    <p>Search rentals from ReFresh sellers.</p>
+    <p>Search and filter rentals from ReFresh sellers.</p>
   </div>
 
-  <div class="search-box">
-    <input id="searchInput" type="text" placeholder="Search by item, brand, size, seller...">
+  <div class="filters">
+    <input id="searchInput" type="text" placeholder="Search item, brand, seller...">
+
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+      <option>Clothing</option>
+      <option>Shoes</option>
+      <option>Bags</option>
+      <option>Belts</option>
+      <option>Watches</option>
+      <option>Jewelry</option>
+      <option>Accessories</option>
+    </select>
+
+    <select id="priceFilter">
+      <option value="">Any Price</option>
+      <option value="10">Under $10/day</option>
+      <option value="25">Under $25/day</option>
+      <option value="50">Under $50/day</option>
+      <option value="100">Under $100/day</option>
+    </select>
+
+    <input id="sizeFilter" type="text" placeholder="Size">
+
+    <select id="sortFilter">
+      <option value="newest">Newest</option>
+      <option value="low">Price: Low to High</option>
+      <option value="high">Price: High to Low</option>
+      <option value="az">A-Z</option>
+    </select>
   </div>
+
+  <p class="count" id="countText">Loading listings...</p>
 
   <div id="listings">
     <p class="empty">Loading listings...</p>
@@ -245,16 +281,21 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 const listingsDiv = document.getElementById("listings");
+const countText = document.getElementById("countText");
+
 const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const priceFilter = document.getElementById("priceFilter");
+const sizeFilter = document.getElementById("sizeFilter");
+const sortFilter = document.getElementById("sortFilter");
 
 let allListings = [];
 
 async function loadListings(){
   listingsDiv.innerHTML = "";
+  allListings = [];
 
   const querySnapshot = await getDocs(collection(db, "listings"));
-
-  allListings = [];
 
   querySnapshot.forEach((doc) => {
     allListings.push({
@@ -263,11 +304,67 @@ async function loadListings(){
     });
   });
 
-  displayListings(allListings);
+  applyFilters();
+}
+
+function applyFilters(){
+  let filtered = [...allListings];
+
+  const searchTerm = searchInput.value.toLowerCase();
+  const category = categoryFilter.value.toLowerCase();
+  const maxPrice = priceFilter.value;
+  const size = sizeFilter.value.toLowerCase();
+  const sort = sortFilter.value;
+
+  if(searchTerm){
+    filtered = filtered.filter((item) =>
+      (item.itemName || "").toLowerCase().includes(searchTerm) ||
+      (item.brand || "").toLowerCase().includes(searchTerm) ||
+      (item.sellerName || "").toLowerCase().includes(searchTerm) ||
+      (item.description || "").toLowerCase().includes(searchTerm)
+    );
+  }
+
+  if(category){
+    filtered = filtered.filter((item) =>
+      (item.category || "").toLowerCase() === category
+    );
+  }
+
+  if(maxPrice){
+    filtered = filtered.filter((item) =>
+      Number(item.price || 0) <= Number(maxPrice)
+    );
+  }
+
+  if(size){
+    filtered = filtered.filter((item) =>
+      (item.size || "").toLowerCase().includes(size)
+    );
+  }
+
+  if(sort === "low"){
+    filtered.sort((a,b) => Number(a.price || 0) - Number(b.price || 0));
+  }
+
+  if(sort === "high"){
+    filtered.sort((a,b) => Number(b.price || 0) - Number(a.price || 0));
+  }
+
+  if(sort === "az"){
+    filtered.sort((a,b) => (a.itemName || "").localeCompare(b.itemName || ""));
+  }
+
+  if(sort === "newest"){
+    filtered.sort((a,b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+  }
+
+  displayListings(filtered);
 }
 
 function displayListings(listings){
   listingsDiv.innerHTML = "";
+  countText.innerText = listings.length + " listings found";
 
   if(listings.length === 0){
     listingsDiv.innerHTML = "<p class='empty'>No listings found.</p>";
@@ -275,20 +372,36 @@ function displayListings(listings){
   }
 
   listings.forEach((item) => {
+    const sellerProfileLink = "profile.html?seller=" + encodeURIComponent(item.sellerName || "Seller");
+
     listingsDiv.innerHTML += `
       <div class="card">
         <div class="fake-img">👕</div>
+
+        <span class="badge">${item.category || "General"}</span>
+        <span class="badge">${item.condition || "Condition N/A"}</span>
+
         <h3>${item.itemName || "Untitled Item"}</h3>
+
         <p>Brand: ${item.brand || "N/A"}</p>
         <p>Size: ${item.size || "N/A"}</p>
+        <p>${item.description || "No description yet."}</p>
+
         <p class="price">$${item.price || "0"}/day</p>
-        <p class="seller">Posted by: ${item.sellerName || "Seller"}</p>
+
+        <p class="seller">
+          Posted by:
+          <a href="${sellerProfileLink}">${item.sellerName || "Seller"}</a>
+        </p>
 
         <div class="actions">
-         <button class="rentBtn" onclick="window.location.href='item.html?id=${item.id}'">
-  Rent Now
-</button>
-          <button class="favoriteBtn" data-id="${item.id}">♡ Save</button>
+          <button class="rentBtn" onclick="window.location.href='item.html?id=${item.id}'">
+            Rent Now
+          </button>
+
+          <button class="favoriteBtn" data-id="${item.id}">
+            ♡ Save
+          </button>
         </div>
       </div>
     `;
@@ -315,20 +428,11 @@ function displayListings(listings){
   });
 }
 
-searchInput.addEventListener("input", () => {
-  const searchTerm = searchInput.value.toLowerCase();
-
-  const filtered = allListings.filter((item) => {
-    return (
-      (item.itemName || "").toLowerCase().includes(searchTerm) ||
-      (item.brand || "").toLowerCase().includes(searchTerm) ||
-      (item.size || "").toLowerCase().includes(searchTerm) ||
-      (item.sellerName || "").toLowerCase().includes(searchTerm)
-    );
-  });
-
-  displayListings(filtered);
-});
+searchInput.addEventListener("input", applyFilters);
+categoryFilter.addEventListener("change", applyFilters);
+priceFilter.addEventListener("change", applyFilters);
+sizeFilter.addEventListener("input", applyFilters);
+sortFilter.addEventListener("change", applyFilters);
 
 loadListings();
 </script>
