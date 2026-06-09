@@ -1,1 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Admin Dashboard | ReFresh</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+body{
+  background:#111;
+  color:white;
+  min-height:100vh;
+  padding:25px;
+}
+
+.page{
+  max-width:1200px;
+  margin:auto;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo img{
+  width:70px;
+}
+
+.logo h1{
+  color:#3B82F6;
+}
+
+.nav a{
+  color:#3B82F6;
+  text-decoration:none;
+  font-weight:bold;
+  margin-left:15px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  margin-bottom:30px;
+}
+
+.card,.box{
+  background:#1a1a1a;
+  border:1px solid #333;
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 0 20px rgba(59,130,246,.12);
+}
+
+.card h2,.box h2{
+  color:#3B82F6;
+  margin-bottom:12px;
+}
+
+.item{
+  background:#111;
+  border:1px solid #333;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.item p{
+  color:#ccc;
+  margin:5px 0;
+}
+
+@media(max-width:650px){
+  .top{
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .nav a{
+    display:inline-block;
+    margin:8px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="top">
+    <div class="logo">
+      <img src="image-1.jpg" alt="ReFresh Logo">
+      <h1>Admin Dashboard</h1>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="browse.html">Browse</a>
+      <a href="dashboard.html">Seller</a>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Total Listings</h2>
+      <p id="listingCount">0</p>
+    </div>
+
+    <div class="card">
+      <h2>Total Requests</h2>
+      <p id="requestCount">0</p>
+    </div>
+
+    <div class="card">
+      <h2>Total Favorites</h2>
+      <p id="favoriteCount">0</p>
+    </div>
+
+    <div class="card">
+      <h2>Estimated Revenue</h2>
+      <p id="revenue">$0.00</p>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>Recent Listings</h2>
+    <div id="listings">Loading listings...</div>
+  </div>
+
+  <br>
+
+  <div class="box">
+    <h2>Rental Requests</h2>
+    <div id="requests">Loading requests...</div>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadAdmin(){
+  const listingsSnap = await getDocs(collection(db, "listings"));
+  const requestsSnap = await getDocs(collection(db, "rentalRequests"));
+  const favoritesSnap = await getDocs(collection(db, "favorites"));
+
+  document.getElementById("listingCount").innerText = listingsSnap.size;
+  document.getElementById("requestCount").innerText = requestsSnap.size;
+  document.getElementById("favoriteCount").innerText = favoritesSnap.size;
+
+  let revenue = 0;
+  requestsSnap.forEach((doc) => {
+    const r = doc.data();
+    if(r.status === "accepted"){
+      revenue += Number(r.price || 0) * 0.10;
+    }
+  });
+
+  document.getElementById("revenue").innerText = "$" + revenue.toFixed(2);
+
+  const listingsDiv = document.getElementById("listings");
+  listingsDiv.innerHTML = "";
+
+  if(listingsSnap.empty){
+    listingsDiv.innerHTML = "<p>No listings yet.</p>";
+  }
+
+  listingsSnap.forEach((doc) => {
+    const item = doc.data();
+
+    listingsDiv.innerHTML += `
+      <div class="item">
+        <h3>${item.itemName || "Untitled Item"}</h3>
+        <p>Seller: ${item.sellerName || "Seller"}</p>
+        <p>Brand: ${item.brand || "N/A"}</p>
+        <p>Price: $${item.price || "0"}/day</p>
+      </div>
+    `;
+  });
+
+  const requestsDiv = document.getElementById("requests");
+  requestsDiv.innerHTML = "";
+
+  if(requestsSnap.empty){
+    requestsDiv.innerHTML = "<p>No rental requests yet.</p>";
+  }
+
+  requestsSnap.forEach((doc) => {
+    const request = doc.data();
+
+    requestsDiv.innerHTML += `
+      <div class="item">
+        <h3>${request.itemName || "Requested Item"}</h3>
+        <p>Buyer: ${request.buyerEmail || "Unknown"}</p>
+        <p>Seller: ${request.sellerName || "Seller"}</p>
+        <p>Status: ${request.status || "pending"}</p>
+      </div>
+    `;
+  });
+}
+
+loadAdmin();
+</script>
+
+</body>
+</html>
