@@ -77,15 +77,18 @@ body{
   margin-bottom:10px;
 }
 
-.form-box{
+.form-box,
+.requests-box{
   background:#1a1a1a;
   border:1px solid #333;
   border-radius:20px;
   padding:30px;
   box-shadow:0 0 30px rgba(59,130,246,.2);
+  margin-bottom:30px;
 }
 
-.form-box h2{
+.form-box h2,
+.requests-box h2{
   margin-bottom:20px;
   color:#3B82F6;
 }
@@ -118,6 +121,34 @@ button.upload{
   cursor:pointer;
 }
 
+.request-card{
+  background:#111;
+  border:1px solid #333;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:15px;
+}
+
+.request-card h3{
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
+.request-card p{
+  color:#ccc;
+  margin-bottom:6px;
+}
+
+.status{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 10px;
+  border-radius:8px;
+  background:#222;
+  color:#3B82F6;
+  font-weight:bold;
+}
+
 .links{
   margin-top:25px;
   text-align:center;
@@ -134,6 +165,11 @@ button.upload{
   .top{
     flex-direction:column;
     gap:20px;
+  }
+
+  .links a{
+    display:block;
+    margin:12px 0;
   }
 }
 </style>
@@ -155,7 +191,7 @@ button.upload{
   <div class="cards">
     <div class="card">
       <h2>My Listings</h2>
-      <p>Your uploaded items will appear on Browse.</p>
+      <p>Your uploaded items appear on Browse.</p>
     </div>
 
     <div class="card">
@@ -181,8 +217,16 @@ button.upload{
     <button class="upload" id="uploadBtn">Upload Listing</button>
   </div>
 
+  <div class="requests-box">
+    <h2>Rental Requests</h2>
+    <div id="requests">
+      <p>Loading requests...</p>
+    </div>
+  </div>
+
   <div class="links">
     <a href="browse.html">Browse Listings</a>
+    <a href="favorites.html">Favorites</a>
     <a href="profile.html">My Profile</a>
     <a href="index.html">Back Home</a>
   </div>
@@ -191,11 +235,11 @@ button.upload{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDSM9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
   authDomain: "refresh-7b0b7.firebaseapp.com",
   projectId: "refresh-7b0b7",
   storageBucket: "refresh-7b0b7.firebasestorage.app",
@@ -229,6 +273,35 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
     alert(error.message);
   }
 });
+
+async function loadRequests(){
+  const requestsDiv = document.getElementById("requests");
+  requestsDiv.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "rentalRequests"));
+
+  if(querySnapshot.empty){
+    requestsDiv.innerHTML = "<p>No rental requests yet.</p>";
+    return;
+  }
+
+  querySnapshot.forEach((doc) => {
+    const request = doc.data();
+
+    requestsDiv.innerHTML += `
+      <div class="request-card">
+        <h3>${request.itemName || "Requested Item"}</h3>
+        <p>Brand: ${request.brand || "N/A"}</p>
+        <p>Size: ${request.size || "N/A"}</p>
+        <p>Price: $${request.price || "0"}/day</p>
+        <p>Buyer: ${request.buyerEmail || "Unknown buyer"}</p>
+        <span class="status">${request.status || "pending"}</span>
+      </div>
+    `;
+  });
+}
+
+loadRequests();
 </script>
 
 </body>
