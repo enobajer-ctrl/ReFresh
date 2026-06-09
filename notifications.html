@@ -1,1 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Notifications | ReFresh</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+body{
+  background:#111;
+  color:white;
+  min-height:100vh;
+  padding:25px;
+}
+
+.page{
+  max-width:1000px;
+  margin:auto;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo img{
+  width:70px;
+}
+
+.logo h1{
+  color:#3B82F6;
+}
+
+.nav a{
+  color:#3B82F6;
+  text-decoration:none;
+  font-weight:bold;
+  margin-left:15px;
+}
+
+.box{
+  background:#1a1a1a;
+  border:1px solid #333;
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 0 25px rgba(59,130,246,.15);
+  margin-bottom:25px;
+}
+
+.box h2{
+  color:#3B82F6;
+  margin-bottom:15px;
+}
+
+.notice{
+  background:#111;
+  border:1px solid #333;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.notice h3{
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
+.notice p{
+  color:#ccc;
+}
+
+@media(max-width:650px){
+  .top{
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .nav a{
+    display:inline-block;
+    margin:8px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="top">
+    <div class="logo">
+      <img src="image-1.jpg" alt="ReFresh Logo">
+      <h1>Notifications</h1>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="browse.html">Browse</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="messages.html">Messages</a>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>Recent Activity</h2>
+    <div id="notifications">Loading notifications...</div>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadNotifications(){
+  const box = document.getElementById("notifications");
+  box.innerHTML = "";
+
+  const messagesSnap = await getDocs(collection(db, "messages"));
+  const requestsSnap = await getDocs(collection(db, "rentalRequests"));
+
+  if(messagesSnap.empty && requestsSnap.empty){
+    box.innerHTML = "<p>No notifications yet.</p>";
+    return;
+  }
+
+  messagesSnap.forEach((doc) => {
+    const m = doc.data();
+
+    box.innerHTML += `
+      <div class="notice">
+        <h3>New Message</h3>
+        <p>${m.senderEmail || "Someone"} messaged about ${m.itemName || "an item"}.</p>
+      </div>
+    `;
+  });
+
+  requestsSnap.forEach((doc) => {
+    const r = doc.data();
+
+    box.innerHTML += `
+      <div class="notice">
+        <h3>Rental Request</h3>
+        <p>${r.buyerEmail || "Someone"} requested ${r.itemName || "an item"}.</p>
+        <p>Status: ${r.status || "pending"}</p>
+      </div>
+    `;
+  });
+}
+
+loadNotifications();
+</script>
+
+</body>
+</html>
