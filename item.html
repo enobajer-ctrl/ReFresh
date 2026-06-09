@@ -7,12 +7,7 @@
 <title>Item Details | ReFresh</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
   background:#111;
@@ -22,15 +17,21 @@ body{
 }
 
 .page{
-  max-width:900px;
+  max-width:1100px;
   margin:auto;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
 }
 
 .logo{
   display:flex;
   align-items:center;
   gap:12px;
-  margin-bottom:30px;
 }
 
 .logo img{
@@ -39,32 +40,43 @@ body{
 
 .logo h1{
   color:#3B82F6;
-  letter-spacing:3px;
 }
 
-.card{
+.nav a{
+  color:#3B82F6;
+  text-decoration:none;
+  font-weight:bold;
+  margin-left:15px;
+}
+
+.item-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.image-box,.details-box,.rent-box,.seller-box{
   background:#1a1a1a;
   border:1px solid #333;
   border-radius:20px;
-  padding:30px;
-  box-shadow:0 0 25px rgba(59,130,246,.18);
+  padding:25px;
+  box-shadow:0 0 25px rgba(59,130,246,.15);
 }
 
 .fake-img{
-  height:280px;
+  height:420px;
   background:linear-gradient(135deg,#222,#333);
   border-radius:18px;
   display:flex;
   justify-content:center;
   align-items:center;
   color:#3B82F6;
-  font-size:70px;
-  margin-bottom:25px;
+  font-size:90px;
 }
 
 h2{
   color:#3B82F6;
-  font-size:32px;
+  font-size:34px;
   margin-bottom:15px;
 }
 
@@ -74,12 +86,34 @@ p{
 }
 
 .price{
-  font-size:24px;
+  font-size:26px;
   color:#3B82F6;
   font-weight:bold;
 }
 
-button{
+.badge{
+  display:inline-block;
+  background:#222;
+  color:#3B82F6;
+  padding:7px 10px;
+  border-radius:10px;
+  font-size:13px;
+  margin:5px 5px 10px 0;
+  font-weight:bold;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  color:white;
+  font-size:16px;
+  margin:10px 0;
+}
+
+button,.btn{
   width:100%;
   padding:15px;
   background:#3B82F6;
@@ -88,21 +122,47 @@ button{
   border-radius:12px;
   font-weight:bold;
   font-size:16px;
-  margin-top:15px;
+  margin-top:12px;
   cursor:pointer;
+  display:block;
+  text-align:center;
+  text-decoration:none;
 }
 
-.messageBtn{
+.secondary{
   background:#222;
   border:1px solid #3B82F6;
 }
 
-a{
+.danger{
+  background:#333;
+}
+
+.total{
+  font-size:24px;
   color:#3B82F6;
-  display:inline-block;
-  margin-top:25px;
-  text-decoration:none;
   font-weight:bold;
+}
+
+.small{
+  color:#888;
+  font-size:13px;
+}
+
+@media(max-width:800px){
+  .item-layout{
+    grid-template-columns:1fr;
+  }
+
+  .top{
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .nav a{
+    display:inline-block;
+    margin:8px;
+  }
 }
 </style>
 </head>
@@ -111,26 +171,66 @@ a{
 
 <div class="page">
 
-  <div class="logo">
-    <img src="image-1.jpg" alt="ReFresh Logo">
-    <h1>ReFresh</h1>
+  <div class="top">
+    <div class="logo">
+      <img src="image-1.jpg" alt="ReFresh Logo">
+      <h1>ReFresh</h1>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="browse.html">Browse</a>
+      <a href="favorites.html">Favorites</a>
+      <a href="profile.html">Profile</a>
+    </div>
   </div>
 
-  <div class="card">
-    <div class="fake-img">👕</div>
+  <div class="item-layout">
 
-    <h2 id="itemName">Loading item...</h2>
-    <p id="brand"></p>
-    <p id="size"></p>
-    <p id="condition"></p>
-    <p id="description"></p>
-    <p class="price" id="price"></p>
-    <p id="seller"></p>
+    <div class="image-box">
+      <div class="fake-img">👕</div>
+    </div>
 
-    <button id="requestBtn">Request To Rent</button>
-    <button id="messageBtn" class="messageBtn">Message Seller</button>
+    <div>
+      <div class="details-box">
+        <span class="badge" id="categoryBadge">Category</span>
+        <span class="badge" id="conditionBadge">Condition</span>
+        <span class="badge" id="statusBadge">Available</span>
 
-    <a href="browse.html">← Back to Browse</a>
+        <h2 id="itemName">Loading item...</h2>
+        <p id="brand"></p>
+        <p id="size"></p>
+        <p id="description"></p>
+        <p class="price" id="price"></p>
+      </div>
+
+      <br>
+
+      <div class="rent-box">
+        <h2>Rental Estimate</h2>
+
+        <label>Number of days</label>
+        <input id="daysInput" type="number" min="1" value="1">
+
+        <p>Daily Price: <span id="dailyPrice">$0</span></p>
+        <p class="total">Total: <span id="totalPrice">$0</span></p>
+        <p class="small">Requesting this item does not charge you yet.</p>
+
+        <button id="requestBtn">Request To Rent</button>
+        <button id="favoriteBtn" class="secondary">♡ Save Item</button>
+        <button id="messageBtn" class="secondary">Message Seller</button>
+        <button id="reviewBtn" class="danger">Leave Review</button>
+      </div>
+
+      <br>
+
+      <div class="seller-box">
+        <h2>Seller</h2>
+        <p id="seller"></p>
+        <a id="sellerProfile" class="btn secondary" href="#">View Seller Profile</a>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -158,6 +258,9 @@ const params = new URLSearchParams(window.location.search);
 const itemId = params.get("id");
 
 let currentItem = null;
+let dailyPrice = 0;
+
+const daysInput = document.getElementById("daysInput");
 
 async function loadItem(){
   if(!itemId){
@@ -170,18 +273,37 @@ async function loadItem(){
 
   if(itemSnap.exists()){
     currentItem = itemSnap.data();
+    dailyPrice = Number(currentItem.price || 0);
 
     document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
     document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
     document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
-    document.getElementById("condition").innerText = "Condition: " + (currentItem.condition || "N/A");
     document.getElementById("description").innerText = "Description: " + (currentItem.description || "No description yet.");
-    document.getElementById("price").innerText = "$" + (currentItem.price || "0") + "/day";
+    document.getElementById("price").innerText = "$" + dailyPrice + "/day";
+
+    document.getElementById("categoryBadge").innerText = currentItem.category || "General";
+    document.getElementById("conditionBadge").innerText = currentItem.condition || "Condition N/A";
+    document.getElementById("statusBadge").innerText = currentItem.inventoryStatus || "Available";
+
     document.getElementById("seller").innerText = "Posted by: " + (currentItem.sellerName || "Seller");
+    document.getElementById("sellerProfile").href =
+      "profile.html?seller=" + encodeURIComponent(currentItem.sellerName || "Seller");
+
+    updateTotal();
   } else {
     document.getElementById("itemName").innerText = "Item not found";
   }
 }
+
+function updateTotal(){
+  const days = Number(daysInput.value || 1);
+  const total = days * dailyPrice;
+
+  document.getElementById("dailyPrice").innerText = "$" + dailyPrice;
+  document.getElementById("totalPrice").innerText = "$" + total.toFixed(2);
+}
+
+daysInput.addEventListener("input", updateTotal);
 
 document.getElementById("requestBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
@@ -197,21 +319,47 @@ document.getElementById("requestBtn").addEventListener("click", async () => {
     return;
   }
 
+  const days = Number(daysInput.value || 1);
+  const totalPrice = days * dailyPrice;
+
   try{
     await addDoc(collection(db, "rentalRequests"), {
       listingId: itemId,
       itemName: currentItem.itemName || "",
       brand: currentItem.brand || "",
       size: currentItem.size || "",
-      price: currentItem.price || "",
+      price: dailyPrice,
+      days: days,
+      totalPrice: totalPrice,
       sellerName: currentItem.sellerName || "Seller",
       buyerId: user.uid,
       buyerEmail: user.email,
-      status: "pending",
-      createdAt: new Date().toISOString()
+      status: "pending"
     });
 
     alert("Rental request sent!");
+  } catch(error){
+    alert(error.message);
+  }
+});
+
+document.getElementById("favoriteBtn").addEventListener("click", async () => {
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("Please log in to save favorites.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  try{
+    await addDoc(collection(db, "favorites"), {
+      userId: user.uid,
+      listingId: itemId
+    });
+
+    document.getElementById("favoriteBtn").innerText = "Saved ✓";
+    alert("Saved to favorites!");
   } catch(error){
     alert(error.message);
   }
@@ -224,6 +372,15 @@ document.getElementById("messageBtn").addEventListener("click", () => {
   }
 
   window.location.href = "messaging.html?listingId=" + itemId;
+});
+
+document.getElementById("reviewBtn").addEventListener("click", () => {
+  if(!currentItem){
+    alert("Item not loaded.");
+    return;
+  }
+
+  window.location.href = "reviews.html?seller=" + encodeURIComponent(currentItem.sellerName || "Seller");
 });
 
 loadItem();
