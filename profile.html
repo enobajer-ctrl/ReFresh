@@ -4,15 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Profile | ReFresh</title>
+<title>Seller Profile | ReFresh</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
   background:#111;
@@ -30,7 +25,7 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:35px;
+  margin-bottom:30px;
 }
 
 .logo{
@@ -45,7 +40,6 @@ body{
 
 .logo h1{
   color:#3B82F6;
-  letter-spacing:3px;
 }
 
 .nav a{
@@ -55,14 +49,13 @@ body{
   margin-left:15px;
 }
 
-.profile-card{
+.profile-card,.box{
   background:#1a1a1a;
   border:1px solid #333;
   border-radius:20px;
-  padding:35px;
-  text-align:center;
-  box-shadow:0 0 30px rgba(59,130,246,.2);
-  margin-bottom:30px;
+  padding:30px;
+  margin-bottom:25px;
+  box-shadow:0 0 25px rgba(59,130,246,.15);
 }
 
 .avatar{
@@ -71,68 +64,53 @@ body{
   border-radius:50%;
   background:#3B82F6;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   font-size:42px;
-  margin:0 auto 20px;
+  margin-bottom:20px;
 }
 
-.profile-card h2{
-  font-size:32px;
-  margin-bottom:8px;
-}
-
-.profile-card p{
-  color:#aaa;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-  margin-bottom:30px;
-}
-
-.stat{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:18px;
-  padding:25px;
-  text-align:center;
-}
-
-.stat h3{
+.profile-card h2,.box h2{
   color:#3B82F6;
-  font-size:28px;
-  margin-bottom:8px;
+  margin-bottom:12px;
 }
 
-.section{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:20px;
-  padding:30px;
-}
-
-.section h2{
-  color:#3B82F6;
+input{
+  width:100%;
+  padding:14px;
   margin-bottom:15px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  color:white;
 }
 
-.section p{
+button{
+  padding:14px;
+  background:#3B82F6;
+  color:white;
+  border:none;
+  border-radius:12px;
+  font-weight:bold;
+  width:100%;
+  cursor:pointer;
+}
+
+.review{
+  background:#111;
+  border:1px solid #333;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.review h3{
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
+.review p{
   color:#ccc;
-}
-
-@media(max-width:650px){
-  .top{
-    flex-direction:column;
-    gap:18px;
-  }
-
-  .nav a{
-    display:inline-block;
-    margin:8px;
-  }
 }
 </style>
 </head>
@@ -144,47 +122,100 @@ body{
   <div class="top">
     <div class="logo">
       <img src="image-1.jpg" alt="ReFresh Logo">
-      <h1>ReFresh</h1>
+      <h1>Profile</h1>
     </div>
 
     <div class="nav">
       <a href="index.html">Home</a>
       <a href="browse.html">Browse</a>
       <a href="dashboard.html">Dashboard</a>
+      <a href="reviews.html">Reviews</a>
     </div>
   </div>
 
   <div class="profile-card">
     <div class="avatar">👤</div>
-    <h2>My Profile</h2>
-    <p>ReFresh member</p>
+    <h2 id="profileName">Seller Profile</h2>
+    <p id="ratingText">Average Rating: No reviews yet</p>
   </div>
 
-  <div class="stats">
-    <div class="stat">
-      <h3>0</h3>
-      <p>Listings</p>
-    </div>
-
-    <div class="stat">
-      <h3>0</h3>
-      <p>Active Rentals</p>
-    </div>
-
-    <div class="stat">
-      <h3>$0</h3>
-      <p>Earnings</p>
-    </div>
+  <div class="box">
+    <h2>Search Seller Reviews</h2>
+    <input id="sellerSearch" placeholder="Enter seller username">
+    <button id="searchBtn">View Seller Reviews</button>
   </div>
 
-  <div class="section">
-    <h2>About This Profile</h2>
-    <p>
-      This is where seller details, reviews, profile photos, and personal listings will appear as ReFresh grows.
-    </p>
+  <div class="box">
+    <h2>Seller Reviews</h2>
+    <div id="reviews">Search a seller to view reviews.</div>
   </div>
 
 </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.getElementById("searchBtn").addEventListener("click", loadSellerReviews);
+
+async function loadSellerReviews(){
+  const sellerName = document.getElementById("sellerSearch").value.trim();
+  const reviewsDiv = document.getElementById("reviews");
+
+  if(!sellerName){
+    alert("Enter a seller username.");
+    return;
+  }
+
+  document.getElementById("profileName").innerText = sellerName + "'s Profile";
+
+  reviewsDiv.innerHTML = "";
+
+  const snapshot = await getDocs(collection(db, "reviews"));
+
+  let total = 0;
+  let count = 0;
+
+  snapshot.forEach((doc) => {
+    const r = doc.data();
+
+    if((r.sellerName || "").toLowerCase() === sellerName.toLowerCase()){
+      total += Number(r.rating || 0);
+      count++;
+
+      const stars = "★".repeat(r.rating || 0) + "☆".repeat(5 - (r.rating || 0));
+
+      reviewsDiv.innerHTML += `
+        <div class="review">
+          <h3>${stars}</h3>
+          <p>${r.review || ""}</p>
+        </div>
+      `;
+    }
+  });
+
+  if(count === 0){
+    reviewsDiv.innerHTML = "<p>No reviews found for this seller.</p>";
+    document.getElementById("ratingText").innerText = "Average Rating: No reviews yet";
+  } else {
+    const average = (total / count).toFixed(1);
+    document.getElementById("ratingText").innerText = "Average Rating: " + average + "/5";
+  }
+}
+</script>
 
 </body>
 </html>
