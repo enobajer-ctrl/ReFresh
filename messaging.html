@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Message Seller | ReFresh</title>
+<title>Messages | ReFresh</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
@@ -53,7 +53,7 @@ body{
   background:#1a1a1a;
   border:1px solid #333;
   border-radius:20px;
-  padding:28px;
+  padding:25px;
   box-shadow:0 0 25px rgba(59,130,246,.15);
   margin-bottom:25px;
 }
@@ -67,42 +67,8 @@ body{
   background:#111;
   border:1px solid #333;
   border-radius:14px;
-  padding:18px;
-  margin-bottom:20px;
-}
-
-.item-info p{
-  color:#ccc;
-  margin:8px 0;
-}
-
-textarea{
-  width:100%;
-  padding:15px;
-  min-height:130px;
-  background:#111;
-  border:1px solid #333;
-  border-radius:12px;
-  color:white;
-  font-size:16px;
-  margin-bottom:15px;
-}
-
-textarea:focus{
-  outline:none;
-  border-color:#3B82F6;
-}
-
-button{
-  width:100%;
-  padding:15px;
-  background:#3B82F6;
-  color:white;
-  border:none;
-  border-radius:12px;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:16px;
+  padding:16px;
+  margin-bottom:18px;
 }
 
 .message{
@@ -115,12 +81,35 @@ button{
 
 .message h3{
   color:#3B82F6;
-  margin-bottom:8px;
+  margin-bottom:6px;
 }
 
 .message p{
   color:#ccc;
   margin-bottom:6px;
+}
+
+textarea{
+  width:100%;
+  min-height:120px;
+  padding:14px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  color:white;
+  font-size:15px;
+  margin-bottom:14px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  background:#3B82F6;
+  color:white;
+  border:none;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 .small{
@@ -129,15 +118,8 @@ button{
 }
 
 @media(max-width:650px){
-  .top{
-    flex-direction:column;
-    gap:18px;
-  }
-
-  .nav a{
-    display:inline-block;
-    margin:8px;
-  }
+  .top{flex-direction:column;gap:18px}
+  .nav a{display:inline-block;margin:8px}
 }
 </style>
 </head>
@@ -156,35 +138,34 @@ button{
       <a href="index.html">Home</a>
       <a href="browse.html">Browse</a>
       <a href="dashboard.html">Dashboard</a>
-      <a href="profile.html">Profile</a>
+      <a href="notifications.html">Notifications</a>
     </div>
   </div>
 
   <div class="box">
-    <h2>Message Seller</h2>
+    <h2>Conversation</h2>
 
     <div class="item-info">
       <h3 id="itemName">Loading item...</h3>
-      <p id="brand"></p>
-      <p id="seller"></p>
+      <p id="sellerName"></p>
     </div>
 
-    <textarea id="messageText" placeholder="Ask the seller a question about this item..."></textarea>
-
-    <button id="sendBtn">Send Message</button>
+    <div id="messages">Loading messages...</div>
   </div>
 
   <div class="box">
-    <h2>Messages About This Item</h2>
-    <div id="messages">Loading messages...</div>
+    <h2>Reply</h2>
+
+    <textarea id="messageText" placeholder="Type your message..."></textarea>
+    <button id="sendBtn">Send Message</button>
   </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -197,17 +178,31 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 const params = new URLSearchParams(window.location.search);
 const listingId = params.get("listingId");
 
+let currentUser = null;
 let currentItem = null;
+
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+
+  if(!user){
+    alert("Please log in to use messages.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  loadItem();
+  loadMessages();
+});
 
 async function loadItem(){
   if(!listingId){
-    document.getElementById("itemName").innerText = "No item selected";
+    document.getElementById("itemName").innerText = "No listing selected";
     return;
   }
 
@@ -218,76 +213,35 @@ async function loadItem(){
     currentItem = itemSnap.data();
 
     document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
-    document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
-    document.getElementById("seller").innerText = "Seller: " + (currentItem.sellerName || "Seller");
+    document.getElementById("sellerName").innerText = "Seller: " + (currentItem.sellerName || "Seller");
   } else {
     document.getElementById("itemName").innerText = "Item not found";
   }
 }
-
-document.getElementById("sendBtn").addEventListener("click", async () => {
-  const user = auth.currentUser;
-
-  if(!user){
-    alert("Please log in to message the seller.");
-    window.location.href = "login.html";
-    return;
-  }
-
-  if(!currentItem){
-    alert("Item not loaded yet.");
-    return;
-  }
-
-  const messageText = document.getElementById("messageText").value;
-
-  if(messageText.trim() === ""){
-    alert("Type a message first.");
-    return;
-  }
-
-  try{
-    await addDoc(collection(db, "messages"), {
-      listingId: listingId,
-      itemName: currentItem.itemName || "",
-      brand: currentItem.brand || "",
-      sellerName: currentItem.sellerName || "Seller",
-      senderEmail: user.email,
-      message: messageText,
-      timestamp: new Date().toISOString()
-    });
-
-    alert("Message sent!");
-    document.getElementById("messageText").value = "";
-    loadMessages();
-  }catch(error){
-    alert(error.message);
-  }
-});
 
 async function loadMessages(){
   const messagesDiv = document.getElementById("messages");
   messagesDiv.innerHTML = "";
 
   if(!listingId){
-    messagesDiv.innerHTML = "<p>No item selected.</p>";
+    messagesDiv.innerHTML = "<p>No conversation selected.</p>";
     return;
   }
 
-  const messagesQuery = query(
+  const q = query(
     collection(db, "messages"),
     where("listingId", "==", listingId)
   );
 
-  const snapshot = await getDocs(messagesQuery);
+  const snapshot = await getDocs(q);
 
   if(snapshot.empty){
-    messagesDiv.innerHTML = "<p>No messages yet for this item.</p>";
+    messagesDiv.innerHTML = "<p>No messages yet. Start the conversation.</p>";
     return;
   }
 
-  snapshot.forEach((doc) => {
-    const msg = doc.data();
+  snapshot.forEach((messageDoc) => {
+    const msg = messageDoc.data();
 
     messagesDiv.innerHTML += `
       <div class="message">
@@ -299,8 +253,42 @@ async function loadMessages(){
   });
 }
 
-loadItem();
-loadMessages();
+document.getElementById("sendBtn").addEventListener("click", async () => {
+  if(!currentUser){
+    alert("Please log in first.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if(!listingId || !currentItem){
+    alert("Listing not loaded.");
+    return;
+  }
+
+  const messageText = document.getElementById("messageText").value.trim();
+
+  if(messageText === ""){
+    alert("Type a message first.");
+    return;
+  }
+
+  try{
+    await addDoc(collection(db, "messages"), {
+      listingId: listingId,
+      itemName: currentItem.itemName || "",
+      sellerName: currentItem.sellerName || "Seller",
+      senderEmail: currentUser.email,
+      message: messageText,
+      timestamp: new Date().toISOString()
+    });
+
+    alert("Message sent!");
+    document.getElementById("messageText").value = "";
+    loadMessages();
+  } catch(error){
+    alert(error.message);
+  }
+});
 </script>
 
 </body>
