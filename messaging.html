@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Messages | ReFresh</title>
+<title>Message Seller | ReFresh</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
@@ -17,7 +17,7 @@ body{
 }
 
 .page{
-  max-width:1000px;
+  max-width:900px;
   margin:auto;
 }
 
@@ -53,7 +53,7 @@ body{
   background:#1a1a1a;
   border:1px solid #333;
   border-radius:20px;
-  padding:25px;
+  padding:28px;
   box-shadow:0 0 25px rgba(59,130,246,.15);
   margin-bottom:25px;
 }
@@ -63,30 +63,46 @@ body{
   margin-bottom:15px;
 }
 
-input,textarea{
+.item-info{
+  background:#111;
+  border:1px solid #333;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:20px;
+}
+
+.item-info p{
+  color:#ccc;
+  margin:8px 0;
+}
+
+textarea{
   width:100%;
-  padding:14px;
-  margin-bottom:14px;
+  padding:15px;
+  min-height:130px;
   background:#111;
   border:1px solid #333;
   border-radius:12px;
   color:white;
-  font-size:15px;
+  font-size:16px;
+  margin-bottom:15px;
 }
 
-textarea{
-  min-height:120px;
+textarea:focus{
+  outline:none;
+  border-color:#3B82F6;
 }
 
 button{
   width:100%;
-  padding:14px;
+  padding:15px;
   background:#3B82F6;
   color:white;
   border:none;
   border-radius:12px;
   font-weight:bold;
   cursor:pointer;
+  font-size:16px;
 }
 
 .message{
@@ -145,17 +161,21 @@ button{
   </div>
 
   <div class="box">
-    <h2>Send Message</h2>
+    <h2>Message Seller</h2>
 
-    <input id="senderEmail" placeholder="Your Email">
-    <input id="receiverEmail" placeholder="Seller or Buyer Email">
-    <textarea id="messageText" placeholder="Type your message..."></textarea>
+    <div class="item-info">
+      <h3 id="itemName">Loading item...</h3>
+      <p id="brand"></p>
+      <p id="seller"></p>
+    </div>
+
+    <textarea id="messageText" placeholder="Ask the seller a question about this item..."></textarea>
 
     <button id="sendBtn">Send Message</button>
   </div>
 
   <div class="box">
-    <h2>Message Inbox</h2>
+    <h2>Messages About This Item</h2>
     <div id="messages">Loading messages...</div>
   </div>
 
@@ -163,7 +183,8 @@ button{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -177,13 +198,62 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+const params = new URLSearchParams(window.location.search);
+const listingId = params.get("listingId");
+
+let currentItem = null;
+
+async function loadItem(){
+  if(!listingId){
+    document.getElementById("itemName").innerText = "No item selected";
+    return;
+  }
+
+  const itemRef = doc(db, "listings", listingId);
+  const itemSnap = await getDoc(itemRef);
+
+  if(itemSnap.exists()){
+    currentItem = itemSnap.data();
+
+    document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
+    document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
+    document.getElementById("seller").innerText = "Seller: " + (currentItem.sellerName || "Seller");
+  } else {
+    document.getElementById("itemName").innerText = "Item not found";
+  }
+}
 
 document.getElementById("sendBtn").addEventListener("click", async () => {
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("Please log in to message the seller.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if(!currentItem){
+    alert("Item not loaded yet.");
+    return;
+  }
+
+  const messageText = document.getElementById("messageText").value;
+
+  if(messageText.trim() === ""){
+    alert("Type a message first.");
+    return;
+  }
+
   try{
     await addDoc(collection(db, "messages"), {
-      senderEmail: document.getElementById("senderEmail").value,
-      receiverEmail: document.getElementById("receiverEmail").value,
-      message: document.getElementById("messageText").value,
+      listingId: listingId,
+      itemName: currentItem.itemName || "",
+      brand: currentItem.brand || "",
+      sellerName: currentItem.sellerName || "Seller",
+      senderEmail: user.email,
+      message: messageText,
       timestamp: new Date().toISOString()
     });
 
@@ -199,10 +269,20 @@ async function loadMessages(){
   const messagesDiv = document.getElementById("messages");
   messagesDiv.innerHTML = "";
 
-  const snapshot = await getDocs(collection(db, "messages"));
+  if(!listingId){
+    messagesDiv.innerHTML = "<p>No item selected.</p>";
+    return;
+  }
+
+  const messagesQuery = query(
+    collection(db, "messages"),
+    where("listingId", "==", listingId)
+  );
+
+  const snapshot = await getDocs(messagesQuery);
 
   if(snapshot.empty){
-    messagesDiv.innerHTML = "<p>No messages yet.</p>";
+    messagesDiv.innerHTML = "<p>No messages yet for this item.</p>";
     return;
   }
 
@@ -211,8 +291,7 @@ async function loadMessages(){
 
     messagesDiv.innerHTML += `
       <div class="message">
-        <h3>From: ${msg.senderEmail || "Unknown"}</h3>
-        <p>To: ${msg.receiverEmail || "Unknown"}</p>
+        <h3>${msg.senderEmail || "User"}</h3>
         <p>${msg.message || ""}</p>
         <p class="small">${msg.timestamp || ""}</p>
       </div>
@@ -220,6 +299,7 @@ async function loadMessages(){
   });
 }
 
+loadItem();
 loadMessages();
 </script>
 
