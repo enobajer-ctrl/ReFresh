@@ -7,159 +7,30 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-
-body{
-  background:#111;
-  color:white;
-}
-
-.app{
-  display:grid;
-  grid-template-columns:230px 1fr;
-  min-height:100vh;
-}
-
-.sidebar{
-  background:#0b0b0b;
-  border-right:1px solid #333;
-  padding:25px;
-}
-
-.logo{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.logo img{
-  width:75px;
-}
-
-.logo h1{
-  color:#3B82F6;
-  margin-top:8px;
-}
-
-.sidebar a,
-.sidebar button{
-  display:block;
-  width:100%;
-  color:white;
-  background:none;
-  border:none;
-  text-align:left;
-  text-decoration:none;
-  padding:13px;
-  border-radius:10px;
-  margin-bottom:8px;
-  font-size:15px;
-  cursor:pointer;
-}
-
-.sidebar a:hover,
-.sidebar button:hover{
-  background:#1a1a1a;
-  color:#3B82F6;
-}
-
-.main{
-  padding:30px;
-}
-
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:30px;
-}
-
-.top h2{
-  color:#3B82F6;
-  font-size:32px;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:18px;
-  margin-bottom:30px;
-}
-
-.stat,.box{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:18px;
-  padding:22px;
-  box-shadow:0 0 18px rgba(59,130,246,.12);
-}
-
-.stat h3,.box h2{
-  color:#3B82F6;
-  margin-bottom:10px;
-}
-
-.stat p{
-  font-size:26px;
-  font-weight:bold;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:22px;
-}
-
-input,select,textarea{
-  width:100%;
-  padding:14px;
-  margin-bottom:14px;
-  background:#111;
-  border:1px solid #333;
-  border-radius:12px;
-  color:white;
-  font-size:15px;
-}
-
-textarea{
-  min-height:90px;
-}
-
-button.action{
-  background:#3B82F6;
-  color:white;
-  border:none;
-  padding:13px 16px;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.item{
-  background:#111;
-  border:1px solid #333;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:12px;
-}
-
-.item h3{
-  color:#3B82F6;
-  margin-bottom:8px;
-}
-
-.item p{
-  color:#ccc;
-  margin-bottom:6px;
-}
-
-.small{
-  color:#aaa;
-}
-
-@media(max-width:850px){
-  .app{grid-template-columns:1fr}
-  .sidebar{border-right:none;border-bottom:1px solid #333}
-  .grid{grid-template-columns:1fr}
-}
+body{background:#111;color:white}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.sidebar{background:#0b0b0b;border-right:1px solid #333;padding:25px}
+.logo{text-align:center;margin-bottom:30px}
+.logo img{width:75px}
+.logo h1{color:#3B82F6;margin-top:8px}
+.sidebar a,.sidebar button{display:block;width:100%;color:white;background:none;border:none;text-align:left;text-decoration:none;padding:13px;border-radius:10px;margin-bottom:8px;font-size:15px;cursor:pointer}
+.sidebar a:hover,.sidebar button:hover{background:#1a1a1a;color:#3B82F6}
+.main{padding:30px}
+.top{margin-bottom:30px}
+.top h2{color:#3B82F6;font-size:32px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:30px}
+.stat,.box{background:#1a1a1a;border:1px solid #333;border-radius:18px;padding:22px;box-shadow:0 0 18px rgba(59,130,246,.12)}
+.stat h3,.box h2{color:#3B82F6;margin-bottom:10px}
+.stat p{font-size:26px;font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+input,select,textarea{width:100%;padding:14px;margin-bottom:14px;background:#111;border:1px solid #333;border-radius:12px;color:white;font-size:15px}
+textarea{min-height:90px}
+button.action{background:#3B82F6;color:white;border:none;padding:13px 16px;border-radius:10px;font-weight:bold;cursor:pointer;margin:4px}
+.item{background:#111;border:1px solid #333;border-radius:14px;padding:15px;margin-bottom:12px}
+.item h3{color:#3B82F6;margin-bottom:8px}
+.item p{color:#ccc;margin-bottom:6px}
+.small{color:#aaa}
+@media(max-width:850px){.app{grid-template-columns:1fr}.sidebar{border-right:none;border-bottom:1px solid #333}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -167,108 +38,100 @@ button.action{
 
 <div class="app">
 
-  <aside class="sidebar">
-    <div class="logo">
-      <img src="image-1.jpg" alt="ReFresh Logo">
-      <h1>ReFresh</h1>
+<aside class="sidebar">
+  <div class="logo">
+    <img src="image-1.jpg" alt="ReFresh Logo">
+    <h1>ReFresh</h1>
+  </div>
+
+  <a href="index.html">🏠 Back Home</a>
+  <a href="browse.html">🛍 Browse</a>
+  <a href="messaging.html">💬 Messages</a>
+  <a href="notifications.html">🔔 Notifications</a>
+  <a href="reviews.html">⭐ Reviews</a>
+  <a href="profile.html">👤 Profile</a>
+  <a href="settings.html">⚙️ Settings</a>
+  <button id="logoutBtn">🚪 Logout</button>
+</aside>
+
+<main class="main">
+
+  <div class="top">
+    <h2>My Dashboard</h2>
+    <p class="small" id="userInfo">Loading account...</p>
+  </div>
+
+  <section class="stats">
+    <div class="stat"><h3>My Listings</h3><p id="listingCount">0</p></div>
+    <div class="stat"><h3>My Requests</h3><p id="requestCount">0</p></div>
+    <div class="stat"><h3>My Messages</h3><p id="messageCount">0</p></div>
+    <div class="stat"><h3>My Earnings</h3><p id="earnings">$0</p></div>
+  </section>
+
+  <div class="grid">
+
+    <div class="box">
+      <h2>Upload Listing</h2>
+
+      <input id="itemName" placeholder="Item Name">
+      <input id="brand" placeholder="Brand">
+      <input id="size" placeholder="Size">
+      <input id="price" placeholder="Price Per Day">
+
+      <select id="category">
+        <option value="">Category</option>
+        <option>Clothing</option>
+        <option>Shoes</option>
+        <option>Bags</option>
+        <option>Belts</option>
+        <option>Watches</option>
+        <option>Jewelry</option>
+        <option>Accessories</option>
+      </select>
+
+      <select id="condition">
+        <option value="">Condition</option>
+        <option>New</option>
+        <option>Like New</option>
+        <option>Good</option>
+        <option>Used</option>
+      </select>
+
+      <textarea id="description" placeholder="Description"></textarea>
+
+      <button class="action" id="uploadBtn">Upload Listing</button>
+      <p class="small">Your username is added automatically.</p>
     </div>
 
-    <a href="index.html">🏠 Back Home</a>
-    <a href="browse.html">🛍 Browse</a>
-    <a href="messaging.html">💬 Messages</a>
-    <a href="notifications.html">🔔 Notifications</a>
-    <a href="reviews.html">⭐ Reviews</a>
-    <a href="profile.html">👤 Profile</a>
-    <button id="logoutBtn">🚪 Logout</button>
-  </aside>
-
-  <main class="main">
-
-    <div class="top">
-      <div>
-        <h2>My Dashboard</h2>
-        <p class="small" id="userEmail">Loading account...</p>
-      </div>
+    <div class="box">
+      <h2>My Messages</h2>
+      <div id="messages">Loading...</div>
     </div>
 
-    <section class="stats">
-      <div class="stat">
-        <h3>My Listings</h3>
-        <p id="listingCount">0</p>
-      </div>
+  </div>
 
-      <div class="stat">
-        <h3>My Requests</h3>
-        <p id="requestCount">0</p>
-      </div>
+  <br>
 
-      <div class="stat">
-        <h3>My Messages</h3>
-        <p id="messageCount">0</p>
-      </div>
-
-      <div class="stat">
-        <h3>My Earnings</h3>
-        <p id="earnings">$0</p>
-      </div>
-    </section>
-
-    <div class="grid">
-
-      <div class="box">
-        <h2>Upload Listing</h2>
-
-        <input id="sellerName" placeholder="Your Username">
-        <input id="itemName" placeholder="Item Name">
-        <input id="brand" placeholder="Brand">
-        <input id="size" placeholder="Size">
-        <input id="price" placeholder="Price Per Day">
-
-        <select id="category">
-          <option value="">Category</option>
-          <option>Clothing</option>
-          <option>Shoes</option>
-          <option>Bags</option>
-          <option>Belts</option>
-          <option>Watches</option>
-          <option>Jewelry</option>
-          <option>Accessories</option>
-        </select>
-
-        <textarea id="description" placeholder="Description"></textarea>
-
-        <button class="action" id="uploadBtn">Upload Listing</button>
-      </div>
-
-      <div class="box">
-        <h2>My Messages</h2>
-        <div id="messages">Loading...</div>
-      </div>
-
+  <div class="grid">
+    <div class="box">
+      <h2>My Listings</h2>
+      <div id="myListings">Loading...</div>
     </div>
 
-    <br>
-
-    <div class="grid">
-      <div class="box">
-        <h2>My Listings</h2>
-        <div id="myListings">Loading...</div>
-      </div>
-
-      <div class="box">
-        <h2>My Rental Requests</h2>
-        <div id="myRequests">Loading...</div>
-      </div>
+    <div class="box">
+      <h2>My Rental Requests</h2>
+      <div id="myRequests">Loading...</div>
     </div>
+  </div>
 
-  </main>
+</main>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -285,6 +148,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 let currentUser = null;
+let userData = {};
 let myListingIds = [];
 
 onAuthStateChanged(auth, async (user) => {
@@ -294,7 +158,12 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   currentUser = user;
-  document.getElementById("userEmail").innerText = user.email;
+
+  const userDoc = await getDoc(doc(db, "users", user.uid));
+  userData = userDoc.exists() ? userDoc.data() : {};
+
+  document.getElementById("userInfo").innerText =
+    (userData.username || user.email) + " • " + user.email;
 
   loadDashboard();
 });
@@ -315,12 +184,13 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
     await addDoc(collection(db, "listings"), {
       sellerId: currentUser.uid,
       sellerEmail: currentUser.email,
-      sellerName: document.getElementById("sellerName").value,
+      sellerName: userData.username || currentUser.email,
       itemName: document.getElementById("itemName").value,
       brand: document.getElementById("brand").value,
       size: document.getElementById("size").value,
       price: document.getElementById("price").value,
       category: document.getElementById("category").value,
+      condition: document.getElementById("condition").value,
       description: document.getElementById("description").value,
       inventoryStatus: "Available",
       createdAt: new Date().toISOString()
@@ -362,6 +232,7 @@ async function loadMyListings(){
           <p>Status: ${item.inventoryStatus || "Available"}</p>
 
           <button class="action" onclick="window.location.href='item.html?id=${listingDoc.id}'">View</button>
+          <button class="action" onclick="window.location.href='edit-listing.html?id=${listingDoc.id}'">Edit</button>
           <button class="action" data-id="${listingDoc.id}" data-action="available">Available</button>
           <button class="action" data-id="${listingDoc.id}" data-action="unavailable">Unavailable</button>
           <button class="action" data-id="${listingDoc.id}" data-action="delete">Delete</button>
@@ -386,15 +257,11 @@ async function loadMyListings(){
       }
 
       if(action === "available"){
-        await updateDoc(doc(db, "listings", id), {
-          inventoryStatus: "Available"
-        });
+        await updateDoc(doc(db, "listings", id), { inventoryStatus: "Available" });
       }
 
       if(action === "unavailable"){
-        await updateDoc(doc(db, "listings", id), {
-          inventoryStatus: "Unavailable"
-        });
+        await updateDoc(doc(db, "listings", id), { inventoryStatus: "Unavailable" });
       }
 
       loadDashboard();
