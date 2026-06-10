@@ -72,7 +72,8 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:42px;
+  font-size:34px;
+  font-weight:bold;
 }
 
 h2,h3{
@@ -160,21 +161,22 @@ input{
       <a href="index.html">Home</a>
       <a href="browse.html">Browse</a>
       <a href="dashboard.html">Dashboard</a>
-      <a href="reviews.html">Reviews</a>
+      <a href="settings.html">Settings</a>
     </div>
   </div>
 
   <div class="box">
     <div class="profile">
-      <div class="avatar">👤</div>
+      <div class="avatar" id="avatarInitials">RF</div>
 
       <div>
-        <h2 id="profileName">My Profile</h2>
-        <p id="profileEmail">Loading...</p>
+        <h2 id="profileName">@user</h2>
+        <p id="bioText">Loading bio...</p>
+        <p id="memberSince">ReFresh member</p>
         <p id="ratingText">Average Rating: Loading...</p>
-        <p>Bio: ReFresh seller renting fashion and accessories.</p>
 
         <a href="dashboard.html" class="btn">Go To Dashboard</a>
+        <a href="settings.html" class="btn secondary">Edit Profile</a>
         <button id="messageBtn" class="secondary">Message Seller</button>
       </div>
     </div>
@@ -223,7 +225,7 @@ input{
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -242,23 +244,30 @@ const db = getFirestore(app);
 const params = new URLSearchParams(window.location.search);
 const sellerFromUrl = params.get("seller");
 
-let currentUser = null;
 let currentSellerName = "";
 
 onAuthStateChanged(auth, async (user) => {
-  currentUser = user;
-
   if(sellerFromUrl){
     loadSellerByName(sellerFromUrl);
     return;
   }
 
   if(user){
-    document.getElementById("profileName").innerText = "My Profile";
-    document.getElementById("profileEmail").innerText = user.email;
-    loadSellerByUserId(user.uid, user.email);
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    const userData = userSnap.exists() ? userSnap.data() : {};
+
+    const username = userData.username || "user";
+    currentSellerName = username;
+
+    document.getElementById("profileName").innerText = "@" + username;
+    document.getElementById("bioText").innerText = userData.bio || "ReFresh member.";
+    document.getElementById("avatarInitials").innerText = userData.initials || username.substring(0,2).toUpperCase();
+    document.getElementById("memberSince").innerText = "ReFresh member";
+
+    loadSellerByUserId(user.uid, username);
   } else {
-    document.getElementById("profileEmail").innerText = "Not logged in";
+    document.getElementById("profileName").innerText = "@guest";
+    document.getElementById("bioText").innerText = "Log in to view your profile.";
     document.getElementById("sellerListings").innerHTML = "<p>Please log in or search a seller.</p>";
     document.getElementById("reviews").innerHTML = "<p>Please log in or search a seller.</p>";
   }
@@ -284,39 +293,37 @@ document.getElementById("messageBtn").addEventListener("click", () => {
   window.location.href = "messaging.html?seller=" + encodeURIComponent(currentSellerName);
 });
 
-async function loadSellerByUserId(userId, email){
+async function loadSellerByUserId(userId, username){
   const listingsSnap = await getDocs(collection(db, "listings"));
-
-  let sellerName = email;
   let listings = [];
 
-  listingsSnap.forEach((doc) => {
-    const item = doc.data();
+  listingsSnap.forEach((listingDoc) => {
+    const item = listingDoc.data();
 
     if(item.sellerId === userId){
-      sellerName = item.sellerName || email;
-      listings.push({id: doc.id, ...item});
+      listings.push({id: listingDoc.id, ...item});
     }
   });
 
-  currentSellerName = sellerName;
-  document.getElementById("profileName").innerText = sellerName;
-  loadProfileData(sellerName, listings);
+  loadProfileData(username, listings);
 }
 
 async function loadSellerByName(sellerName){
   currentSellerName = sellerName;
-  document.getElementById("profileName").innerText = sellerName;
-  document.getElementById("profileEmail").innerText = "Seller Profile";
+
+  document.getElementById("profileName").innerText = "@" + sellerName;
+  document.getElementById("bioText").innerText = "ReFresh seller.";
+  document.getElementById("avatarInitials").innerText = sellerName.substring(0,2).toUpperCase();
+  document.getElementById("memberSince").innerText = "Seller Profile";
 
   const listingsSnap = await getDocs(collection(db, "listings"));
   let listings = [];
 
-  listingsSnap.forEach((doc) => {
-    const item = doc.data();
+  listingsSnap.forEach((listingDoc) => {
+    const item = listingDoc.data();
 
     if((item.sellerName || "").toLowerCase() === sellerName.toLowerCase()){
-      listings.push({id: doc.id, ...item});
+      listings.push({id: listingDoc.id, ...item});
     }
   });
 
@@ -332,24 +339,24 @@ async function loadProfileData(sellerName, listings){
   let requestCount = 0;
   let favoriteCount = 0;
 
-  reviewsSnap.forEach((doc) => {
-    const r = doc.data();
+  reviewsSnap.forEach((reviewDoc) => {
+    const r = reviewDoc.data();
 
     if((r.sellerName || "").toLowerCase() === sellerName.toLowerCase()){
       reviews.push(r);
     }
   });
 
-  requestsSnap.forEach((doc) => {
-    const req = doc.data();
+  requestsSnap.forEach((requestDoc) => {
+    const req = requestDoc.data();
 
     if((req.sellerName || "").toLowerCase() === sellerName.toLowerCase()){
       requestCount++;
     }
   });
 
-  favoritesSnap.forEach((doc) => {
-    const fav = doc.data();
+  favoritesSnap.forEach((favDoc) => {
+    const fav = favDoc.data();
 
     listings.forEach((item) => {
       if(fav.listingId === item.id){
