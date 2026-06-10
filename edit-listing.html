@@ -3,144 +3,227 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Edit Listing | ReFresh</title>
 
 <style>
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
 }
 
 body{
-background:#111;
-color:white;
-padding:25px;
+  background:#111;
+  color:white;
+  min-height:100vh;
+  padding:25px;
 }
 
-.container{
-max-width:700px;
-margin:auto;
+.page{
+  max-width:800px;
+  margin:auto;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo img{
+  width:65px;
+}
+
+.logo h1{
+  color:#3B82F6;
+}
+
+.nav a{
+  color:#3B82F6;
+  text-decoration:none;
+  font-weight:bold;
+  margin-left:15px;
 }
 
 .box{
-background:#1a1a1a;
-border:1px solid #333;
-border-radius:18px;
-padding:25px;
-margin-bottom:20px;
+  background:#1a1a1a;
+  border:1px solid #333;
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 0 18px rgba(59,130,246,.12);
+  margin-bottom:22px;
 }
 
-h1,h2{
-color:#3B82F6;
-margin-bottom:15px;
+h2{
+  color:#3B82F6;
+  margin-bottom:15px;
 }
 
-input,textarea,select{
-width:100%;
-padding:14px;
-margin-bottom:12px;
-background:#111;
-border:1px solid #333;
-border-radius:12px;
-color:white;
+input,
+textarea,
+select{
+  width:100%;
+  padding:14px;
+  margin-bottom:14px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  color:white;
+  font-size:15px;
 }
 
 textarea{
-min-height:120px;
+  min-height:110px;
 }
 
-button{
-background:#3B82F6;
-color:white;
-border:none;
-padding:14px;
-border-radius:12px;
-font-weight:bold;
-cursor:pointer;
-margin-right:8px;
-margin-top:10px;
+button,.btn{
+  background:#3B82F6;
+  color:white;
+  border:none;
+  border-radius:10px;
+  padding:13px 16px;
+  font-weight:bold;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  margin-top:8px;
+  margin-right:8px;
 }
 
-.deleteBtn{
-background:#dc2626;
+.delete{
+  background:#7f1d1d;
+}
+
+.secondary{
+  background:#222;
+  border:1px solid #3B82F6;
 }
 
 .preview{
-background:#111;
-border:1px solid #333;
-padding:15px;
-border-radius:12px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:14px;
+  padding:18px;
 }
 
 .preview h3{
-color:#3B82F6;
-margin-bottom:10px;
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
+.preview p{
+  color:#ccc;
+  margin-bottom:6px;
+}
+
+.small{
+  color:#aaa;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="page">
 
-<div class="box">
-<h1>Edit Listing</h1>
+  <div class="top">
+    <div class="logo">
+      <img src="image-1.jpg" alt="ReFresh Logo">
+      <h1>ReFresh</h1>
+    </div>
 
-<input id="itemName" placeholder="Item Name">
-<input id="brand" placeholder="Brand">
-<input id="size" placeholder="Size">
-<input id="price" placeholder="Price Per Day">
+    <div class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="browse.html">Browse</a>
+    </div>
+  </div>
 
-<select id="status">
-<option value="Available">Available</option>
-<option value="Unavailable">Unavailable</option>
-<option value="Rented">Rented</option>
-</select>
+  <div class="box">
+    <h2>Edit Listing</h2>
+    <p class="small">Update your listing details below.</p>
+    <br>
 
-<textarea id="description" placeholder="Description"></textarea>
+    <input id="itemName" placeholder="Item Name">
+    <input id="brand" placeholder="Brand">
+    <input id="size" placeholder="Size">
+    <input id="price" placeholder="Price Per Day">
 
-<button id="saveBtn">Save Changes</button>
-<button id="deleteBtn" class="deleteBtn">Delete Listing</button>
-<button onclick="window.location.href='dashboard.html'">
-Back To Dashboard
-</button>
-</div>
+    <select id="category">
+      <option value="">Category</option>
+      <option>Clothing</option>
+      <option>Shoes</option>
+      <option>Bags</option>
+      <option>Belts</option>
+      <option>Watches</option>
+      <option>Jewelry</option>
+      <option>Accessories</option>
+    </select>
 
-<div class="box">
-<h2>Preview</h2>
+    <select id="condition">
+      <option value="">Condition</option>
+      <option>New</option>
+      <option>Like New</option>
+      <option>Good</option>
+      <option>Used</option>
+    </select>
 
-<div class="preview">
-<h3 id="previewName">Item Name</h3>
-<p id="previewBrand">Brand</p>
-<p id="previewSize">Size</p>
-<p id="previewPrice">$0/day</p>
-<p id="previewStatus">Available</p>
-</div>
+    <select id="status">
+      <option>Available</option>
+      <option>Unavailable</option>
+      <option>Rented</option>
+    </select>
 
-</div>
+    <textarea id="description" placeholder="Description"></textarea>
+
+    <button id="saveBtn">Save Changes</button>
+    <button id="deleteBtn" class="delete">Delete Listing</button>
+    <a href="dashboard.html" class="btn secondary">Back To Dashboard</a>
+  </div>
+
+  <div class="box">
+    <h2>Preview</h2>
+
+    <div class="preview">
+      <h3 id="previewName">Item Name</h3>
+      <p id="previewBrand">Brand: N/A</p>
+      <p id="previewSize">Size: N/A</p>
+      <p id="previewPrice">$0/day</p>
+      <p id="previewCategory">Category: N/A</p>
+      <p id="previewCondition">Condition: N/A</p>
+      <p id="previewStatus">Status: Available</p>
+      <p id="previewDescription">Description: N/A</p>
+    </div>
+  </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-getFirestore,
-doc,
-getDoc,
-updateDoc,
-deleteDoc
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-apiKey:"AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
-authDomain:"refresh-7b0b7.firebaseapp.com",
-projectId:"refresh-7b0b7",
-storageBucket:"refresh-7b0b7.firebasestorage.app",
-messagingSenderId:"286051120509",
-appId:"1:286051120509:web:596ed691578537e8ca0814",
-measurementId:"G-NNGSL330VG"
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -150,81 +233,118 @@ const params = new URLSearchParams(window.location.search);
 const listingId = params.get("id");
 
 if(!listingId){
-alert("No listing found.");
-window.location.href="dashboard.html";
+  alert("No listing found.");
+  window.location.href = "dashboard.html";
 }
 
-const listingRef = doc(db,"listings",listingId);
+const listingRef = doc(db, "listings", listingId);
+
+const itemName = document.getElementById("itemName");
+const brand = document.getElementById("brand");
+const size = document.getElementById("size");
+const price = document.getElementById("price");
+const category = document.getElementById("category");
+const condition = document.getElementById("condition");
+const status = document.getElementById("status");
+const description = document.getElementById("description");
 
 async function loadListing(){
+  try{
+    const snap = await getDoc(listingRef);
 
-const snap = await getDoc(listingRef);
+    if(!snap.exists()){
+      alert("Listing not found.");
+      window.location.href = "dashboard.html";
+      return;
+    }
 
-if(!snap.exists()){
-alert("Listing not found.");
-window.location.href="dashboard.html";
-return;
-}
+    const item = snap.data();
 
-const item = snap.data();
+    itemName.value = item.itemName || "";
+    brand.value = item.brand || "";
+    size.value = item.size || "";
+    price.value = item.price || "";
+    category.value = item.category || "";
+    condition.value = item.condition || "";
+    status.value = item.inventoryStatus || "Available";
+    description.value = item.description || "";
 
-itemName.value = item.itemName || "";
-brand.value = item.brand || "";
-size.value = item.size || "";
-price.value = item.price || "";
-description.value = item.description || "";
-status.value = item.inventoryStatus || "Available";
+    updatePreview();
 
-updatePreview();
+  }catch(error){
+    alert(error.message);
+  }
 }
 
 function updatePreview(){
+  document.getElementById("previewName").innerText =
+    itemName.value || "Item Name";
 
-previewName.innerText =
-itemName.value || "Item Name";
+  document.getElementById("previewBrand").innerText =
+    "Brand: " + (brand.value || "N/A");
 
-previewBrand.innerText =
-"Brand: " + (brand.value || "N/A");
+  document.getElementById("previewSize").innerText =
+    "Size: " + (size.value || "N/A");
 
-previewSize.innerText =
-"Size: " + (size.value || "N/A");
+  document.getElementById("previewPrice").innerText =
+    "$" + (price.value || "0") + "/day";
 
-previewPrice.innerText =
-"$" + (price.value || "0") + "/day";
+  document.getElementById("previewCategory").innerText =
+    "Category: " + (category.value || "N/A");
 
-previewStatus.innerText =
-status.value;
+  document.getElementById("previewCondition").innerText =
+    "Condition: " + (condition.value || "N/A");
+
+  document.getElementById("previewStatus").innerText =
+    "Status: " + (status.value || "Available");
+
+  document.getElementById("previewDescription").innerText =
+    "Description: " + (description.value || "N/A");
 }
 
-[itemName,brand,size,price,description,status]
-.forEach(el=>{
-el.addEventListener("input",updatePreview);
+[itemName, brand, size, price, category, condition, status, description].forEach((field) => {
+  field.addEventListener("input", updatePreview);
+  field.addEventListener("change", updatePreview);
 });
 
-saveBtn.addEventListener("click",async()=>{
+document.getElementById("saveBtn").addEventListener("click", async () => {
+  try{
+    await updateDoc(listingRef, {
+      itemName: itemName.value,
+      brand: brand.value,
+      size: size.value,
+      price: price.value,
+      category: category.value,
+      condition: condition.value,
+      inventoryStatus: status.value,
+      description: description.value,
+      lastUpdated: new Date().toISOString()
+    });
 
-await updateDoc(listingRef,{
-itemName:itemName.value,
-brand:brand.value,
-size:size.value,
-price:price.value,
-description:description.value,
-inventoryStatus:status.value,
-lastUpdated:new Date().toISOString()
+    alert("Listing updated!");
+    window.location.href = "dashboard.html";
+
+  }catch(error){
+    alert(error.message);
+  }
 });
 
-alert("Listing updated!");
-});
+document.getElementById("deleteBtn").addEventListener("click", async () => {
+  const confirmDelete = confirm("Are you sure you want to delete this listing?");
 
-deleteBtn.addEventListener("click",async()=>{
+  if(!confirmDelete){
+    return;
+  }
 
-if(!confirm("Delete this listing?")) return;
+  try{
+    await deleteDoc(listingRef);
 
-await deleteDoc(listingRef);
+    alert("Listing deleted.");
+    window.location.href = "dashboard.html";
 
-alert("Listing deleted.");
-
-window.location.href="dashboard.html";
+  }catch(error){
+    alert(error.message);
+  }
 });
 
 loadListing();
