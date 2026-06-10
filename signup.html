@@ -3,124 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Create Account | ReFresh</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
-
-body{
-  background:#111;
-  color:white;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-}
-
-.signup-box{
-  background:#1a1a1a;
-  width:100%;
-  max-width:450px;
-  padding:35px;
-  border-radius:20px;
-  border:1px solid #333;
-  box-shadow:0 0 30px rgba(59,130,246,.25);
-}
-
-.logo{
-  text-align:center;
-  margin-bottom:25px;
-}
-
-.logo img{
-  width:120px;
-  margin-bottom:10px;
-}
-
-.logo h1{
-  color:#3B82F6;
-  letter-spacing:3px;
-}
-
-h2{
-  text-align:center;
-  margin-bottom:10px;
-}
-
-.subtitle{
-  text-align:center;
-  color:#aaa;
-  margin-bottom:30px;
-}
-
-input{
-  width:100%;
-  padding:15px;
-  margin-bottom:15px;
-  background:#111;
-  border:1px solid #333;
-  border-radius:12px;
-  color:white;
-  font-size:16px;
-}
-
-input:focus{
-  outline:none;
-  border-color:#3B82F6;
-}
-
-button{
-  width:100%;
-  padding:15px;
-  background:#3B82F6;
-  color:white;
-  border:none;
-  border-radius:12px;
-  font-weight:bold;
-  font-size:16px;
-  cursor:pointer;
-}
-
-.links{
-  margin-top:25px;
-  text-align:center;
-}
-
-.links a{
-  color:#3B82F6;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-.small{
-  margin-top:12px;
-  color:#aaa;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#111;color:white;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.box{background:#1a1a1a;width:100%;max-width:460px;padding:35px;border-radius:20px;border:1px solid #333;box-shadow:0 0 30px rgba(59,130,246,.25)}
+.logo{text-align:center;margin-bottom:25px}
+.logo img{width:120px;margin-bottom:10px}
+.logo h1{color:#3B82F6;letter-spacing:3px}
+h2{text-align:center;margin-bottom:10px}
+p{text-align:center;color:#aaa;margin-bottom:25px}
+input,textarea{width:100%;padding:15px;margin-bottom:15px;background:#111;border:1px solid #333;border-radius:12px;color:white;font-size:16px}
+textarea{min-height:80px}
+input:focus,textarea:focus{outline:none;border-color:#3B82F6}
+button{width:100%;padding:15px;background:#3B82F6;color:white;border:none;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer}
+.links{text-align:center;margin-top:25px}
+.links a{color:#3B82F6;text-decoration:none;font-weight:bold}
+.small{margin-top:12px;color:#aaa}
 </style>
 </head>
 
 <body>
 
-<div class="signup-box">
-
+<div class="box">
   <div class="logo">
     <img src="image-1.jpg" alt="ReFresh Logo">
     <h1>REFRESH</h1>
   </div>
 
   <h2>Create Account</h2>
-  <p class="subtitle">Join the ReFresh marketplace.</p>
+  <p>Join the ReFresh marketplace.</p>
 
   <input id="username" type="text" placeholder="Username">
   <input id="email" type="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
+  <textarea id="bio" placeholder="Short bio optional"></textarea>
 
   <button id="signupBtn">Create Account</button>
 
@@ -130,7 +48,6 @@ button{
     <br><br>
     <a href="index.html">← Back Home</a>
   </div>
-
 </div>
 
 <script type="module">
@@ -152,27 +69,39 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+function getInitials(username){
+  if(!username) return "U";
+  return username.substring(0,2).toUpperCase();
+}
+
 document.getElementById("signupBtn").addEventListener("click", async () => {
-
-  const username = document.getElementById("username").value;
-  const email = document.getElementById("email").value;
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
+  const bio = document.getElementById("bio").value.trim();
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(async (userCredential) => {
+  if(!username || !email || !password){
+    alert("Username, email, and password are required.");
+    return;
+  }
 
-      await setDoc(doc(db, "users", userCredential.user.uid), {
-        username: username,
-        email: email
-      });
+  try{
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      alert("Account created!");
-      window.location.href = "dashboard.html";
-
-    })
-    .catch((error) => {
-      alert(error.message);
+    await setDoc(doc(db, "users", userCredential.user.uid), {
+      username: username,
+      email: email,
+      bio: bio || "ReFresh member.",
+      initials: getInitials(username),
+      createdAt: new Date().toISOString()
     });
+
+    alert("Account created!");
+    window.location.href = "dashboard.html";
+
+  }catch(error){
+    alert(error.message);
+  }
 });
 </script>
 
