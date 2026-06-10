@@ -391,23 +391,33 @@ checkoutBtn.addEventListener("click", async () => {
       createdAt: new Date().toISOString()
     });
 
-    await addDoc(collection(db, "rentalRequests"), {
-      listingId: itemId,
-      itemName: currentItem.itemName || "",
-      brand: currentItem.brand || "",
-      size: currentItem.size || "",
-      price: dailyPrice,
-      days: totals.days,
-      totalPrice: totals.total,
-      subtotal: totals.subtotal,
-      serviceFee: totals.serviceFee,
-      commission: totals.commission,
-      sellerPayout: totals.sellerPayout,
-      sellerName: currentItem.sellerName || "Seller",
-      startDate: startDate.value,
-      endDate: endDate.value,
-      status: "pending"
-    });
+   await addDoc(collection(db, "rentalRequests"), {
+  listingId: itemId,
+  itemName: currentItem.itemName || "",
+  brand: currentItem.brand || "",
+  size: currentItem.size || "",
+  price: dailyPrice,
+  days: totals.days,
+  totalPrice: totals.total,
+  subtotal: totals.subtotal,
+  serviceFee: totals.serviceFee,
+  commission: totals.commission,
+  sellerPayout: totals.sellerPayout,
+  sellerName: currentItem.sellerName || "Seller",
+  startDate: startDate.value,
+  endDate: endDate.value,
+  status: "pending"
+});
+    await addDoc(collection(db, "notifications"), {
+  userId: currentItem.sellerId,
+  title: "New Booking Request",
+  message: `${document.getElementById("buyerName").value} requested to rent ${currentItem.itemName}`,
+  listingId: itemId,
+  itemName: currentItem.itemName || "",
+  createdAt: new Date().toISOString(),
+  read: false
+});
+   
 
     const response = await fetch("https://refresh-payments.vercel.app/api/create-checkout-session", {
       method: "POST",
