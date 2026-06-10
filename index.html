@@ -262,14 +262,17 @@ footer a, footer p{
     <h1>REFRESH</h1>
   </div>
 
-  <nav>
-    <a href="browse.html">Browse</a>
-    <a href="dashboard.html">Sell</a>
-    <a href="favorites.html">Favorites</a>
-    <a href="reviews.html">Reviews</a>
-    <a href="login.html">Login</a>
-    <a href="signup.html">Sign Up</a>
-  </nav>
+ <nav>
+  <a href="browse.html">Browse</a>
+  <a href="sell.html">Sell</a>
+  <a href="favorites.html">Favorites</a>
+  <a href="reviews.html">Reviews</a>
+  <a href="profile.html">👤 Profile</a>
+  <span id="authLinks">
+  <a href="login.html">Login</a>
+  <a href="signup.html">Sign Up</a>
+</span>
+</nav>
 </header>
 
 <section class="hero">
@@ -457,6 +460,40 @@ footer a, footer p{
     </div>
   </div>
 </footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+  const authLinks = document.getElementById("authLinks");
+
+  if(user){
+    authLinks.innerHTML = `
+      <a href="profile.html">👤 Profile</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      await signOut(auth);
+      window.location.href = "index.html";
+    });
+  }
+});
+</script>
 </body>
 </html>
