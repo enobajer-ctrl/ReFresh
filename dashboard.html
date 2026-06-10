@@ -3,56 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Seller Dashboard | ReFresh</title>
+<title>Dashboard | ReFresh</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
-  background:#0f0f0f;
+  background:#111;
   color:white;
-  min-height:100vh;
 }
 
 .app{
   display:grid;
-  grid-template-columns:250px 1fr;
+  grid-template-columns:230px 1fr;
   min-height:100vh;
 }
 
 .sidebar{
-  background:#111;
+  background:#0b0b0b;
   border-right:1px solid #333;
   padding:25px;
 }
 
 .logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:35px;
+  text-align:center;
+  margin-bottom:30px;
 }
 
 .logo img{
-  width:60px;
+  width:75px;
 }
 
 .logo h1{
   color:#3B82F6;
-  font-size:24px;
+  margin-top:8px;
 }
 
-.sidebar a{
+.sidebar a,
+.sidebar button{
   display:block;
-  color:#ccc;
+  width:100%;
+  color:white;
+  background:none;
+  border:none;
+  text-align:left;
   text-decoration:none;
   padding:13px;
   border-radius:10px;
   margin-bottom:8px;
+  font-size:15px;
+  cursor:pointer;
 }
 
-.sidebar a:hover{
+.sidebar a:hover,
+.sidebar button:hover{
   background:#1a1a1a;
   color:#3B82F6;
 }
@@ -61,25 +65,16 @@ body{
   padding:30px;
 }
 
-.topbar{
+.top{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:30px;
 }
 
-.topbar h2{
+.top h2{
   color:#3B82F6;
   font-size:32px;
-}
-
-.logout{
-  background:#222;
-  color:white;
-  border:1px solid #444;
-  padding:12px 18px;
-  border-radius:10px;
-  cursor:pointer;
 }
 
 .stats{
@@ -89,7 +84,7 @@ body{
   margin-bottom:30px;
 }
 
-.stat{
+.stat,.box{
   background:#1a1a1a;
   border:1px solid #333;
   border-radius:18px;
@@ -97,36 +92,20 @@ body{
   box-shadow:0 0 18px rgba(59,130,246,.12);
 }
 
-.stat h3{
-  color:#999;
-  font-size:14px;
+.stat h3,.box h2{
+  color:#3B82F6;
   margin-bottom:10px;
 }
 
 .stat p{
-  color:#3B82F6;
-  font-size:28px;
+  font-size:26px;
   font-weight:bold;
 }
 
-.layout{
+.grid{
   display:grid;
-  grid-template-columns:1.2fr .8fr;
+  grid-template-columns:1fr 1fr;
   gap:22px;
-}
-
-.box{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:20px;
-  padding:24px;
-  box-shadow:0 0 20px rgba(59,130,246,.10);
-  margin-bottom:22px;
-}
-
-.box h2{
-  color:#3B82F6;
-  margin-bottom:18px;
 }
 
 input,select,textarea{
@@ -141,39 +120,25 @@ input,select,textarea{
 }
 
 textarea{
-  min-height:95px;
+  min-height:90px;
 }
 
-button{
-  padding:12px 15px;
+button.action{
+  background:#3B82F6;
+  color:white;
   border:none;
+  padding:13px 16px;
   border-radius:10px;
   font-weight:bold;
   cursor:pointer;
-  margin:4px 4px 4px 0;
-}
-
-.upload,.accept,.primary{
-  background:#3B82F6;
-  color:white;
-}
-
-.decline,.secondary{
-  background:#333;
-  color:white;
-}
-
-.delete,.danger{
-  background:#7f1d1d;
-  color:white;
 }
 
 .item{
   background:#111;
   border:1px solid #333;
   border-radius:14px;
-  padding:16px;
-  margin-bottom:14px;
+  padding:15px;
+  margin-bottom:12px;
 }
 
 .item h3{
@@ -183,40 +148,17 @@ button{
 
 .item p{
   color:#ccc;
-  margin:6px 0;
-}
-
-.status{
-  display:inline-block;
-  padding:6px 10px;
-  background:#222;
-  color:#3B82F6;
-  border-radius:8px;
-  margin-top:8px;
-  font-size:13px;
-}
-
-.alert{
-  background:#111;
-  border-left:4px solid #3B82F6;
-  padding:14px;
-  margin-bottom:12px;
-  color:#ccc;
+  margin-bottom:6px;
 }
 
 .small{
-  color:#888;
-  font-size:13px;
+  color:#aaa;
 }
 
-@media(max-width:900px){
+@media(max-width:850px){
   .app{grid-template-columns:1fr}
   .sidebar{border-right:none;border-bottom:1px solid #333}
-  .layout{grid-template-columns:1fr}
-}
-
-@media(max-width:600px){
-  .topbar{flex-direction:column;gap:15px;align-items:flex-start}
+  .grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -231,121 +173,92 @@ button{
       <h1>ReFresh</h1>
     </div>
 
-    <a href="dashboard.html">Dashboard</a>
-    <a href="browse.html">Browse Listings</a>
-    <a href="favorites.html">Favorites</a>
-    <a href="messaging.html">Messages</a>
-    <a href="notifications.html">Notifications</a>
-    <a href="reviews.html">Reviews</a>
-    <a href="profile.html">Profile</a>
-    <a href="admin.html">Admin</a>
-    <a href="index.html">Home</a>
+    <a href="index.html">🏠 Back Home</a>
+    <a href="browse.html">🛍 Browse</a>
+    <a href="messaging.html">💬 Messages</a>
+    <a href="notifications.html">🔔 Notifications</a>
+    <a href="reviews.html">⭐ Reviews</a>
+    <a href="profile.html">👤 Profile</a>
+    <button id="logoutBtn">🚪 Logout</button>
   </aside>
 
   <main class="main">
 
-    <div class="topbar">
+    <div class="top">
       <div>
-        <h2>Seller Dashboard</h2>
-        <p class="small">Manage listings, requests, messages, and performance.</p>
+        <h2>My Dashboard</h2>
+        <p class="small" id="userEmail">Loading account...</p>
       </div>
-
-      <button class="logout" id="logoutBtn">Logout</button>
     </div>
 
     <section class="stats">
-      <div class="stat"><h3>Total Requests</h3><p id="totalRequests">0</p></div>
-      <div class="stat"><h3>Pending</h3><p id="pendingRequests">0</p></div>
-      <div class="stat"><h3>Accepted</h3><p id="acceptedRequests">0</p></div>
-      <div class="stat"><h3>Declined</h3><p id="declinedRequests">0</p></div>
-      <div class="stat"><h3>Active Rentals</h3><p id="activeRentals">0</p></div>
-      <div class="stat"><h3>Seller Earnings</h3><p id="sellerEarnings">$0</p></div>
-      <div class="stat"><h3>ReFresh Fee</h3><p id="refreshFee">$0</p></div>
-      <div class="stat"><h3>Unread Messages</h3><p id="messageCount">0</p></div>
-      <div class="stat"><h3>Listings</h3><p id="listingCount">0</p></div>
-      <div class="stat"><h3>Average Rating</h3><p id="averageRating">0.0</p></div>
+      <div class="stat">
+        <h3>My Listings</h3>
+        <p id="listingCount">0</p>
+      </div>
+
+      <div class="stat">
+        <h3>My Requests</h3>
+        <p id="requestCount">0</p>
+      </div>
+
+      <div class="stat">
+        <h3>My Messages</h3>
+        <p id="messageCount">0</p>
+      </div>
+
+      <div class="stat">
+        <h3>My Earnings</h3>
+        <p id="earnings">$0</p>
+      </div>
     </section>
 
-    <div class="layout">
+    <div class="grid">
 
-      <div>
+      <div class="box">
+        <h2>Upload Listing</h2>
 
-        <div class="box">
-          <h2>Add New Listing</h2>
+        <input id="sellerName" placeholder="Your Username">
+        <input id="itemName" placeholder="Item Name">
+        <input id="brand" placeholder="Brand">
+        <input id="size" placeholder="Size">
+        <input id="price" placeholder="Price Per Day">
 
-          <input id="sellerName" placeholder="Your Username">
-          <input id="itemName" placeholder="Item Name">
-          <input id="brand" placeholder="Brand">
-          <input id="size" placeholder="Size">
-          <input id="price" placeholder="Price Per Day">
+        <select id="category">
+          <option value="">Category</option>
+          <option>Clothing</option>
+          <option>Shoes</option>
+          <option>Bags</option>
+          <option>Belts</option>
+          <option>Watches</option>
+          <option>Jewelry</option>
+          <option>Accessories</option>
+        </select>
 
-          <select id="category">
-            <option value="">Choose Category</option>
-            <option>Clothing</option>
-            <option>Shoes</option>
-            <option>Bags</option>
-            <option>Belts</option>
-            <option>Watches</option>
-            <option>Jewelry</option>
-            <option>Accessories</option>
-          </select>
+        <textarea id="description" placeholder="Description"></textarea>
 
-          <select id="condition">
-            <option value="">Condition</option>
-            <option>New</option>
-            <option>Like New</option>
-            <option>Good</option>
-            <option>Used</option>
-          </select>
-
-          <textarea id="description" placeholder="Description"></textarea>
-
-          <button class="upload" id="uploadBtn">Upload Listing</button>
-        </div>
-
-        <div class="box">
-          <h2>Rental Requests</h2>
-          <div id="requests">Loading requests...</div>
-        </div>
-
-        <div class="box">
-          <h2>My Listings</h2>
-          <div id="myListings">Loading listings...</div>
-        </div>
-
+        <button class="action" id="uploadBtn">Upload Listing</button>
       </div>
 
-      <div>
-
-        <div class="box">
-          <h2>Smart Alerts</h2>
-          <div id="alerts">
-            <div class="alert">Loading alerts...</div>
-          </div>
-        </div>
-
-        <div class="box">
-          <h2>Messages</h2>
-          <div id="messages">Loading messages...</div>
-        </div>
-
-        <div class="box">
-          <h2>Active Rentals</h2>
-          <div id="activeRentalList">Loading active rentals...</div>
-        </div>
-
-        <div class="box">
-          <h2>Rental History</h2>
-          <div id="rentalHistory">Loading rental history...</div>
-        </div>
-
-        <div class="box">
-          <h2>Seller Performance</h2>
-          <p id="performanceText">Loading performance...</p>
-        </div>
-
+      <div class="box">
+        <h2>My Messages</h2>
+        <div id="messages">Loading...</div>
       </div>
 
+    </div>
+
+    <br>
+
+    <div class="grid">
+      <div class="box">
+        <h2>My Listings</h2>
+        <div id="myListings">Loading...</div>
+      </div>
+
+      <div class="box">
+        <h2>My Rental Requests</h2>
+        <div id="myRequests">Loading...</div>
+      </div>
     </div>
 
   </main>
@@ -354,8 +267,8 @@ button{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -368,8 +281,23 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let myListingIds = [];
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user){
+    window.location.href = "login.html";
+    return;
+  }
+
+  currentUser = user;
+  document.getElementById("userEmail").innerText = user.email;
+
+  loadDashboard();
+});
 
 document.getElementById("logoutBtn").addEventListener("click", () => {
   signOut(auth).then(() => {
@@ -378,292 +306,186 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 });
 
 document.getElementById("uploadBtn").addEventListener("click", async () => {
-  try {
+  if(!currentUser){
+    alert("Please log in first.");
+    return;
+  }
+
+  try{
     await addDoc(collection(db, "listings"), {
+      sellerId: currentUser.uid,
+      sellerEmail: currentUser.email,
       sellerName: document.getElementById("sellerName").value,
       itemName: document.getElementById("itemName").value,
       brand: document.getElementById("brand").value,
       size: document.getElementById("size").value,
       price: document.getElementById("price").value,
       category: document.getElementById("category").value,
-      condition: document.getElementById("condition").value,
       description: document.getElementById("description").value,
       inventoryStatus: "Available",
       createdAt: new Date().toISOString()
     });
 
     alert("Listing uploaded!");
-    loadListings();
     loadDashboard();
-  } catch(error) {
+
+  }catch(error){
     alert(error.message);
   }
 });
 
 async function loadDashboard(){
-  await loadRequests();
-  await loadListings();
-  await loadMessages();
-  await loadReviews();
-  await loadAlerts();
+  await loadMyListings();
+  await loadMyRequests();
+  await loadMyMessages();
 }
 
-async function loadRequests(){
-  const requestsDiv = document.getElementById("requests");
-  const activeDiv = document.getElementById("activeRentalList");
-  const historyDiv = document.getElementById("rentalHistory");
-
-  requestsDiv.innerHTML = "";
-  activeDiv.innerHTML = "";
-  historyDiv.innerHTML = "";
-
-  let total = 0;
-  let pending = 0;
-  let accepted = 0;
-  let declined = 0;
-  let active = 0;
-  let sellerEarnings = 0;
-  let refreshFee = 0;
-
-  const snapshot = await getDocs(collection(db, "rentalRequests"));
-
-  if(snapshot.empty){
-    requestsDiv.innerHTML = "<p>No rental requests yet.</p>";
-    activeDiv.innerHTML = "<p>No active rentals.</p>";
-    historyDiv.innerHTML = "<p>No rental history yet.</p>";
-  }
-
-  snapshot.forEach((requestDoc) => {
-    const r = requestDoc.data();
-    const totalPrice = Number(r.totalPrice || r.price || 0);
-
-    total++;
-
-    if(r.status === "accepted"){
-      accepted++;
-      active++;
-      sellerEarnings += totalPrice * 0.9;
-      refreshFee += totalPrice * 0.1;
-    } else if(r.status === "declined"){
-      declined++;
-    } else {
-      pending++;
-    }
-
-    requestsDiv.innerHTML += `
-      <div class="item">
-        <h3>${r.itemName || "Requested Item"}</h3>
-        <p>Buyer: ${r.buyerEmail || "Unknown"}</p>
-        <p>Brand: ${r.brand || "N/A"}</p>
-        <p>Size: ${r.size || "N/A"}</p>
-        <p>Days: ${r.days || 1}</p>
-        <p>Total: $${totalPrice.toFixed(2)}</p>
-        <span class="status">${r.status || "pending"}</span>
-        <br><br>
-        <button class="accept" data-id="${requestDoc.id}" data-listing="${r.listingId || ""}">Accept</button>
-        <button class="decline" data-id="${requestDoc.id}">Decline</button>
-      </div>
-    `;
-
-    if(r.status === "accepted"){
-      activeDiv.innerHTML += `
-        <div class="item">
-          <h3>${r.itemName || "Active Rental"}</h3>
-          <p>Buyer: ${r.buyerEmail || "Unknown"}</p>
-          <p>Total: $${totalPrice.toFixed(2)}</p>
-          <p>Status: Active</p>
-        </div>
-      `;
-    }
-
-    if(r.status === "accepted" || r.status === "declined"){
-      historyDiv.innerHTML += `
-        <div class="item">
-          <h3>${r.itemName || "Rental"}</h3>
-          <p>Status: ${r.status}</p>
-          <p>Total: $${totalPrice.toFixed(2)}</p>
-        </div>
-      `;
-    }
-  });
-
-  document.getElementById("totalRequests").innerText = total;
-  document.getElementById("pendingRequests").innerText = pending;
-  document.getElementById("acceptedRequests").innerText = accepted;
-  document.getElementById("declinedRequests").innerText = declined;
-  document.getElementById("activeRentals").innerText = active;
-  document.getElementById("sellerEarnings").innerText = "$" + sellerEarnings.toFixed(2);
-  document.getElementById("refreshFee").innerText = "$" + refreshFee.toFixed(2);
-
-  document.getElementById("performanceText").innerText =
-    "Acceptance Rate: " + (total ? Math.round((accepted / total) * 100) : 0) +
-    "% • Total Requests: " + total +
-    " • Active Rentals: " + active;
-
-  document.querySelectorAll(".accept").forEach(button => {
-    button.addEventListener("click", async () => {
-      await updateDoc(doc(db, "rentalRequests", button.dataset.id), {
-        status:"accepted"
-      });
-
-      if(button.dataset.listing){
-        await updateDoc(doc(db, "listings", button.dataset.listing), {
-          inventoryStatus:"Rented"
-        });
-      }
-
-      alert("Request accepted and listing marked rented.");
-      loadDashboard();
-    });
-  });
-
-  document.querySelectorAll(".decline").forEach(button => {
-    button.addEventListener("click", async () => {
-      await updateDoc(doc(db, "rentalRequests", button.dataset.id), {
-        status:"declined"
-      });
-
-      alert("Request declined.");
-      loadDashboard();
-    });
-  });
-}
-
-async function loadListings(){
+async function loadMyListings(){
   const listingsDiv = document.getElementById("myListings");
   listingsDiv.innerHTML = "";
+  myListingIds = [];
 
   const snapshot = await getDocs(collection(db, "listings"));
 
-  document.getElementById("listingCount").innerText = snapshot.size;
-
-  if(snapshot.empty){
-    listingsDiv.innerHTML = "<p>No listings yet.</p>";
-    return;
-  }
-
   snapshot.forEach((listingDoc) => {
-    const l = listingDoc.data();
+    const item = listingDoc.data();
 
-    listingsDiv.innerHTML += `
-      <div class="item">
-        <h3>${l.itemName || "Untitled Item"}</h3>
-        <p>Seller: ${l.sellerName || "Seller"}</p>
-        <p>Brand: ${l.brand || "N/A"}</p>
-        <p>Size: ${l.size || "N/A"}</p>
-        <p>Price: $${l.price || "0"}/day</p>
-        <p>Status: ${l.inventoryStatus || "Available"}</p>
-        <button class="primary" onclick="window.location.href='item.html?id=${listingDoc.id}'">View</button>
-        <button class="secondary unavailable" data-id="${listingDoc.id}">Mark Unavailable</button>
-        <button class="secondary available" data-id="${listingDoc.id}">Mark Available</button>
-        <button class="danger delete" data-id="${listingDoc.id}">Delete</button>
-      </div>
-    `;
-  });
+    if(item.sellerId === currentUser.uid){
+      myListingIds.push(listingDoc.id);
 
-  document.querySelectorAll(".delete").forEach(button => {
-    button.addEventListener("click", async () => {
-      await deleteDoc(doc(db, "listings", button.dataset.id));
-      alert("Listing deleted.");
-      loadDashboard();
-    });
-  });
+      listingsDiv.innerHTML += `
+        <div class="item">
+          <h3>${item.itemName || "Untitled Item"}</h3>
+          <p>Brand: ${item.brand || "N/A"}</p>
+          <p>Size: ${item.size || "N/A"}</p>
+          <p>Price: $${item.price || "0"}/day</p>
+          <p>Status: ${item.inventoryStatus || "Available"}</p>
 
-  document.querySelectorAll(".unavailable").forEach(button => {
-    button.addEventListener("click", async () => {
-      await updateDoc(doc(db, "listings", button.dataset.id), {
-        inventoryStatus:"Unavailable"
-      });
-      alert("Listing marked unavailable.");
-      loadDashboard();
-    });
-  });
-
-  document.querySelectorAll(".available").forEach(button => {
-    button.addEventListener("click", async () => {
-      await updateDoc(doc(db, "listings", button.dataset.id), {
-        inventoryStatus:"Available"
-      });
-      alert("Listing marked available.");
-      loadDashboard();
-    });
-  });
-}
-
-async function loadMessages(){
-  const messagesDiv = document.getElementById("messages");
-  messagesDiv.innerHTML = "";
-
-  const snapshot = await getDocs(collection(db, "messages"));
-
-  document.getElementById("messageCount").innerText = snapshot.size;
-
-  if(snapshot.empty){
-    messagesDiv.innerHTML = "<p>No messages yet.</p>";
-    return;
-  }
-
-  snapshot.forEach((messageDoc) => {
-    const msg = messageDoc.data();
-
-    messagesDiv.innerHTML += `
-      <div class="item">
-        <h3>${msg.itemName || "Message"}</h3>
-        <p>From: ${msg.senderEmail || "Unknown"}</p>
-        <p>${msg.message || ""}</p>
-        <button class="primary" onclick="window.location.href='messaging.html?listingId=${msg.listingId}'">Reply</button>
-      </div>
-    `;
-  });
-}
-
-async function loadReviews(){
-  const snapshot = await getDocs(collection(db, "reviews"));
-
-  let total = 0;
-  let count = 0;
-
-  snapshot.forEach((reviewDoc) => {
-    const r = reviewDoc.data();
-
-    total += Number(r.rating || 0);
-    count++;
-  });
-
-  document.getElementById("averageRating").innerText =
-    count ? (total / count).toFixed(1) : "0.0";
-}
-
-async function loadAlerts(){
-  const alertsDiv = document.getElementById("alerts");
-  alertsDiv.innerHTML = "";
-
-  const requestsSnap = await getDocs(collection(db, "rentalRequests"));
-  const messagesSnap = await getDocs(collection(db, "messages"));
-
-  let pending = 0;
-
-  requestsSnap.forEach((doc) => {
-    const r = doc.data();
-    if(!r.status || r.status === "pending"){
-      pending++;
+          <button class="action" onclick="window.location.href='item.html?id=${listingDoc.id}'">View</button>
+          <button class="action" data-id="${listingDoc.id}" data-action="available">Available</button>
+          <button class="action" data-id="${listingDoc.id}" data-action="unavailable">Unavailable</button>
+          <button class="action" data-id="${listingDoc.id}" data-action="delete">Delete</button>
+        </div>
+      `;
     }
   });
 
-  if(pending > 0){
-    alertsDiv.innerHTML += `<div class="alert">You have ${pending} pending rental request(s).</div>`;
+  if(myListingIds.length === 0){
+    listingsDiv.innerHTML = "<p>No listings yet.</p>";
   }
 
-  if(messagesSnap.size > 0){
-    alertsDiv.innerHTML += `<div class="alert">You have ${messagesSnap.size} message(s) in your inbox.</div>`;
-  }
+  document.getElementById("listingCount").innerText = myListingIds.length;
 
-  if(alertsDiv.innerHTML === ""){
-    alertsDiv.innerHTML = `<div class="alert">No new alerts.</div>`;
-  }
+  document.querySelectorAll("[data-action]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const id = button.dataset.id;
+      const action = button.dataset.action;
+
+      if(action === "delete"){
+        await deleteDoc(doc(db, "listings", id));
+      }
+
+      if(action === "available"){
+        await updateDoc(doc(db, "listings", id), {
+          inventoryStatus: "Available"
+        });
+      }
+
+      if(action === "unavailable"){
+        await updateDoc(doc(db, "listings", id), {
+          inventoryStatus: "Unavailable"
+        });
+      }
+
+      loadDashboard();
+    });
+  });
 }
 
-loadDashboard();
+async function loadMyRequests(){
+  const requestsDiv = document.getElementById("myRequests");
+  requestsDiv.innerHTML = "";
+
+  let count = 0;
+  let earnings = 0;
+
+  const snapshot = await getDocs(collection(db, "rentalRequests"));
+
+  snapshot.forEach((requestDoc) => {
+    const request = requestDoc.data();
+
+    if(myListingIds.includes(request.listingId)){
+      count++;
+
+      if(request.status === "accepted"){
+        earnings += Number(request.totalPrice || request.price || 0) * 0.9;
+      }
+
+      requestsDiv.innerHTML += `
+        <div class="item">
+          <h3>${request.itemName || "Rental Request"}</h3>
+          <p>Buyer: ${request.buyerEmail || "Unknown"}</p>
+          <p>Days: ${request.days || 1}</p>
+          <p>Total: $${request.totalPrice || request.price || 0}</p>
+          <p>Status: ${request.status || "pending"}</p>
+
+          <button class="action" data-request="${requestDoc.id}" data-status="accepted">Accept</button>
+          <button class="action" data-request="${requestDoc.id}" data-status="declined">Decline</button>
+        </div>
+      `;
+    }
+  });
+
+  if(count === 0){
+    requestsDiv.innerHTML = "<p>No requests yet.</p>";
+  }
+
+  document.getElementById("requestCount").innerText = count;
+  document.getElementById("earnings").innerText = "$" + earnings.toFixed(2);
+
+  document.querySelectorAll("[data-request]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await updateDoc(doc(db, "rentalRequests", button.dataset.request), {
+        status: button.dataset.status
+      });
+
+      loadDashboard();
+    });
+  });
+}
+
+async function loadMyMessages(){
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML = "";
+
+  let count = 0;
+
+  const snapshot = await getDocs(collection(db, "messages"));
+
+  snapshot.forEach((messageDoc) => {
+    const message = messageDoc.data();
+
+    if(myListingIds.includes(message.listingId)){
+      count++;
+
+      messagesDiv.innerHTML += `
+        <div class="item">
+          <h3>${message.itemName || "Message"}</h3>
+          <p>From: ${message.senderEmail || "Unknown"}</p>
+          <p>${message.message || ""}</p>
+
+          <button class="action" onclick="window.location.href='messaging.html?listingId=${message.listingId}'">Reply</button>
+        </div>
+      `;
+    }
+  });
+
+  if(count === 0){
+    messagesDiv.innerHTML = "<p>No messages yet.</p>";
+  }
+
+  document.getElementById("messageCount").innerText = count;
+}
 </script>
 
 </body>
