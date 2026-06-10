@@ -18,6 +18,7 @@ body{background:#111;color:white}
 .main{padding:30px}
 .top{margin-bottom:30px}
 .top h2{color:#3B82F6;font-size:32px}
+.small{color:#aaa}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:30px}
 .stat,.box{background:#1a1a1a;border:1px solid #333;border-radius:18px;padding:22px;box-shadow:0 0 18px rgba(59,130,246,.12)}
 .stat h3,.box h2{color:#3B82F6;margin-bottom:10px}
@@ -25,11 +26,12 @@ body{background:#111;color:white}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 input,select,textarea{width:100%;padding:14px;margin-bottom:14px;background:#111;border:1px solid #333;border-radius:12px;color:white;font-size:15px}
 textarea{min-height:90px}
-button.action{background:#3B82F6;color:white;border:none;padding:13px 16px;border-radius:10px;font-weight:bold;cursor:pointer;margin:4px}
 .item{background:#111;border:1px solid #333;border-radius:14px;padding:15px;margin-bottom:12px}
 .item h3{color:#3B82F6;margin-bottom:8px}
 .item p{color:#ccc;margin-bottom:6px}
-.small{color:#aaa}
+button.action{background:#3B82F6;color:white;border:none;padding:12px 15px;border-radius:10px;font-weight:bold;cursor:pointer;margin:4px 4px 4px 0}
+button.delete{background:#7f1d1d}
+.badge{display:inline-block;background:#222;color:#3B82F6;padding:6px 10px;border-radius:8px;margin-top:6px;font-size:13px}
 @media(max-width:850px){.app{grid-template-columns:1fr}.sidebar{border-right:none;border-bottom:1px solid #333}.grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -62,10 +64,10 @@ button.action{background:#3B82F6;color:white;border:none;padding:13px 16px;borde
   </div>
 
   <section class="stats">
-    <div class="stat"><h3>My Listings</h3><p id="listingCount">0</p></div>
-    <div class="stat"><h3>My Requests</h3><p id="requestCount">0</p></div>
-    <div class="stat"><h3>My Messages</h3><p id="messageCount">0</p></div>
-    <div class="stat"><h3>My Earnings</h3><p id="earnings">$0</p></div>
+    <div class="stat"><h3>Listings</h3><p id="listingCount">0</p></div>
+    <div class="stat"><h3>Orders</h3><p id="orderCount">0</p></div>
+    <div class="stat"><h3>Messages</h3><p id="messageCount">0</p></div>
+    <div class="stat"><h3>Earnings</h3><p id="earnings">$0</p></div>
   </section>
 
   <div class="grid">
@@ -113,15 +115,17 @@ button.action{background:#3B82F6;color:white;border:none;padding:13px 16px;borde
   <br>
 
   <div class="grid">
+
     <div class="box">
       <h2>My Listings</h2>
       <div id="myListings">Loading...</div>
     </div>
 
     <div class="box">
-      <h2>My Rental Requests</h2>
-      <div id="myRequests">Loading...</div>
+      <h2>My Orders</h2>
+      <div id="myOrders">Loading...</div>
     </div>
+
   </div>
 
 </main>
@@ -163,7 +167,7 @@ onAuthStateChanged(auth, async (user) => {
   userData = userDoc.exists() ? userDoc.data() : {};
 
   document.getElementById("userInfo").innerText =
-    (userData.username || user.email) + " • " + user.email;
+    "@" + (userData.username || "user");
 
   loadDashboard();
 });
@@ -206,7 +210,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
 
 async function loadDashboard(){
   await loadMyListings();
-  await loadMyRequests();
+  await loadMyOrders();
   await loadMyMessages();
 }
 
@@ -229,13 +233,10 @@ async function loadMyListings(){
           <p>Brand: ${item.brand || "N/A"}</p>
           <p>Size: ${item.size || "N/A"}</p>
           <p>Price: $${item.price || "0"}/day</p>
-          <p>Status: ${item.inventoryStatus || "Available"}</p>
-
-         
+          <span class="badge">${item.inventoryStatus || "Available"}</span>
+          <br><br>
           <button class="action" onclick="window.location.href='edit-listing.html?id=${listingDoc.id}'">Edit</button>
-          <button class="action" data-id="${listingDoc.id}" data-action="available">Available</button>
-          <button class="action" data-id="${listingDoc.id}" data-action="unavailable">Unavailable</button>
-          <button class="action" data-id="${listingDoc.id}" data-action="delete">Delete</button>
+          <button class="action delete" data-id="${listingDoc.id}" data-action="delete">Delete</button>
         </div>
       `;
     }
@@ -247,31 +248,19 @@ async function loadMyListings(){
 
   document.getElementById("listingCount").innerText = myListingIds.length;
 
-  document.querySelectorAll("[data-action]").forEach((button) => {
+  document.querySelectorAll("[data-action='delete']").forEach((button) => {
     button.addEventListener("click", async () => {
-      const id = button.dataset.id;
-      const action = button.dataset.action;
+      if(!confirm("Delete this listing?")) return;
 
-      if(action === "delete"){
-        await deleteDoc(doc(db, "listings", id));
-      }
-
-      if(action === "available"){
-        await updateDoc(doc(db, "listings", id), { inventoryStatus: "Available" });
-      }
-
-      if(action === "unavailable"){
-        await updateDoc(doc(db, "listings", id), { inventoryStatus: "Unavailable" });
-      }
-
+      await deleteDoc(doc(db, "listings", button.dataset.id));
       loadDashboard();
     });
   });
 }
 
-async function loadMyRequests(){
-  const requestsDiv = document.getElementById("myRequests");
-  requestsDiv.innerHTML = "";
+async function loadMyOrders(){
+  const ordersDiv = document.getElementById("myOrders");
+  ordersDiv.innerHTML = "";
 
   let count = 0;
   let earnings = 0;
@@ -279,41 +268,41 @@ async function loadMyRequests(){
   const snapshot = await getDocs(collection(db, "rentalRequests"));
 
   snapshot.forEach((requestDoc) => {
-    const request = requestDoc.data();
+    const order = requestDoc.data();
 
-    if(myListingIds.includes(request.listingId)){
+    if(myListingIds.includes(order.listingId)){
       count++;
 
-      if(request.status === "accepted"){
-        earnings += Number(request.totalPrice || request.price || 0) * 0.9;
-      }
+      const sellerEarnings = Number(order.sellerPayout || 0);
+      earnings += sellerEarnings;
 
-      requestsDiv.innerHTML += `
+      ordersDiv.innerHTML += `
         <div class="item">
-          <h3>${request.itemName || "Rental Request"}</h3>
-          <p>Buyer: ${request.buyerEmail || "Unknown"}</p>
-          <p>Days: ${request.days || 1}</p>
-          <p>Total: $${request.totalPrice || request.price || 0}</p>
-          <p>Status: ${request.status || "pending"}</p>
-
-          <button class="action" data-request="${requestDoc.id}" data-status="accepted">Accept</button>
-          <button class="action" data-request="${requestDoc.id}" data-status="declined">Decline</button>
+          <h3>${order.itemName || "Rental Order"}</h3>
+          <p>Buyer: ${order.buyerEmail || "Unknown"}</p>
+          <p>Dates: ${order.startDate || "N/A"} to ${order.endDate || "N/A"}</p>
+          <p>Days: ${order.days || 1}</p>
+          <p>Total Paid: $${Number(order.totalPrice || order.total || 0).toFixed(2)}</p>
+          <p>You Earn: $${sellerEarnings.toFixed(2)}</p>
+          <span class="badge">${order.status || "pending"}</span>
+          <br><br>
+          ${order.status !== "accepted" ? `<button class="action" data-order="${requestDoc.id}">Approve Rental</button>` : `<p class="small">Approved ✓</p>`}
         </div>
       `;
     }
   });
 
   if(count === 0){
-    requestsDiv.innerHTML = "<p>No requests yet.</p>";
+    ordersDiv.innerHTML = "<p>No orders yet.</p>";
   }
 
-  document.getElementById("requestCount").innerText = count;
+  document.getElementById("orderCount").innerText = count;
   document.getElementById("earnings").innerText = "$" + earnings.toFixed(2);
 
-  document.querySelectorAll("[data-request]").forEach((button) => {
+  document.querySelectorAll("[data-order]").forEach((button) => {
     button.addEventListener("click", async () => {
-      await updateDoc(doc(db, "rentalRequests", button.dataset.request), {
-        status: button.dataset.status
+      await updateDoc(doc(db, "rentalRequests", button.dataset.order), {
+        status: "accepted"
       });
 
       loadDashboard();
@@ -340,7 +329,6 @@ async function loadMyMessages(){
           <h3>${message.itemName || "Message"}</h3>
           <p>From: ${message.senderEmail || "Unknown"}</p>
           <p>${message.message || ""}</p>
-
           <button class="action" onclick="window.location.href='messaging.html?listingId=${message.listingId}'">Reply</button>
         </div>
       `;
