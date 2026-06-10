@@ -117,7 +117,7 @@ nav a:hover{
 }
 
 .section{
-  padding:75px 8%;
+  padding:70px 8%;
 }
 
 .section.light{
@@ -167,50 +167,14 @@ nav a:hover{
   color:#555;
 }
 
-.stat{
-  font-size:34px;
-  color:#3B82F6;
-  font-weight:bold;
-}
-
-.fake-img{
-  height:180px;
-  background:linear-gradient(135deg,#222,#333);
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:50px;
-  color:#3B82F6;
-  margin-bottom:15px;
-}
-
-.light .fake-img{
-  background:linear-gradient(135deg,#e5e7eb,#dbeafe);
-}
-
-.steps{
-  counter-reset:step;
-}
-
-.step-card::before{
-  counter-increment:step;
-  content:counter(step);
-  width:42px;
-  height:42px;
-  background:#3B82F6;
-  color:white;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 15px;
-  font-weight:bold;
+.category{
+  font-size:44px;
+  margin-bottom:12px;
 }
 
 footer{
   background:#000;
-  padding:60px 8%;
+  padding:50px 8%;
   border-top:1px solid #222;
 }
 
@@ -262,168 +226,121 @@ footer a, footer p{
     <h1>REFRESH</h1>
   </div>
 
- <nav>
-  <a href="browse.html">Browse</a>
-  <a href="sell.html">Sell</a>
-  <a href="favorites.html">Favorites</a>
-  <a href="reviews.html">Reviews</a>
-  <a href="profile.html">👤 Profile</a>
-  <span id="authLinks">
-  <a href="login.html">Login</a>
-  <a href="signup.html">Sign Up</a>
-</span>
-</nav>
+  <nav>
+    <a href="browse.html">Browse</a>
+    <a href="dashboard.html">Sell</a>
+    <a href="favorites.html">Favorites</a>
+    <a href="reviews.html">Reviews</a>
+    <span id="authLinks">
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+    </span>
+  </nav>
 </header>
 
 <section class="hero">
   <div>
-    <h2>Rent Designer Fashion.<br><span>Own Nothing. Wear Everything.</span></h2>
+    <h2>Rent Designer Fashion.<br><span>Wear It. Return It. Repeat.</span></h2>
+
     <p>
-      ReFresh is a fashion rental marketplace where buyers can rent clothing,
-      shoes, accessories, bags, watches, and more from trusted sellers.
+      Browse luxury fashion, shoes, bags, jewelry and accessories
+      from trusted ReFresh members.
     </p>
 
     <div class="buttons">
       <a href="browse.html" class="btn">Browse Listings</a>
-      <a href="https://form.typeform.com/to/DqectVrL" target="_blank" class="btn-outline">Apply To Sell</a>
       <a href="dashboard.html" class="btn-outline">Seller Dashboard</a>
     </div>
   </div>
 </section>
 
 <section class="section light">
-  <h2>Marketplace Stats</h2>
+  <h2>Why ReFresh?</h2>
 
   <div class="grid">
     <div class="card">
-      <div class="stat">120+</div>
-      <p>Potential Listings</p>
+      <h3>💰 Save Money</h3>
+      <p>Rent luxury items instead of buying pieces you may only wear once.</p>
     </div>
 
     <div class="card">
-      <div class="stat">45+</div>
-      <p>Future Sellers</p>
+      <h3>🛡️ Trusted Community</h3>
+      <p>Use profiles, reviews, messages, and requests to rent with confidence.</p>
     </div>
 
     <div class="card">
-      <div class="stat">10%</div>
-      <p>ReFresh Commission</p>
-    </div>
-
-    <div class="card">
-      <div class="stat">$8.99</div>
-      <p>Buyer Membership</p>
+      <h3>⚡ Fast Booking</h3>
+      <p>Browse, message sellers, request rentals, and checkout in minutes.</p>
     </div>
   </div>
 </section>
 
 <section class="section">
-  <h2>Featured Rentals</h2>
+  <h2>Browse Styles</h2>
 
   <div class="grid">
     <div class="card">
-      <div class="fake-img">👟</div>
-      <h3>Sneakers</h3>
-      <p>Rent shoes for events, trips, or photoshoots.</p>
+      <div class="category">👕</div>
+      <h3>Fashion</h3>
+      <p>Clothing, jackets, hoodies, and statement pieces.</p>
     </div>
 
     <div class="card">
-      <div class="fake-img">🧥</div>
-      <h3>Streetwear</h3>
-      <p>Hoodies, jackets, and statement pieces.</p>
+      <div class="category">👟</div>
+      <h3>Shoes</h3>
+      <p>Sneakers and footwear for events, trips, and content.</p>
     </div>
 
     <div class="card">
-      <div class="fake-img">⌚</div>
-      <h3>Accessories</h3>
-      <p>Watches, jewelry, belts, sunglasses, and bags.</p>
+      <div class="category">👜</div>
+      <h3>Bags</h3>
+      <p>Handbags, designer bags, and everyday accessories.</p>
+    </div>
+
+    <div class="card">
+      <div class="category">💍</div>
+      <h3>Jewelry</h3>
+      <p>Watches, chains, rings, and standout pieces.</p>
     </div>
   </div>
 
   <div style="text-align:center;margin-top:35px;">
-    <a href="browse.html" class="btn">See All Listings</a>
+    <a href="browse.html" class="btn">Start Browsing</a>
   </div>
 </section>
 
 <section class="section light">
-  <h2>How ReFresh Works</h2>
+  <h2>How It Works</h2>
 
-  <div class="grid steps">
-    <div class="card step-card">
-      <h3>Browse</h3>
-      <p>Search items by brand, size, category, price, or seller.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>1. Browse</h3>
+      <p>Search by item, brand, size, category, price, or seller.</p>
     </div>
 
-    <div class="card step-card">
-      <h3>Request</h3>
+    <div class="card">
+      <h3>2. Request</h3>
       <p>Choose rental days and send a request to the seller.</p>
     </div>
 
-    <div class="card step-card">
-      <h3>Wear</h3>
-      <p>Rock the item for your event, trip, or content shoot.</p>
+    <div class="card">
+      <h3>3. Rent</h3>
+      <p>Message, checkout, and get ready to wear your item.</p>
     </div>
 
-    <div class="card step-card">
-      <h3>Return</h3>
-      <p>Return the item and leave a review for the seller.</p>
+    <div class="card">
+      <h3>4. Review</h3>
+      <p>After the rental, leave a review to help build trust.</p>
     </div>
   </div>
 </section>
 
 <section class="section">
-  <h2>For Sellers</h2>
+  <h2>Ready To Refresh Your Style?</h2>
 
-  <div class="grid">
-    <div class="card">
-      <h3>List For Free</h3>
-      <p>Sellers can list clothing, shoes, bags, watches, jewelry, and accessories for free.</p>
-    </div>
-
-    <div class="card">
-      <h3>Set Your Price</h3>
-      <p>You choose your daily rental price and control your inventory.</p>
-    </div>
-
-    <div class="card">
-      <h3>Earn Money</h3>
-      <p>Sellers keep 90% of completed rentals. ReFresh keeps 10%.</p>
-    </div>
-  </div>
-
-  <div style="text-align:center;margin-top:35px;">
-    <a href="https://form.typeform.com/to/DqectVrL" target="_blank" class="btn">Apply To Sell</a>
-  </div>
-</section>
-
-<section class="section light">
-  <h2>Why Join ReFresh?</h2>
-
-  <div class="grid">
-    <div class="card">
-      <h3>Save Money</h3>
-      <p>Rent outfits instead of buying pieces you may only wear once.</p>
-    </div>
-
-    <div class="card">
-      <h3>Try New Styles</h3>
-      <p>Experiment with fashion without committing to the full price.</p>
-    </div>
-
-    <div class="card">
-      <h3>Build Trust</h3>
-      <p>Reviews, seller profiles, and messaging help buyers and sellers connect.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="contact">
-  <h2>Contact ReFresh</h2>
-
-  <div class="card">
-    <h3>Need Help?</h3>
-    <p>Email: support@refreshstyle.shop</p>
-    <p>For sellers, partnerships, and buyer support.</p>
+  <div style="text-align:center;">
+    <a href="browse.html" class="btn">Browse Listings</a>
+    <a href="dashboard.html" class="btn-outline">Open Dashboard</a>
   </div>
 </section>
 
@@ -433,24 +350,22 @@ footer a, footer p{
       <h3>Marketplace</h3>
       <a href="browse.html">Browse Listings</a>
       <a href="favorites.html">Favorites</a>
-      <a href="checkout.html">Checkout Preview</a>
       <a href="reviews.html">Reviews</a>
     </div>
 
     <div>
-      <h3>Seller</h3>
-      <a href="dashboard.html">Seller Dashboard</a>
-      <a href="https://form.typeform.com/to/DqectVrL" target="_blank">Apply To Sell</a>
-      <a href="admin.html">Admin</a>
-      <a href="notifications.html">Notifications</a>
+      <h3>Account</h3>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="settings.html">Settings</a>
+      <a href="messaging.html">Messages</a>
     </div>
 
     <div>
-      <h3>Account</h3>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
-      <a href="profile.html">Profile</a>
-      <a href="messaging.html">Messages</a>
+      <h3>Tools</h3>
+      <a href="notifications.html">Notifications</a>
+      <a href="checkout.html">Checkout Preview</a>
+      <a href="admin.html">Admin</a>
     </div>
 
     <div>
@@ -460,6 +375,7 @@ footer a, footer p{
     </div>
   </div>
 </footer>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -495,5 +411,6 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 </script>
+
 </body>
 </html>
