@@ -281,7 +281,9 @@ button{
 
         <button id="checkoutBtn">Proceed to Checkout</button>
 
-        <p class="small">Secure checkout powered by Stripe will be added later.</p>
+        <p class="small">
+  🔒 Secure checkout powered by Stripe. Your payment information is encrypted and protected.
+</p>
       </div>
 
     </div>
@@ -392,7 +394,24 @@ document.getElementById("checkoutBtn").addEventListener("click", async () => {
     status: "checkout preview"
   });
 
- window.open("https://buy.stripe.com/test_6oU14n51f2on2d8ghHabK00", "_blank");
+const response = await fetch("https://refresh-payments.vercel.app/api/create-checkout-session", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    itemName: currentItem.itemName || "ReFresh Rental",
+    amount: Math.round(total * 100)
+  })
+});
+
+const data = await response.json();
+
+if(data.url){
+  window.location.href = data.url;
+} else {
+  alert(data.error || "Stripe checkout failed.");
+}
 });
 
 loadItem();
