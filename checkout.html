@@ -3,195 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Checkout | ReFresh</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-
-body{
-  background:#f4f7fb;
-  color:#111;
-  min-height:100vh;
-  padding:25px;
-}
-
-.page{
-  max-width:1100px;
-  margin:auto;
-}
-
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:30px;
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.logo img{
-  width:65px;
-}
-
-.logo h1{
-  color:#3B82F6;
-}
-
-.nav a{
-  color:#3B82F6;
-  text-decoration:none;
-  font-weight:bold;
-  margin-left:15px;
-}
-
-.progress{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:25px;
-}
-
-.step{
-  background:white;
-  color:#3B82F6;
-  padding:10px 14px;
-  border-radius:20px;
-  font-size:13px;
-  font-weight:bold;
-  box-shadow:0 5px 15px rgba(0,0,0,.08);
-}
-
-.checkout{
-  display:grid;
-  grid-template-columns:1fr 420px;
-  gap:25px;
-}
-
-.box{
-  background:white;
-  border-radius:20px;
-  padding:28px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
-  margin-bottom:22px;
-}
-
-.box h2{
-  color:#3B82F6;
-  margin-bottom:18px;
-}
-
-.item-img{
-  height:230px;
-  background:linear-gradient(135deg,#e5e7eb,#dbeafe);
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:70px;
-  color:#3B82F6;
-  margin-bottom:20px;
-}
-
-.badge{
-  display:inline-block;
-  background:#e0edff;
-  color:#3B82F6;
-  padding:7px 10px;
-  border-radius:10px;
-  font-size:13px;
-  margin:5px 5px 10px 0;
-  font-weight:bold;
-}
-
-input,select,textarea{
-  width:100%;
-  padding:14px;
-  margin-bottom:14px;
-  border:1px solid #d1d5db;
-  border-radius:12px;
-  font-size:15px;
-}
-
-textarea{
-  min-height:85px;
-}
-
-input:focus,select:focus,textarea:focus{
-  outline:none;
-  border-color:#3B82F6;
-}
-
-.two{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin:12px 0;
-  color:#444;
-}
-
-.total{
-  border-top:1px solid #ddd;
-  margin-top:15px;
-  padding-top:15px;
-  font-size:22px;
-  font-weight:bold;
-  color:#3B82F6;
-}
-
-button{
-  width:100%;
-  padding:16px;
-  background:#3B82F6;
-  color:white;
-  border:none;
-  border-radius:14px;
-  font-weight:bold;
-  font-size:16px;
-  cursor:pointer;
-}
-
-button:disabled{
-  background:#9ca3af;
-  cursor:not-allowed;
-}
-
-.small{
-  color:#666;
-  font-size:13px;
-  margin-top:10px;
-  line-height:1.5;
-}
-
-.check{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  margin:15px 0;
-  color:#444;
-}
-
-.check input{
-  width:auto;
-  margin-top:3px;
-}
-
-@media(max-width:850px){
-  .checkout{grid-template-columns:1fr}
-  .top{flex-direction:column;gap:15px}
-  .progress{flex-direction:column}
-  .two{grid-template-columns:1fr}
-}
+body{background:#f4f7fb;color:#111;min-height:100vh;padding:25px}
+.page{max-width:1100px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{width:65px}
+.logo h1{color:#3B82F6}
+.nav a{color:#3B82F6;text-decoration:none;font-weight:bold;margin-left:15px}
+.checkout{display:grid;grid-template-columns:1fr 420px;gap:25px}
+.box{background:white;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:22px}
+.box h2{color:#3B82F6;margin-bottom:18px}
+.item-img{height:230px;background:linear-gradient(135deg,#e5e7eb,#dbeafe);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:70px;color:#3B82F6;margin-bottom:20px}
+input,select,textarea{width:100%;padding:14px;margin-bottom:14px;border:1px solid #d1d5db;border-radius:12px;font-size:15px}
+textarea{min-height:85px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row{display:flex;justify-content:space-between;gap:12px;margin:12px 0;color:#444}
+.total{border-top:1px solid #ddd;margin-top:15px;padding-top:15px;font-size:22px;font-weight:bold;color:#3B82F6}
+button{width:100%;padding:16px;background:#3B82F6;color:white;border:none;border-radius:14px;font-weight:bold;font-size:16px;cursor:pointer}
+button:disabled{background:#9ca3af;cursor:not-allowed}
+.badge{display:inline-block;background:#e0edff;color:#3B82F6;padding:7px 10px;border-radius:10px;font-size:13px;margin:5px 5px 10px 0;font-weight:bold}
+.small{color:#666;font-size:13px;margin-top:10px;line-height:1.5}
+.warning{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;padding:12px;border-radius:12px;margin-bottom:14px;font-size:14px}
+.check{display:flex;gap:10px;align-items:flex-start;margin:15px 0;color:#444}
+.check input{width:auto;margin-top:3px}
+@media(max-width:850px){.checkout{grid-template-columns:1fr}.top{flex-direction:column;gap:15px}.two{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -204,7 +43,6 @@ button:disabled{
       <img src="image-1.jpg" alt="ReFresh Logo">
       <h1>ReFresh Checkout</h1>
     </div>
-
     <div class="nav">
       <a href="index.html">Home</a>
       <a href="browse.html">Browse</a>
@@ -212,19 +50,11 @@ button:disabled{
     </div>
   </div>
 
-  <div class="progress">
-    <div class="step">1. Review Item</div>
-    <div class="step">2. Delivery Info</div>
-    <div class="step">3. Secure Payment</div>
-  </div>
-
   <div class="checkout">
 
     <div>
-
       <div class="box">
         <h2>Rental Item</h2>
-
         <div class="item-img">👕</div>
 
         <span class="badge" id="categoryBadge">Category</span>
@@ -234,6 +64,21 @@ button:disabled{
         <p id="brand"></p>
         <p id="size"></p>
         <p id="seller"></p>
+      </div>
+
+      <div class="box">
+        <h2>Rental Dates</h2>
+
+        <div id="bookedDates" class="warning" style="display:none;"></div>
+
+        <div class="two">
+          <input id="startDate" type="date">
+          <input id="endDate" type="date">
+        </div>
+
+        <p class="small">
+          Pick the dates you need the item. Dates already requested or rented cannot be selected.
+        </p>
       </div>
 
       <div class="box">
@@ -266,16 +111,10 @@ button:disabled{
         </div>
 
         <textarea id="deliveryNotes" placeholder="Apartment number, gate code, pickup notes, delivery instructions, etc."></textarea>
-
-        <p class="small">
-          For pickup orders, use this section for meetup location notes. For delivery orders, enter the full delivery address.
-        </p>
       </div>
-
     </div>
 
     <div>
-
       <div class="box">
         <h2>Order Summary</h2>
 
@@ -286,7 +125,7 @@ button:disabled{
 
         <div class="row">
           <span>Rental Days</span>
-          <input id="daysInput" type="number" min="1" value="1" style="width:90px;margin:0;">
+          <strong id="daysText">0</strong>
         </div>
 
         <div class="row">
@@ -318,15 +157,9 @@ button:disabled{
 
         <button id="checkoutBtn">Proceed to Checkout</button>
 
-        <p class="small">
-          🔒 Secure checkout powered by Stripe.
-        </p>
-
-        <p class="small">
-          ReFresh charges a $2 platform fee. Sellers receive their rental total minus a 10% ReFresh commission.
-        </p>
+        <p class="small">🔒 Secure checkout powered by Stripe.</p>
+        <p class="small">ReFresh charges a $2 platform fee. Sellers receive their rental total minus a 10% ReFresh commission.</p>
       </div>
-
     </div>
 
   </div>
@@ -335,7 +168,7 @@ button:disabled{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -355,9 +188,18 @@ const itemId = params.get("id");
 
 let currentItem = null;
 let dailyPrice = 0;
+let blockedRanges = [];
 
-const daysInput = document.getElementById("daysInput");
+const startDate = document.getElementById("startDate");
+const endDate = document.getElementById("endDate");
 const checkoutBtn = document.getElementById("checkoutBtn");
+
+function todayISO(){
+  return new Date().toISOString().split("T")[0];
+}
+
+startDate.min = todayISO();
+endDate.min = todayISO();
 
 async function loadItem(){
   if(!itemId){
@@ -380,6 +222,7 @@ async function loadItem(){
       document.getElementById("categoryBadge").innerText = currentItem.category || "General";
       document.getElementById("conditionBadge").innerText = currentItem.condition || "Condition N/A";
 
+      await loadBlockedDates();
       updateTotals();
 
     } else {
@@ -391,48 +234,110 @@ async function loadItem(){
   }
 }
 
+async function loadBlockedDates(){
+  const requestsSnap = await getDocs(collection(db, "rentalRequests"));
+  blockedRanges = [];
+
+  requestsSnap.forEach((requestDoc) => {
+    const r = requestDoc.data();
+
+    if(
+      r.listingId === itemId &&
+      (r.status === "accepted" || r.status === "pending") &&
+      r.startDate &&
+      r.endDate
+    ){
+      blockedRanges.push({
+        start: r.startDate,
+        end: r.endDate
+      });
+    }
+  });
+
+  const bookedBox = document.getElementById("bookedDates");
+
+  if(blockedRanges.length > 0){
+    bookedBox.style.display = "block";
+    bookedBox.innerHTML =
+      "<strong>Unavailable dates:</strong><br>" +
+      blockedRanges.map(r => `${r.start} to ${r.end}`).join("<br>");
+  }
+}
+
+function datesOverlap(startA, endA, startB, endB){
+  return startA <= endB && endA >= startB;
+}
+
+function selectedDatesBlocked(){
+  if(!startDate.value || !endDate.value) return false;
+
+  return blockedRanges.some((range) =>
+    datesOverlap(startDate.value, endDate.value, range.start, range.end)
+  );
+}
+
+function getRentalDays(){
+  if(!startDate.value || !endDate.value) return 0;
+
+  const start = new Date(startDate.value);
+  const end = new Date(endDate.value);
+
+  const diff = end - start;
+
+  if(diff < 0) return 0;
+
+  return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+}
+
 function getTotals(){
-  const days = Number(daysInput.value || 1);
+  const days = getRentalDays();
   const subtotal = dailyPrice * days;
-  const serviceFee = 2;
+  const serviceFee = days > 0 ? 2 : 0;
   const commission = subtotal * 0.10;
   const total = subtotal + serviceFee;
   const sellerPayout = subtotal - commission;
 
-  return {
-    days,
-    subtotal,
-    serviceFee,
-    commission,
-    total,
-    sellerPayout
-  };
+  return { days, subtotal, serviceFee, commission, total, sellerPayout };
 }
 
 function updateTotals(){
   const totals = getTotals();
 
-  document.getElementById("dailyPrice").innerText =
-    "$" + dailyPrice.toFixed(2);
+  if(startDate.value){
+    endDate.min = startDate.value;
+  }
 
-  document.getElementById("subtotal").innerText =
-    "$" + totals.subtotal.toFixed(2);
-
-  document.getElementById("serviceFee").innerText =
-    "$" + totals.serviceFee.toFixed(2);
-
-  document.getElementById("totalPrice").innerText =
-    "$" + totals.total.toFixed(2);
-
-  document.getElementById("sellerPayout").innerText =
-    "$" + totals.sellerPayout.toFixed(2);
+  document.getElementById("dailyPrice").innerText = "$" + dailyPrice.toFixed(2);
+  document.getElementById("daysText").innerText = totals.days;
+  document.getElementById("subtotal").innerText = "$" + totals.subtotal.toFixed(2);
+  document.getElementById("serviceFee").innerText = "$" + totals.serviceFee.toFixed(2);
+  document.getElementById("totalPrice").innerText = "$" + totals.total.toFixed(2);
+  document.getElementById("sellerPayout").innerText = "$" + totals.sellerPayout.toFixed(2);
 }
 
-daysInput.addEventListener("input", updateTotals);
+startDate.addEventListener("change", updateTotals);
+endDate.addEventListener("change", updateTotals);
 
 checkoutBtn.addEventListener("click", async () => {
   if(!currentItem){
     alert("Item not loaded.");
+    return;
+  }
+
+  if(!startDate.value || !endDate.value){
+    alert("Please select your rental start and end dates.");
+    return;
+  }
+
+  const totals = getTotals();
+
+  if(totals.days <= 0){
+    alert("Please choose valid rental dates.");
+    return;
+  }
+
+  if(selectedDatesBlocked()){
+    alert("Those dates are already unavailable. Please choose different dates.");
     return;
   }
 
@@ -456,8 +361,6 @@ checkoutBtn.addEventListener("click", async () => {
     return;
   }
 
-  const totals = getTotals();
-
   checkoutBtn.disabled = true;
   checkoutBtn.innerText = "Opening Stripe...";
 
@@ -476,6 +379,8 @@ checkoutBtn.addEventListener("click", async () => {
       zipCode: document.getElementById("zipCode").value,
       country: document.getElementById("country").value,
       deliveryNotes: document.getElementById("deliveryNotes").value,
+      startDate: startDate.value,
+      endDate: endDate.value,
       days: totals.days,
       subtotal: totals.subtotal,
       serviceFee: totals.serviceFee,
@@ -486,11 +391,27 @@ checkoutBtn.addEventListener("click", async () => {
       createdAt: new Date().toISOString()
     });
 
+    await addDoc(collection(db, "rentalRequests"), {
+      listingId: itemId,
+      itemName: currentItem.itemName || "",
+      brand: currentItem.brand || "",
+      size: currentItem.size || "",
+      price: dailyPrice,
+      days: totals.days,
+      totalPrice: totals.total,
+      subtotal: totals.subtotal,
+      serviceFee: totals.serviceFee,
+      commission: totals.commission,
+      sellerPayout: totals.sellerPayout,
+      sellerName: currentItem.sellerName || "Seller",
+      startDate: startDate.value,
+      endDate: endDate.value,
+      status: "pending"
+    });
+
     const response = await fetch("https://refresh-payments.vercel.app/api/create-checkout-session", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: {"Content-Type":"application/json"},
       body: JSON.stringify({
         itemName: currentItem.itemName || "ReFresh Rental",
         amount: Math.round(totals.total * 100)
