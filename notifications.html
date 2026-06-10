@@ -3,94 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Notifications | ReFresh</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-
-body{
-  background:#111;
-  color:white;
-  min-height:100vh;
-  padding:25px;
-}
-
-.page{
-  max-width:1000px;
-  margin:auto;
-}
-
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:30px;
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.logo img{
-  width:70px;
-}
-
-.logo h1{
-  color:#3B82F6;
-}
-
-.nav a{
-  color:#3B82F6;
-  text-decoration:none;
-  font-weight:bold;
-  margin-left:15px;
-}
-
-.box{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 0 25px rgba(59,130,246,.15);
-  margin-bottom:25px;
-}
-
-.box h2{
-  color:#3B82F6;
-  margin-bottom:15px;
-}
-
-.notice{
-  background:#111;
-  border:1px solid #333;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:12px;
-}
-
-.notice h3{
-  color:#3B82F6;
-  margin-bottom:8px;
-}
-
-.notice p{
-  color:#ccc;
-}
-
-@media(max-width:650px){
-  .top{
-    flex-direction:column;
-    gap:18px;
-  }
-
-  .nav a{
-    display:inline-block;
-    margin:8px;
-  }
-}
+body{background:#111;color:white;min-height:100vh;padding:25px}
+.page{max-width:900px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{width:65px}
+.logo h1{color:#3B82F6}
+.nav a{color:#3B82F6;text-decoration:none;font-weight:bold;margin-left:15px}
+.box,.note{background:#1a1a1a;border:1px solid #333;border-radius:18px;padding:22px;margin-bottom:16px}
+.box h2,.note h3{color:#3B82F6}
+.note p{color:#ccc;margin-top:8px}
+.small{color:#aaa;font-size:13px;margin-top:8px}
+.badge{display:inline-block;margin-top:10px;background:#222;color:#3B82F6;padding:6px 10px;border-radius:8px;font-size:13px}
+.empty{text-align:center;color:#aaa;padding:35px}
+@media(max-width:700px){.top{flex-direction:column;gap:15px}.nav a{display:inline-block;margin:7px}}
 </style>
 </head>
 
@@ -101,26 +31,29 @@ body{
   <div class="top">
     <div class="logo">
       <img src="image-1.jpg" alt="ReFresh Logo">
-      <h1>Notifications</h1>
+      <h1>ReFresh</h1>
     </div>
 
     <div class="nav">
       <a href="index.html">Home</a>
-      <a href="browse.html">Browse</a>
       <a href="dashboard.html">Dashboard</a>
-      <a href="messages.html">Messages</a>
+      <a href="my-rentals.html">My Rentals</a>
+      <a href="profile.html">Profile</a>
     </div>
   </div>
 
   <div class="box">
-    <h2>Recent Activity</h2>
-    <div id="notifications">Loading notifications...</div>
+    <h2>Notifications</h2>
+    <p class="small">Booking requests, rental updates, and account alerts will appear here.</p>
   </div>
+
+  <div id="notificationsList">Loading...</div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -134,45 +67,47 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-async function loadNotifications(){
-  const box = document.getElementById("notifications");
-  box.innerHTML = "";
-
-  const messagesSnap = await getDocs(collection(db, "messages"));
-  const requestsSnap = await getDocs(collection(db, "rentalRequests"));
-
-  if(messagesSnap.empty && requestsSnap.empty){
-    box.innerHTML = "<p>No notifications yet.</p>";
+onAuthStateChanged(auth, async (user) => {
+  if(!user){
+    window.location.href = "login.html";
     return;
   }
 
-  messagesSnap.forEach((doc) => {
-    const m = doc.data();
+  const list = document.getElementById("notificationsList");
+  list.innerHTML = "";
 
-    box.innerHTML += `
-      <div class="notice">
-        <h3>New Message</h3>
-        <p>${m.senderEmail || "Someone"} messaged about ${m.itemName || "an item"}.</p>
-      </div>
-    `;
+  let count = 0;
+  const snapshot = await getDocs(collection(db, "notifications"));
+
+  snapshot.forEach((docSnap) => {
+    const n = docSnap.data();
+
+    if(n.userId === user.uid){
+      count++;
+
+      list.innerHTML += `
+        <div class="note">
+          <h3>${n.title || "Notification"}</h3>
+          <p>${n.message || ""}</p>
+          <span class="badge">${n.read ? "Read" : "New"}</span>
+          <p class="small">${n.createdAt || ""}</p>
+        </div>
+      `;
+    }
   });
 
-  requestsSnap.forEach((doc) => {
-    const r = doc.data();
-
-    box.innerHTML += `
-      <div class="notice">
-        <h3>Rental Request</h3>
-        <p>${r.buyerEmail || "Someone"} requested ${r.itemName || "an item"}.</p>
-        <p>Status: ${r.status || "pending"}</p>
+  if(count === 0){
+    list.innerHTML = `
+      <div class="empty">
+        <h3>No notifications yet.</h3>
+        <p>When someone books one of your items, it will show here.</p>
       </div>
     `;
-  });
-}
-
-loadNotifications();
+  }
+});
 </script>
 
 </body>
