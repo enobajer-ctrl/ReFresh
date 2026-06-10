@@ -231,7 +231,7 @@ async function loadMyListings(){
           <p>Price: $${item.price || "0"}/day</p>
           <p>Status: ${item.inventoryStatus || "Available"}</p>
 
-          <button class="action" onclick="window.location.href='item.html?id=${listingDoc.id}'">View</button>
+         
           <button class="action" onclick="window.location.href='edit-listing.html?id=${listingDoc.id}'">Edit</button>
           <button class="action" data-id="${listingDoc.id}" data-action="available">Available</button>
           <button class="action" data-id="${listingDoc.id}" data-action="unavailable">Unavailable</button>
