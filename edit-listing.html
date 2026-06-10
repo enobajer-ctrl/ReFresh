@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Listing | ReFresh</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#111;
+color:white;
+padding:25px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+}
+
+.box{
+background:#1a1a1a;
+border:1px solid #333;
+border-radius:18px;
+padding:25px;
+margin-bottom:20px;
+}
+
+h1,h2{
+color:#3B82F6;
+margin-bottom:15px;
+}
+
+input,textarea,select{
+width:100%;
+padding:14px;
+margin-bottom:12px;
+background:#111;
+border:1px solid #333;
+border-radius:12px;
+color:white;
+}
+
+textarea{
+min-height:120px;
+}
+
+button{
+background:#3B82F6;
+color:white;
+border:none;
+padding:14px;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+margin-right:8px;
+margin-top:10px;
+}
+
+.deleteBtn{
+background:#dc2626;
+}
+
+.preview{
+background:#111;
+border:1px solid #333;
+padding:15px;
+border-radius:12px;
+}
+
+.preview h3{
+color:#3B82F6;
+margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="box">
+<h1>Edit Listing</h1>
+
+<input id="itemName" placeholder="Item Name">
+<input id="brand" placeholder="Brand">
+<input id="size" placeholder="Size">
+<input id="price" placeholder="Price Per Day">
+
+<select id="status">
+<option value="Available">Available</option>
+<option value="Unavailable">Unavailable</option>
+<option value="Rented">Rented</option>
+</select>
+
+<textarea id="description" placeholder="Description"></textarea>
+
+<button id="saveBtn">Save Changes</button>
+<button id="deleteBtn" class="deleteBtn">Delete Listing</button>
+<button onclick="window.location.href='dashboard.html'">
+Back To Dashboard
+</button>
+</div>
+
+<div class="box">
+<h2>Preview</h2>
+
+<div class="preview">
+<h3 id="previewName">Item Name</h3>
+<p id="previewBrand">Brand</p>
+<p id="previewSize">Size</p>
+<p id="previewPrice">$0/day</p>
+<p id="previewStatus">Available</p>
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+getFirestore,
+doc,
+getDoc,
+updateDoc,
+deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey:"AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+authDomain:"refresh-7b0b7.firebaseapp.com",
+projectId:"refresh-7b0b7",
+storageBucket:"refresh-7b0b7.firebasestorage.app",
+messagingSenderId:"286051120509",
+appId:"1:286051120509:web:596ed691578537e8ca0814",
+measurementId:"G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const params = new URLSearchParams(window.location.search);
+const listingId = params.get("id");
+
+if(!listingId){
+alert("No listing found.");
+window.location.href="dashboard.html";
+}
+
+const listingRef = doc(db,"listings",listingId);
+
+async function loadListing(){
+
+const snap = await getDoc(listingRef);
+
+if(!snap.exists()){
+alert("Listing not found.");
+window.location.href="dashboard.html";
+return;
+}
+
+const item = snap.data();
+
+itemName.value = item.itemName || "";
+brand.value = item.brand || "";
+size.value = item.size || "";
+price.value = item.price || "";
+description.value = item.description || "";
+status.value = item.inventoryStatus || "Available";
+
+updatePreview();
+}
+
+function updatePreview(){
+
+previewName.innerText =
+itemName.value || "Item Name";
+
+previewBrand.innerText =
+"Brand: " + (brand.value || "N/A");
+
+previewSize.innerText =
+"Size: " + (size.value || "N/A");
+
+previewPrice.innerText =
+"$" + (price.value || "0") + "/day";
+
+previewStatus.innerText =
+status.value;
+}
+
+[itemName,brand,size,price,description,status]
+.forEach(el=>{
+el.addEventListener("input",updatePreview);
+});
+
+saveBtn.addEventListener("click",async()=>{
+
+await updateDoc(listingRef,{
+itemName:itemName.value,
+brand:brand.value,
+size:size.value,
+price:price.value,
+description:description.value,
+inventoryStatus:status.value,
+lastUpdated:new Date().toISOString()
+});
+
+alert("Listing updated!");
+});
+
+deleteBtn.addEventListener("click",async()=>{
+
+if(!confirm("Delete this listing?")) return;
+
+await deleteDoc(listingRef);
+
+alert("Listing deleted.");
+
+window.location.href="dashboard.html";
+});
+
+loadListing();
+</script>
+
+</body>
+</html>
