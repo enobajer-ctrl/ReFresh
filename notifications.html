@@ -7,20 +7,206 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#111;color:white;min-height:100vh;padding:25px}
-.page{max-width:900px;margin:auto}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
-.logo{display:flex;align-items:center;gap:12px}
-.logo img{width:65px}
-.logo h1{color:#3B82F6}
-.nav a{color:#3B82F6;text-decoration:none;font-weight:bold;margin-left:15px}
-.box,.note{background:#1a1a1a;border:1px solid #333;border-radius:18px;padding:22px;margin-bottom:16px}
-.box h2,.note h3{color:#3B82F6}
-.note p{color:#ccc;margin-top:8px}
-.small{color:#aaa;font-size:13px;margin-top:8px}
-.badge{display:inline-block;margin-top:10px;background:#222;color:#3B82F6;padding:6px 10px;border-radius:8px;font-size:13px}
-.empty{text-align:center;color:#aaa;padding:35px}
-@media(max-width:700px){.top{flex-direction:column;gap:15px}.nav a{display:inline-block;margin:7px}}
+
+body{
+  background:#0b0b0d;
+  color:white;
+  min-height:100vh;
+  padding:25px;
+}
+
+.page{
+  max-width:1000px;
+  margin:auto;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo img{
+  width:65px;
+}
+
+.logo h1{
+  color:#3B82F6;
+}
+
+.nav a{
+  color:#3B82F6;
+  text-decoration:none;
+  font-weight:bold;
+  margin-left:15px;
+}
+
+.hero{
+  background:linear-gradient(135deg,#111827,#0b0b0d);
+  border:1px solid #263244;
+  border-radius:24px;
+  padding:28px;
+  margin-bottom:22px;
+  box-shadow:0 0 24px rgba(59,130,246,.14);
+}
+
+.hero h2{
+  color:#3B82F6;
+  font-size:34px;
+  margin-bottom:8px;
+}
+
+.small{
+  color:#aaa;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;
+  margin-bottom:22px;
+}
+
+.stat{
+  background:#171717;
+  border:1px solid #2b2b2b;
+  border-radius:18px;
+  padding:20px;
+}
+
+.stat h3{
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
+.stat p{
+  font-size:26px;
+  font-weight:bold;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+
+button,.btn{
+  background:#3B82F6;
+  color:white;
+  border:none;
+  padding:12px 15px;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+}
+
+.secondary{
+  background:#222;
+  border:1px solid #3B82F6;
+}
+
+.danger{
+  background:#7f1d1d;
+}
+
+.note{
+  background:#171717;
+  border:1px solid #2b2b2b;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:15px;
+  box-shadow:0 0 18px rgba(59,130,246,.08);
+}
+
+.note.new{
+  border-color:#3B82F6;
+  background:#101827;
+}
+
+.note-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.note h3{
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
+.note p{
+  color:#ccc;
+  margin-bottom:8px;
+}
+
+.badge{
+  display:inline-block;
+  background:#222;
+  color:#3B82F6;
+  padding:6px 10px;
+  border-radius:9px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.badge.new-badge{
+  background:#3B82F6;
+  color:white;
+}
+
+.note-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.empty{
+  background:#171717;
+  border:1px solid #2b2b2b;
+  border-radius:20px;
+  padding:40px;
+  text-align:center;
+  color:#aaa;
+}
+
+.empty h3{
+  color:#3B82F6;
+  margin-bottom:10px;
+}
+
+@media(max-width:700px){
+  .top{
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .nav a{
+    display:inline-block;
+    margin:7px;
+  }
+
+  .hero h2{
+    font-size:28px;
+  }
+
+  .note-top{
+    flex-direction:column;
+  }
+}
 </style>
 </head>
 
@@ -38,13 +224,39 @@ body{background:#111;color:white;min-height:100vh;padding:25px}
       <a href="index.html">Home</a>
       <a href="dashboard.html">Dashboard</a>
       <a href="my-rentals.html">My Rentals</a>
+      <a href="messaging.html">Messages</a>
       <a href="profile.html">Profile</a>
     </div>
   </div>
 
-  <div class="box">
+  <section class="hero">
     <h2>Notifications</h2>
-    <p class="small">Booking requests, rental updates, and account alerts will appear here.</p>
+    <p class="small">
+      Track booking requests, rental updates, messages, deposit updates, and reviews.
+    </p>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <h3>Total</h3>
+      <p id="totalCount">0</p>
+    </div>
+
+    <div class="stat">
+      <h3>New</h3>
+      <p id="newCount">0</p>
+    </div>
+
+    <div class="stat">
+      <h3>Booking Alerts</h3>
+      <p id="bookingCount">0</p>
+    </div>
+  </section>
+
+  <div class="actions">
+    <button id="markAllReadBtn">Mark All Read</button>
+    <button id="refreshBtn" class="secondary">Refresh</button>
+    <a href="dashboard.html" class="btn secondary">View Dashboard</a>
   </div>
 
   <div id="notificationsList">Loading...</div>
@@ -54,7 +266,14 @@ body{background:#111;color:white;min-height:100vh;padding:25px}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -70,44 +289,181 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+let currentUser = null;
+let notifications = [];
+
 onAuthStateChanged(auth, async (user) => {
   if(!user){
     window.location.href = "login.html";
     return;
   }
 
-  const list = document.getElementById("notificationsList");
-  list.innerHTML = "";
+  currentUser = user;
+  await loadNotifications();
+});
 
-  let count = 0;
+document.getElementById("refreshBtn").addEventListener("click", loadNotifications);
+
+document.getElementById("markAllReadBtn").addEventListener("click", async () => {
+  const unread = notifications.filter(n => !n.read);
+
+  for(const n of unread){
+    await updateDoc(doc(db, "notifications", n.id), {
+      read: true
+    });
+  }
+
+  await loadNotifications();
+});
+
+function getIcon(title = "", message = ""){
+  const text = (title + " " + message).toLowerCase();
+
+  if(text.includes("booking") || text.includes("rent")) return "📅";
+  if(text.includes("message")) return "💬";
+  if(text.includes("approved")) return "✅";
+  if(text.includes("deposit")) return "💰";
+  if(text.includes("review")) return "⭐";
+  if(text.includes("cancel")) return "❌";
+
+  return "🔔";
+}
+
+function getActionLink(n){
+  const title = (n.title || "").toLowerCase();
+  const message = (n.message || "").toLowerCase();
+
+  if(title.includes("booking") || message.includes("rent")){
+    return {
+      text: "View Orders",
+      href: "dashboard.html"
+    };
+  }
+
+  if(title.includes("message") || message.includes("message")){
+    return {
+      text: "Open Messages",
+      href: n.listingId ? `messaging.html?listingId=${n.listingId}` : "messaging.html"
+    };
+  }
+
+  if(title.includes("review") || message.includes("review")){
+    return {
+      text: "View Reviews",
+      href: "reviews.html"
+    };
+  }
+
+  if(title.includes("deposit") || message.includes("deposit")){
+    return {
+      text: "View Rentals",
+      href: "my-rentals.html"
+    };
+  }
+
+  return {
+    text: "Open Dashboard",
+    href: "dashboard.html"
+  };
+}
+
+async function loadNotifications(){
+  const list = document.getElementById("notificationsList");
+  list.innerHTML = "Loading...";
+
+  notifications = [];
+
   const snapshot = await getDocs(collection(db, "notifications"));
 
   snapshot.forEach((docSnap) => {
     const n = docSnap.data();
 
-    if(n.userId === user.uid){
-      count++;
-
-      list.innerHTML += `
-        <div class="note">
-          <h3>${n.title || "Notification"}</h3>
-          <p>${n.message || ""}</p>
-          <span class="badge">${n.read ? "Read" : "New"}</span>
-          <p class="small">${n.createdAt || ""}</p>
-        </div>
-      `;
+    if(n.userId === currentUser.uid){
+      notifications.push({
+        id: docSnap.id,
+        ...n
+      });
     }
   });
 
-  if(count === 0){
+  notifications.sort((a,b) => {
+    return (b.createdAt || "").localeCompare(a.createdAt || "");
+  });
+
+  renderNotifications();
+}
+
+function renderNotifications(){
+  const list = document.getElementById("notificationsList");
+  list.innerHTML = "";
+
+  const total = notifications.length;
+  const unread = notifications.filter(n => !n.read).length;
+  const bookings = notifications.filter(n =>
+    ((n.title || "") + " " + (n.message || "")).toLowerCase().includes("booking") ||
+    ((n.title || "") + " " + (n.message || "")).toLowerCase().includes("rent")
+  ).length;
+
+  document.getElementById("totalCount").innerText = total;
+  document.getElementById("newCount").innerText = unread;
+  document.getElementById("bookingCount").innerText = bookings;
+
+  if(total === 0){
     list.innerHTML = `
       <div class="empty">
-        <h3>No notifications yet.</h3>
-        <p>When someone books one of your items, it will show here.</p>
+        <h3>🎉 You're all caught up!</h3>
+        <p>New bookings, messages, reviews, and rental updates will appear here.</p>
       </div>
     `;
+    return;
   }
-});
+
+  notifications.forEach((n) => {
+    const icon = getIcon(n.title, n.message);
+    const action = getActionLink(n);
+
+    list.innerHTML += `
+      <div class="note ${n.read ? "" : "new"}">
+        <div class="note-top">
+          <div>
+            <h3>${icon} ${n.title || "Notification"}</h3>
+            <p>${n.message || ""}</p>
+            <p class="small">${n.createdAt || ""}</p>
+          </div>
+
+          <span class="badge ${n.read ? "" : "new-badge"}">
+            ${n.read ? "Read" : "New"}
+          </span>
+        </div>
+
+        <div class="note-buttons">
+          <a href="${action.href}" class="btn">${action.text}</a>
+          ${!n.read ? `<button class="secondary" data-read="${n.id}">Mark Read</button>` : ""}
+          <button class="danger" data-delete="${n.id}">Delete</button>
+        </div>
+      </div>
+    `;
+  });
+
+  document.querySelectorAll("[data-read]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await updateDoc(doc(db, "notifications", button.dataset.read), {
+        read: true
+      });
+
+      await loadNotifications();
+    });
+  });
+
+  document.querySelectorAll("[data-delete]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      if(!confirm("Delete this notification?")) return;
+
+      await deleteDoc(doc(db, "notifications", button.dataset.delete));
+      await loadNotifications();
+    });
+  });
+}
 </script>
 
 </body>
