@@ -55,7 +55,7 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
     <div>
       <div class="box">
         <h2>Rental Item</h2>
-        <div class="item-img">👕</div>
+       div class="item-img" id="checkoutPhoto">👕</div>
 
         <span class="badge" id="categoryBadge">Category</span>
         <span class="badge" id="conditionBadge">Condition</span>
@@ -214,7 +214,30 @@ async function loadItem(){
     if(itemSnap.exists()){
       currentItem = itemSnap.data();
       dailyPrice = Number(currentItem.price || 0);
+const photos =
+  currentItem.photoUrls ||
+  currentItem.photos ||
+  currentItem.images ||
+  [];
 
+const photo =
+  currentItem.mainPhoto ||
+  currentItem.photoURL ||
+  currentItem.imageUrl ||
+  photos[0];
+
+const checkoutPhoto = document.getElementById("checkoutPhoto");
+
+if(photo){
+  checkoutPhoto.innerHTML = `
+    <img src="${photo}" alt="${currentItem.itemName || "Rental item"}">
+  `;
+} else {
+  checkoutPhoto.innerHTML = "👕";
+}
+
+document.getElementById("itemName").innerText =
+  currentItem.itemName || "Untitled Item";
       document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
       document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
       document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
