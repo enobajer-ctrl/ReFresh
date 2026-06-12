@@ -7,44 +7,268 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#0f0f10;color:white}
-.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
-.sidebar{background:#080808;border-right:1px solid #222;padding:24px}
-.logo{text-align:center;margin-bottom:25px}
-.logo img{width:72px}
-.logo h1{color:#3B82F6;margin-top:8px}
-.sidebar a,.sidebar button{display:block;width:100%;color:white;background:none;border:none;text-align:left;text-decoration:none;padding:12px;border-radius:10px;margin-bottom:7px;font-size:15px;cursor:pointer}
-.sidebar a:hover,.sidebar button:hover{background:#181818;color:#3B82F6}
-.main{padding:28px;max-width:1250px}
-.top{margin-bottom:24px}
-.top h2{color:#3B82F6;font-size:34px}
-.small{color:#aaa;font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:24px}
-.stat,.box{background:#181818;border:1px solid #2e2e2e;border-radius:20px;padding:22px;box-shadow:0 0 18px rgba(59,130,246,.10)}
-.stat h3,.box h2{color:#3B82F6;margin-bottom:10px}
-.stat p{font-size:28px;font-weight:bold}
-.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;margin-bottom:20px}
-input,select,textarea{width:100%;padding:14px;margin-bottom:12px;background:#0f0f10;border:1px solid #333;border-radius:12px;color:white;font-size:15px}
-textarea{min-height:95px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.photo-box{border:1px dashed #3B82F6;border-radius:16px;padding:18px;margin-bottom:14px;background:#101827}
-.photo-box input{border:none;background:transparent;padding:0}
-.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:10px;margin-top:12px}
-.preview-grid img{width:100%;height:85px;object-fit:cover;border-radius:12px;border:1px solid #333}
-button.action{background:#3B82F6;color:white;border:none;padding:12px 15px;border-radius:10px;font-weight:bold;cursor:pointer;margin:4px 4px 4px 0}
-button.action:disabled{background:#555;cursor:not-allowed}
-button.delete{background:#7f1d1d}
-.item{background:#101010;border:1px solid #333;border-radius:16px;padding:15px;margin-bottom:14px}
-.item-img{width:100%;height:150px;object-fit:cover;border-radius:12px;margin-bottom:12px;background:#222}
-.placeholder{height:150px;border-radius:12px;background:#222;display:flex;align-items:center;justify-content:center;font-size:45px;margin-bottom:12px}
-.item h3{color:#3B82F6;margin-bottom:8px}
-.item p{color:#ccc;margin-bottom:6px}
-.badge{display:inline-block;background:#222;color:#3B82F6;padding:6px 10px;border-radius:8px;margin-top:6px;font-size:13px}
-@media(max-width:850px){
-  .app{grid-template-columns:1fr}
-  .sidebar{border-right:none;border-bottom:1px solid #333}
-  .grid{grid-template-columns:1fr}
-  .two{grid-template-columns:1fr}
+
+body{
+  background:#0b0b0d;
+  color:white;
+}
+
+.app{
+  display:grid;
+  grid-template-columns:230px 1fr;
+  min-height:100vh;
+}
+
+.sidebar{
+  background:#050505;
+  border-right:1px solid #222;
+  padding:24px;
+}
+
+.logo{
+  text-align:center;
+  margin-bottom:28px;
+}
+
+.logo img{
+  width:75px;
+}
+
+.logo h1{
+  color:#3B82F6;
+  margin-top:8px;
+}
+
+.sidebar a,.sidebar button{
+  display:block;
+  width:100%;
+  color:white;
+  background:none;
+  border:none;
+  text-align:left;
+  text-decoration:none;
+  padding:13px;
+  border-radius:12px;
+  margin-bottom:8px;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.sidebar a:hover,.sidebar button:hover{
+  background:#151515;
+  color:#3B82F6;
+}
+
+.main{
+  padding:32px;
+  max-width:1300px;
+}
+
+.hero{
+  background:linear-gradient(135deg,#111827,#0b0b0d);
+  border:1px solid #263244;
+  border-radius:24px;
+  padding:28px;
+  margin-bottom:24px;
+  box-shadow:0 0 24px rgba(59,130,246,.14);
+}
+
+.hero h2{
+  color:#3B82F6;
+  font-size:36px;
+  margin-bottom:8px;
+}
+
+.small{
+  color:#aaa;
+  font-size:14px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.stat,.box{
+  background:#171717;
+  border:1px solid #2b2b2b;
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 0 18px rgba(59,130,246,.08);
+}
+
+.stat h3,.box h2{
+  color:#3B82F6;
+  margin-bottom:10px;
+}
+
+.stat p{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.create-box{
+  margin-bottom:24px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:14px;
+  margin-bottom:14px;
+  background:#0d0d0f;
+  border:1px solid #333;
+  border-radius:14px;
+  color:white;
+  font-size:15px;
+}
+
+textarea{
+  min-height:100px;
+}
+
+.photo-box{
+  border:1px dashed #3B82F6;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:16px;
+  background:#101827;
+}
+
+.photo-box input{
+  border:none;
+  background:transparent;
+  padding:0;
+  margin-top:10px;
+}
+
+.preview-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(85px,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+
+.preview-grid img{
+  width:100%;
+  height:90px;
+  object-fit:cover;
+  border-radius:12px;
+  border:1px solid #333;
+}
+
+.section-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:22px;
+}
+
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:16px;
+}
+
+.item{
+  background:#0f0f10;
+  border:1px solid #333;
+  border-radius:18px;
+  padding:15px;
+  margin-bottom:14px;
+}
+
+.item-img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:14px;
+  margin-bottom:12px;
+  background:#222;
+}
+
+.placeholder{
+  height:160px;
+  border-radius:14px;
+  background:#222;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:45px;
+  margin-bottom:12px;
+}
+
+.item h3{
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
+.item p{
+  color:#ccc;
+  margin-bottom:6px;
+}
+
+.badge{
+  display:inline-block;
+  background:#222;
+  color:#3B82F6;
+  padding:6px 10px;
+  border-radius:9px;
+  margin-top:6px;
+  font-size:13px;
+}
+
+button.action{
+  background:#3B82F6;
+  color:white;
+  border:none;
+  padding:12px 15px;
+  border-radius:11px;
+  font-weight:bold;
+  cursor:pointer;
+  margin:4px 4px 4px 0;
+}
+
+button.action:disabled{
+  background:#555;
+  cursor:not-allowed;
+}
+
+button.delete{
+  background:#7f1d1d;
+}
+
+.empty{
+  color:#aaa;
+}
+
+@media(max-width:900px){
+  .app{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    border-right:none;
+    border-bottom:1px solid #222;
+  }
+
+  .main{
+    padding:22px;
+  }
+
+  .section-grid,.form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero h2{
+    font-size:30px;
+  }
 }
 </style>
 </head>
@@ -59,7 +283,7 @@ button.delete{background:#7f1d1d}
     <h1>ReFresh</h1>
   </div>
 
-  <a href="index.html">🏠 Back Home</a>
+  <a href="index.html">🏠 Home</a>
   <a href="browse.html">🛍 Browse</a>
   <a href="my-rentals.html">📅 My Rentals</a>
   <a href="messaging.html">💬 Messages</a>
@@ -71,85 +295,96 @@ button.delete{background:#7f1d1d}
 
 <main class="main">
 
-  <div class="top">
-    <h2>My Dashboard</h2>
-    <p class="small" id="userInfo">Loading account...</p>
-  </div>
-
-  <section class="stats">
-    <div class="stat"><h3>Listings</h3><p id="listingCount">0</p></div>
-    <div class="stat"><h3>Orders</h3><p id="orderCount">0</p></div>
-    <div class="stat"><h3>Messages</h3><p id="messageCount">0</p></div>
-    <div class="stat"><h3>Earnings</h3><p id="earnings">$0</p></div>
+  <section class="hero">
+    <h2 id="welcomeText">Welcome Back</h2>
+    <p class="small">Manage your listings, orders, photos, and earnings.</p>
   </section>
 
-  <div class="grid">
+  <section class="stats">
+    <div class="stat">
+      <h3>Listings</h3>
+      <p id="listingCount">0</p>
+    </div>
 
-    <div class="box">
-      <h2>Create Listing</h2>
+    <div class="stat">
+      <h3>Orders</h3>
+      <p id="orderCount">0</p>
+    </div>
 
-      <div class="photo-box">
-        <p class="small">Upload up to 5 photos</p>
-        <input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple>
-        <div id="photoPreview" class="preview-grid"></div>
-      </div>
+    <div class="stat">
+      <h3>Messages</h3>
+      <p id="messageCount">0</p>
+    </div>
 
-      <input id="itemName" placeholder="Item Name">
+    <div class="stat">
+      <h3>Earnings</h3>
+      <p id="earnings">$0</p>
+    </div>
+  </section>
 
-      <div class="two">
-        <input id="brand" placeholder="Brand">
-        <input id="size" placeholder="Size">
-      </div>
+  <section class="box create-box">
+    <h2>Create Listing</h2>
+    <p class="small">Add photos, pricing, and a refundable deposit for your item.</p>
+    <br>
 
+    <div class="photo-box">
+      <p class="small">Upload up to 5 photos</p>
+      <input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+      <div id="photoPreview" class="preview-grid"></div>
+    </div>
+
+    <input id="itemName" placeholder="Item Name">
+
+    <div class="form-grid">
+      <input id="brand" placeholder="Brand">
+      <input id="size" placeholder="Size">
+    </div>
+
+    <div class="form-grid">
       <input id="price" placeholder="Price Per Day">
-
-      <div class="two">
-        <select id="category">
-          <option value="">Category</option>
-          <option>Clothing</option>
-          <option>Shoes</option>
-          <option>Bags</option>
-          <option>Belts</option>
-          <option>Watches</option>
-          <option>Jewelry</option>
-          <option>Accessories</option>
-        </select>
-
-        <select id="condition">
-          <option value="">Condition</option>
-          <option>New</option>
-          <option>Like New</option>
-          <option>Good</option>
-          <option>Used</option>
-        </select>
-      </div>
-
-      <textarea id="description" placeholder="Description"></textarea>
-
-      <button class="action" id="uploadBtn">Upload Listing</button>
-      <p class="small">Your username is added automatically.</p>
+      <input id="deposit" placeholder="Refundable Deposit">
     </div>
 
-    <div class="box">
-      <h2>My Messages</h2>
-      <div id="messages">Loading...</div>
+    <div class="form-grid">
+      <select id="category">
+        <option value="">Category</option>
+        <option>Clothing</option>
+        <option>Shoes</option>
+        <option>Bags</option>
+        <option>Belts</option>
+        <option>Watches</option>
+        <option>Jewelry</option>
+        <option>Accessories</option>
+      </select>
+
+      <select id="condition">
+        <option value="">Condition</option>
+        <option>New</option>
+        <option>Like New</option>
+        <option>Good</option>
+        <option>Used</option>
+      </select>
     </div>
 
-  </div>
+    <textarea id="description" placeholder="Description"></textarea>
 
-  <div class="grid">
+    <button class="action" id="uploadBtn">Upload Listing</button>
+    <p class="small">Your username is added automatically.</p>
+  </section>
+
+  <section class="section-grid">
 
     <div class="box">
       <h2>My Listings</h2>
-      <div id="myListings">Loading...</div>
+      <div id="myListings" class="cards-grid">Loading...</div>
     </div>
 
     <div class="box">
-      <h2>My Orders</h2>
+      <h2>Recent Orders</h2>
       <div id="myOrders">Loading...</div>
     </div>
 
-  </div>
+  </section>
 
 </main>
 
@@ -213,8 +448,8 @@ onAuthStateChanged(auth, async (user) => {
   const userDoc = await getDoc(doc(db, "users", user.uid));
   userData = userDoc.exists() ? userDoc.data() : {};
 
-  document.getElementById("userInfo").innerText =
-    "@" + (userData.username || "user");
+  document.getElementById("welcomeText").innerText =
+    "Welcome Back, @" + (userData.username || "user");
 
   loadDashboard();
 });
@@ -267,6 +502,7 @@ uploadBtn.addEventListener("click", async () => {
       brand: document.getElementById("brand").value,
       size: document.getElementById("size").value,
       price: document.getElementById("price").value,
+      deposit: document.getElementById("deposit").value,
       category: document.getElementById("category").value,
       condition: document.getElementById("condition").value,
       description: document.getElementById("description").value,
@@ -282,6 +518,7 @@ uploadBtn.addEventListener("click", async () => {
     document.getElementById("brand").value = "";
     document.getElementById("size").value = "";
     document.getElementById("price").value = "";
+    document.getElementById("deposit").value = "";
     document.getElementById("category").value = "";
     document.getElementById("condition").value = "";
     document.getElementById("description").value = "";
@@ -303,7 +540,7 @@ uploadBtn.addEventListener("click", async () => {
 async function loadDashboard(){
   await loadMyListings();
   await loadMyOrders();
-  await loadMyMessages();
+  await loadMyMessagesCount();
 }
 
 async function loadMyListings(){
@@ -327,9 +564,9 @@ async function loadMyListings(){
         <div class="item">
           ${imageHTML}
           <h3>${item.itemName || "Untitled Item"}</h3>
-          <p>Brand: ${item.brand || "N/A"}</p>
-          <p>Size: ${item.size || "N/A"}</p>
-          <p>Price: $${item.price || "0"}/day</p>
+          <p>${item.brand || "No brand"} • ${item.size || "No size"}</p>
+          <p>$${item.price || "0"}/day</p>
+          <p>Deposit: $${item.deposit || "0"}</p>
           <span class="badge">${item.inventoryStatus || "Available"}</span>
           <br><br>
           <button class="action" onclick="window.location.href='edit-listing.html?id=${listingDoc.id}'">Edit</button>
@@ -340,7 +577,7 @@ async function loadMyListings(){
   });
 
   if(myListingIds.length === 0){
-    listingsDiv.innerHTML = "<p>No listings yet.</p>";
+    listingsDiv.innerHTML = "<p class='empty'>No listings yet.</p>";
   }
 
   document.getElementById("listingCount").innerText = myListingIds.length;
@@ -377,20 +614,22 @@ async function loadMyOrders(){
         <div class="item">
           <h3>${order.itemName || "Rental Order"}</h3>
           <p>Buyer: ${order.buyerEmail || "Unknown"}</p>
-          <p>Dates: ${order.startDate || "N/A"} to ${order.endDate || "N/A"}</p>
-          <p>Days: ${order.days || 1}</p>
-          <p>Total Paid: $${Number(order.totalPrice || order.total || 0).toFixed(2)}</p>
+          <p>${order.startDate || "N/A"} → ${order.endDate || "N/A"}</p>
+          <p>Total: $${Number(order.totalPrice || order.total || 0).toFixed(2)}</p>
           <p>You Earn: $${sellerEarnings.toFixed(2)}</p>
           <span class="badge">${order.status || "pending"}</span>
           <br><br>
-          ${order.status !== "accepted" ? `<button class="action" data-order="${requestDoc.id}">Approve Rental</button>` : `<p class="small">Approved ✓</p>`}
+          ${order.status !== "accepted" 
+            ? `<button class="action" data-order="${requestDoc.id}">Approve Rental</button>` 
+            : `<p class="small">Approved ✓</p>`
+          }
         </div>
       `;
     }
   });
 
   if(count === 0){
-    ordersDiv.innerHTML = "<p>No orders yet.</p>";
+    ordersDiv.innerHTML = "<p class='empty'>No orders yet.</p>";
   }
 
   document.getElementById("orderCount").innerText = count;
@@ -407,10 +646,7 @@ async function loadMyOrders(){
   });
 }
 
-async function loadMyMessages(){
-  const messagesDiv = document.getElementById("messages");
-  messagesDiv.innerHTML = "";
-
+async function loadMyMessagesCount(){
   let count = 0;
 
   const snapshot = await getDocs(collection(db, "messages"));
@@ -420,21 +656,8 @@ async function loadMyMessages(){
 
     if(myListingIds.includes(message.listingId)){
       count++;
-
-      messagesDiv.innerHTML += `
-        <div class="item">
-          <h3>${message.itemName || "Message"}</h3>
-          <p>From: ${message.senderEmail || "Unknown"}</p>
-          <p>${message.message || ""}</p>
-          <button class="action" onclick="window.location.href='messaging.html?listingId=${message.listingId}'">Reply</button>
-        </div>
-      `;
     }
   });
-
-  if(count === 0){
-    messagesDiv.innerHTML = "<p>No messages yet.</p>";
-  }
 
   document.getElementById("messageCount").innerText = count;
 }
