@@ -17,26 +17,8 @@ body{background:#f4f7fb;color:#111;min-height:100vh;padding:25px}
 .checkout{display:grid;grid-template-columns:1fr 420px;gap:25px}
 .box{background:white;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:22px}
 .box h2{color:#3B82F6;margin-bottom:18px}
-.item-img{
-  height:230px;
-  max-height:230px;
-  background:linear-gradient(135deg,#e5e7eb,#dbeafe);
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:70px;
-  color:#3B82F6;
-  margin-bottom:20px;
-  overflow:hidden;
-}
-
-.item-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
+.item-img{height:230px;max-height:230px;background:linear-gradient(135deg,#e5e7eb,#dbeafe);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:70px;color:#3B82F6;margin-bottom:20px;overflow:hidden}
+.item-img img{width:100%;height:100%;object-fit:cover;display:block}
 input,select,textarea{width:100%;padding:14px;margin-bottom:14px;border:1px solid #d1d5db;border-radius:12px;font-size:15px}
 textarea{min-height:85px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -47,6 +29,7 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
 .badge{display:inline-block;background:#e0edff;color:#3B82F6;padding:7px 10px;border-radius:10px;font-size:13px;margin:5px 5px 10px 0;font-weight:bold}
 .small{color:#666;font-size:13px;margin-top:10px;line-height:1.5}
 .warning{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;padding:12px;border-radius:12px;margin-bottom:14px;font-size:14px}
+.deposit-note{background:#eef6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:12px;border-radius:12px;margin:12px 0;font-size:14px}
 .check{display:flex;gap:10px;align-items:flex-start;margin:15px 0;color:#444}
 .check input{width:auto;margin-top:3px}
 @media(max-width:850px){.checkout{grid-template-columns:1fr}.top{flex-direction:column;gap:15px}.two{grid-template-columns:1fr}}
@@ -74,7 +57,8 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
     <div>
       <div class="box">
         <h2>Rental Item</h2>
-<div class="item-img" id="checkoutPhoto">👕</div>
+
+        <div class="item-img" id="checkoutPhoto">👕</div>
 
         <span class="badge" id="categoryBadge">Category</span>
         <span class="badge" id="conditionBadge">Condition</span>
@@ -154,17 +138,26 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
 
         <div class="row">
           <span>ReFresh Fee</span>
-          <strong id="serviceFee">$2.00</strong>
+          <strong id="serviceFee">$0</strong>
+        </div>
+
+        <div class="row">
+          <span>Refundable Deposit</span>
+          <strong id="depositAmount">$0</strong>
         </div>
 
         <div class="row total">
-          <span>Total</span>
+          <span>Total Due Today</span>
           <strong id="totalPrice">$0</strong>
         </div>
 
         <div class="row">
           <span>Seller Earnings</span>
           <strong id="sellerPayout">$0</strong>
+        </div>
+
+        <div class="deposit-note">
+          The deposit is refundable after the item is returned on time and in good condition.
         </div>
 
         <input id="promoCode" placeholder="Promo Code">
@@ -207,6 +200,7 @@ const itemId = params.get("id");
 
 let currentItem = null;
 let dailyPrice = 0;
+let deposit = 0;
 let blockedRanges = [];
 
 const startDate = document.getElementById("startDate");
@@ -233,30 +227,30 @@ async function loadItem(){
     if(itemSnap.exists()){
       currentItem = itemSnap.data();
       dailyPrice = Number(currentItem.price || 0);
-const photos =
-  currentItem.photoUrls ||
-  currentItem.photos ||
-  currentItem.images ||
-  [];
+      deposit = Number(currentItem.deposit || 0);
 
-const photo =
-  currentItem.mainPhoto ||
-  currentItem.photoURL ||
-  currentItem.imageUrl ||
-  photos[0];
+      const photos =
+        currentItem.photoUrls ||
+        currentItem.photos ||
+        currentItem.images ||
+        [];
 
-const checkoutPhoto = document.getElementById("checkoutPhoto");
+      const photo =
+        currentItem.mainPhoto ||
+        currentItem.photoURL ||
+        currentItem.imageUrl ||
+        photos[0];
 
-if(photo){
-  checkoutPhoto.innerHTML = `
-    <img src="${photo}" alt="${currentItem.itemName || "Rental item"}">
-  `;
-} else {
-  checkoutPhoto.innerHTML = "👕";
-}
+      const checkoutPhoto = document.getElementById("checkoutPhoto");
 
-document.getElementById("itemName").innerText =
-  currentItem.itemName || "Untitled Item";
+      if(photo){
+        checkoutPhoto.innerHTML = `
+          <img src="${photo}" alt="${currentItem.itemName || "Rental item"}">
+        `;
+      } else {
+        checkoutPhoto.innerHTML = "👕";
+      }
+
       document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
       document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
       document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
@@ -323,7 +317,6 @@ function getRentalDays(){
 
   const start = new Date(startDate.value);
   const end = new Date(endDate.value);
-
   const diff = end - start;
 
   if(diff < 0) return 0;
@@ -336,10 +329,10 @@ function getTotals(){
   const subtotal = dailyPrice * days;
   const serviceFee = days > 0 ? 2 : 0;
   const commission = subtotal * 0.10;
-  const total = subtotal + serviceFee;
+  const total = subtotal + serviceFee + deposit;
   const sellerPayout = subtotal - commission;
 
-  return { days, subtotal, serviceFee, commission, total, sellerPayout };
+  return { days, subtotal, serviceFee, commission, deposit, total, sellerPayout };
 }
 
 function updateTotals(){
@@ -353,6 +346,7 @@ function updateTotals(){
   document.getElementById("daysText").innerText = totals.days;
   document.getElementById("subtotal").innerText = "$" + totals.subtotal.toFixed(2);
   document.getElementById("serviceFee").innerText = "$" + totals.serviceFee.toFixed(2);
+  document.getElementById("depositAmount").innerText = "$" + totals.deposit.toFixed(2);
   document.getElementById("totalPrice").innerText = "$" + totals.total.toFixed(2);
   document.getElementById("sellerPayout").innerText = "$" + totals.sellerPayout.toFixed(2);
 }
@@ -426,6 +420,8 @@ checkoutBtn.addEventListener("click", async () => {
       days: totals.days,
       subtotal: totals.subtotal,
       serviceFee: totals.serviceFee,
+      deposit: totals.deposit,
+      depositStatus: "held",
       commission: totals.commission,
       total: totals.total,
       sellerPayout: totals.sellerPayout,
@@ -433,33 +429,35 @@ checkoutBtn.addEventListener("click", async () => {
       createdAt: new Date().toISOString()
     });
 
-   await addDoc(collection(db, "rentalRequests"), {
-  listingId: itemId,
-  itemName: currentItem.itemName || "",
-  brand: currentItem.brand || "",
-  size: currentItem.size || "",
-  price: dailyPrice,
-  days: totals.days,
-  totalPrice: totals.total,
-  subtotal: totals.subtotal,
-  serviceFee: totals.serviceFee,
-  commission: totals.commission,
-  sellerPayout: totals.sellerPayout,
-  sellerName: currentItem.sellerName || "Seller",
-  startDate: startDate.value,
-  endDate: endDate.value,
-  status: "pending"
-});
+    await addDoc(collection(db, "rentalRequests"), {
+      listingId: itemId,
+      itemName: currentItem.itemName || "",
+      brand: currentItem.brand || "",
+      size: currentItem.size || "",
+      price: dailyPrice,
+      days: totals.days,
+      totalPrice: totals.total,
+      subtotal: totals.subtotal,
+      serviceFee: totals.serviceFee,
+      deposit: totals.deposit,
+      depositStatus: "held",
+      commission: totals.commission,
+      sellerPayout: totals.sellerPayout,
+      sellerName: currentItem.sellerName || "Seller",
+      startDate: startDate.value,
+      endDate: endDate.value,
+      status: "pending"
+    });
+
     await addDoc(collection(db, "notifications"), {
-  userId: currentItem.sellerId,
-  title: "New Booking Request",
-  message: `${document.getElementById("buyerName").value} requested to rent ${currentItem.itemName}`,
-  listingId: itemId,
-  itemName: currentItem.itemName || "",
-  createdAt: new Date().toISOString(),
-  read: false
-});
-   
+      userId: currentItem.sellerId,
+      title: "New Booking Request",
+      message: `${document.getElementById("buyerName").value} requested to rent ${currentItem.itemName}`,
+      listingId: itemId,
+      itemName: currentItem.itemName || "",
+      createdAt: new Date().toISOString(),
+      read: false
+    });
 
     const response = await fetch("https://refresh-payments.vercel.app/api/create-checkout-session", {
       method: "POST",
