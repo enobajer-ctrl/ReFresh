@@ -10,14 +10,14 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
-  background:#111;
+  background:#0b0b0d;
   color:white;
   min-height:100vh;
   padding:25px;
 }
 
 .page{
-  max-width:900px;
+  max-width:1050px;
   margin:auto;
 }
 
@@ -35,7 +35,7 @@ body{
 }
 
 .logo img{
-  width:70px;
+  width:65px;
 }
 
 .logo h1{
@@ -49,13 +49,62 @@ body{
   margin-left:15px;
 }
 
+.hero,.box,.review,.stat,.empty{
+  background:#171717;
+  border:1px solid #2b2b2b;
+  border-radius:22px;
+  box-shadow:0 0 18px rgba(59,130,246,.09);
+}
+
+.hero{
+  padding:28px;
+  margin-bottom:22px;
+  background:linear-gradient(135deg,#111827,#0b0b0d);
+  border-color:#263244;
+}
+
+.hero h2{
+  color:#3B82F6;
+  font-size:34px;
+  margin-bottom:8px;
+}
+
+.small{
+  color:#aaa;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;
+  margin-bottom:22px;
+}
+
+.stat{
+  padding:20px;
+}
+
+.stat h3{
+  color:#3B82F6;
+  margin-bottom:8px;
+}
+
+.stat p{
+  font-size:26px;
+  font-weight:bold;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:22px;
+}
+
 .box{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:20px;
-  padding:25px;
-  margin-bottom:25px;
-  box-shadow:0 0 25px rgba(59,130,246,.15);
+  padding:24px;
+  margin-bottom:22px;
 }
 
 .box h2{
@@ -67,9 +116,9 @@ input,select,textarea{
   width:100%;
   padding:14px;
   margin-bottom:14px;
-  background:#111;
+  background:#0f0f10;
   border:1px solid #333;
-  border-radius:12px;
+  border-radius:14px;
   color:white;
   font-size:15px;
 }
@@ -78,7 +127,7 @@ textarea{
   min-height:120px;
 }
 
-button{
+button,.btn{
   width:100%;
   padding:14px;
   background:#3B82F6;
@@ -87,14 +136,14 @@ button{
   border-radius:12px;
   font-weight:bold;
   cursor:pointer;
+  text-decoration:none;
+  display:block;
+  text-align:center;
 }
 
 .review{
-  background:#111;
-  border:1px solid #333;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:12px;
+  padding:18px;
+  margin-bottom:14px;
 }
 
 .review h3{
@@ -105,6 +154,82 @@ button{
 .review p{
   color:#ccc;
   margin-bottom:6px;
+}
+
+.stars{
+  color:#facc15;
+  font-size:22px;
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
+
+.badge{
+  display:inline-block;
+  background:#064e3b;
+  color:#bbf7d0;
+  padding:6px 10px;
+  border-radius:9px;
+  font-size:13px;
+  font-weight:bold;
+  margin:6px 6px 8px 0;
+}
+
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.filter{
+  background:#171717;
+  border:1px solid #333;
+  color:white;
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.filter.active{
+  background:#3B82F6;
+  border-color:#3B82F6;
+}
+
+.empty{
+  padding:35px;
+  text-align:center;
+  color:#aaa;
+}
+
+.empty h3{
+  color:#3B82F6;
+  margin-bottom:10px;
+}
+
+.rating-breakdown p{
+  color:#ccc;
+  margin-bottom:8px;
+}
+
+@media(max-width:850px){
+  .top{
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .nav a{
+    display:inline-block;
+    margin:7px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero h2{
+    font-size:28px;
+  }
 }
 </style>
 </head>
@@ -122,38 +247,96 @@ button{
     <div class="nav">
       <a href="index.html">Home</a>
       <a href="browse.html">Browse</a>
+      <a href="my-rentals.html">My Rentals</a>
       <a href="profile.html">Profile</a>
     </div>
   </div>
 
-  <div class="box">
-    <h2>Leave a Seller Review</h2>
+  <section class="hero">
+    <h2>Seller Reviews</h2>
+    <p class="small">Read ratings from renters and leave reviews after completed rentals.</p>
+  </section>
 
-    <input id="sellerName" placeholder="Seller Username">
-    
-    <select id="rating">
-      <option value="">Choose Rating</option>
-      <option value="5">★★★★★ 5 Stars</option>
-      <option value="4">★★★★☆ 4 Stars</option>
-      <option value="3">★★★☆☆ 3 Stars</option>
-      <option value="2">★★☆☆☆ 2 Stars</option>
-      <option value="1">★☆☆☆☆ 1 Star</option>
-    </select>
+  <section class="stats">
+    <div class="stat">
+      <h3>Average Rating</h3>
+      <p id="averageRating">0.0 ★</p>
+    </div>
 
-    <textarea id="reviewText" placeholder="Write your review..."></textarea>
+    <div class="stat">
+      <h3>Total Reviews</h3>
+      <p id="reviewCount">0</p>
+    </div>
 
-    <button id="submitReview">Submit Review</button>
-  </div>
+    <div class="stat">
+      <h3>5-Star Reviews</h3>
+      <p id="fiveStarCount">0</p>
+    </div>
+  </section>
 
-  <div class="box">
-    <h2>Recent Reviews</h2>
-    <div id="reviews">Loading reviews...</div>
+  <div class="grid">
+
+    <div>
+
+      <div class="box">
+        <h2>Leave a Review</h2>
+
+        <input id="sellerName" placeholder="Seller Username">
+
+        <select id="rating">
+          <option value="">Choose Rating</option>
+          <option value="5">★★★★★ 5 Stars</option>
+          <option value="4">★★★★☆ 4 Stars</option>
+          <option value="3">★★★☆☆ 3 Stars</option>
+          <option value="2">★★☆☆☆ 2 Stars</option>
+          <option value="1">★☆☆☆☆ 1 Star</option>
+        </select>
+
+        <textarea id="reviewText" maxlength="500" placeholder="Write your review..."></textarea>
+        <p class="small" id="charCount">0 / 500</p>
+
+        <button id="submitReview">Submit Review</button>
+        <p class="small">Reviews help buyers and sellers build trust on ReFresh.</p>
+      </div>
+
+      <div class="box">
+        <h2>Rating Breakdown</h2>
+        <div class="rating-breakdown" id="breakdown">
+          <p>5★: 0</p>
+          <p>4★: 0</p>
+          <p>3★: 0</p>
+          <p>2★: 0</p>
+          <p>1★: 0</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+
+      <div class="filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="5">5 Star</button>
+        <button class="filter" data-filter="4">4 Star</button>
+        <button class="filter" data-filter="3">3 Star</button>
+        <button class="filter" data-filter="2">2 Star</button>
+        <button class="filter" data-filter="1">1 Star</button>
+      </div>
+
+      <div class="box">
+        <h2>Recent Reviews</h2>
+        <div id="reviews">Loading reviews...</div>
+      </div>
+
+    </div>
+
   </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -167,12 +350,39 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
+let currentUser = null;
+let reviews = [];
+let activeFilter = "all";
+
+const params = new URLSearchParams(window.location.search);
+const sellerParam = params.get("seller");
+
+if(sellerParam){
+  document.getElementById("sellerName").value = sellerParam;
+}
+
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+});
+
+document.getElementById("reviewText").addEventListener("input", () => {
+  const length = document.getElementById("reviewText").value.length;
+  document.getElementById("charCount").innerText = `${length} / 500`;
+});
+
 document.getElementById("submitReview").addEventListener("click", async () => {
-  const sellerName = document.getElementById("sellerName").value;
+  const sellerName = document.getElementById("sellerName").value.trim();
   const rating = document.getElementById("rating").value;
-  const review = document.getElementById("reviewText").value;
+  const review = document.getElementById("reviewText").value.trim();
+
+  if(!currentUser){
+    alert("Please log in to leave a review.");
+    window.location.href = "login.html";
+    return;
+  }
 
   if(!sellerName || !rating || !review){
     alert("Fill out all review fields.");
@@ -182,38 +392,132 @@ document.getElementById("submitReview").addEventListener("click", async () => {
   await addDoc(collection(db, "reviews"), {
     sellerName: sellerName,
     rating: Number(rating),
-    review: review
+    review: review,
+    reviewerId: currentUser.uid,
+    reviewerEmail: currentUser.email,
+    verifiedRental: true,
+    createdAt: new Date().toISOString()
   });
 
   alert("Review submitted!");
+
+  document.getElementById("rating").value = "";
   document.getElementById("reviewText").value = "";
+  document.getElementById("charCount").innerText = "0 / 500";
+
   loadReviews();
 });
 
 async function loadReviews(){
-  const reviewsDiv = document.getElementById("reviews");
-  reviewsDiv.innerHTML = "";
+  reviews = [];
 
   const snapshot = await getDocs(collection(db, "reviews"));
 
-  if(snapshot.empty){
-    reviewsDiv.innerHTML = "<p>No reviews yet.</p>";
+  snapshot.forEach((docSnap) => {
+    reviews.push({
+      id: docSnap.id,
+      ...docSnap.data()
+    });
+  });
+
+  reviews.sort((a,b) => {
+    return (b.createdAt || "").localeCompare(a.createdAt || "");
+  });
+
+  updateStats();
+  displayReviews();
+}
+
+function stars(rating){
+  const num = Number(rating || 0);
+  return "★".repeat(num) + "☆".repeat(5 - num);
+}
+
+function formatDate(date){
+  if(!date) return "";
+  return new Date(date).toLocaleDateString();
+}
+
+function updateStats(){
+  if(reviews.length === 0){
+    document.getElementById("averageRating").innerText = "0.0 ★";
+    document.getElementById("reviewCount").innerText = "0";
+    document.getElementById("fiveStarCount").innerText = "0";
+    document.getElementById("breakdown").innerHTML = `
+      <p>5★: 0</p>
+      <p>4★: 0</p>
+      <p>3★: 0</p>
+      <p>2★: 0</p>
+      <p>1★: 0</p>
+    `;
     return;
   }
 
-  snapshot.forEach((doc) => {
-    const r = doc.data();
-    const stars = "★".repeat(r.rating || 0) + "☆".repeat(5 - (r.rating || 0));
+  const totalRating = reviews.reduce((sum, r) => sum + Number(r.rating || 0), 0);
+  const average = totalRating / reviews.length;
+  const fiveStars = reviews.filter(r => Number(r.rating) === 5).length;
 
+  document.getElementById("averageRating").innerText = average.toFixed(1) + " ★";
+  document.getElementById("reviewCount").innerText = reviews.length;
+  document.getElementById("fiveStarCount").innerText = fiveStars;
+
+  let html = "";
+
+  for(let i = 5; i >= 1; i--){
+    const count = reviews.filter(r => Number(r.rating) === i).length;
+    html += `<p>${i}★: ${count}</p>`;
+  }
+
+  document.getElementById("breakdown").innerHTML = html;
+}
+
+function displayReviews(){
+  const reviewsDiv = document.getElementById("reviews");
+  reviewsDiv.innerHTML = "";
+
+  let filtered = reviews;
+
+  if(activeFilter !== "all"){
+    filtered = reviews.filter(r => String(r.rating) === activeFilter);
+  }
+
+  if(sellerParam){
+    filtered = filtered.filter(r =>
+      (r.sellerName || "").toLowerCase() === sellerParam.toLowerCase()
+    );
+  }
+
+  if(filtered.length === 0){
+    reviewsDiv.innerHTML = `
+      <div class="empty">
+        <h3>No reviews yet.</h3>
+        <p>Reviews will appear here after rentals are completed.</p>
+      </div>
+    `;
+    return;
+  }
+
+  filtered.forEach((r) => {
     reviewsDiv.innerHTML += `
       <div class="review">
         <h3>${r.sellerName || "Seller"}</h3>
-        <p>${stars}</p>
+        <div class="stars">${stars(r.rating)}</div>
+        ${r.verifiedRental ? `<span class="badge">✔ Verified Rental</span>` : ""}
         <p>${r.review || ""}</p>
+        <p class="small">Reviewed on ${formatDate(r.createdAt)}</p>
       </div>
     `;
   });
 }
+
+document.querySelectorAll(".filter").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".filter").forEach((b) => b.classList.remove("active"));
+    button.classList.add("active");
+    activeFilter = button.dataset.filter;
+    displayReviews();
+  });
+});
 
 loadReviews();
 </script>
