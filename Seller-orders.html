@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Orders | ReFresh</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0b0b0d;color:white;min-height:100vh;padding:25px}
+.page{max-width:1150px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{width:65px}
+.logo h1{color:#3B82F6}
+.nav a{color:#3B82F6;text-decoration:none;font-weight:bold;margin-left:15px}
+.hero,.box,.order{background:#171717;border:1px solid #2b2b2b;border-radius:22px;padding:24px;margin-bottom:18px;box-shadow:0 0 18px rgba(59,130,246,.09)}
+.hero h2,.box h2,.order h3{color:#3B82F6}
+.small{color:#aaa;font-size:14px;line-height:1.5;margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:20px}
+.stat{background:#171717;border:1px solid #2b2b2b;border-radius:18px;padding:20px}
+.stat h3{color:#3B82F6;margin-bottom:8px}
+.stat p{font-size:26px;font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.order p{color:#ccc;margin:7px 0}
+.badge{display:inline-block;background:#222;color:#3B82F6;padding:6px 10px;border-radius:9px;font-size:13px;font-weight:bold;margin-top:7px}
+button,.btn{background:#3B82F6;color:white;border:none;padding:12px 14px;border-radius:11px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;margin:6px 6px 0 0}
+.danger{background:#7f1d1d}
+.secondary{background:#222;border:1px solid #3B82F6}
+.success{background:#166534}
+.empty{text-align:center;color:#aaa;padding:30px}
+@media(max-width:800px){.top{flex-direction:column;gap:15px}.nav a{display:inline-block;margin:7px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="top">
+    <div class="logo">
+      <img src="image-1.jpg" alt="ReFresh Logo">
+      <h1>ReFresh</h1>
+    </div>
+
+    <div class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="browse.html">Browse</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="profile.html">Profile</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <h2>Seller Orders</h2>
+    <p class="small">Approve rentals, view delivery details, manage returns, and track deposits.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><h3>Pending</h3><p id="pendingCount">0</p></div>
+    <div class="stat"><h3>Approved</h3><p id="approvedCount">0</p></div>
+    <div class="stat"><h3>Returned</h3><p id="returnedCount">0</p></div>
+    <div class="stat"><h3>Deposits Held</h3><p id="depositTotal">$0</p></div>
+  </section>
+
+  <div class="grid">
+    <div class="box">
+      <h2>Pending Requests</h2>
+      <div id="pendingOrders">Loading...</div>
+    </div>
+
+    <div class="box">
+      <h2>Approved / Active Rentals</h2>
+      <div id="approvedOrders">Loading...</div>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>Completed / Returned</h2>
+    <div id="completedOrders">Loading...</div>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let myListingIds = [];
+let orders = [];
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user){
+    window.location.href = "login.html";
+    return;
+  }
+
+  currentUser = user;
+  await loadSellerOrders();
+});
+
+async function loadSellerOrders(){
+  myListingIds = [];
+  orders = [];
+
+  const listingsSnap = await getDocs(collection(db, "listings"));
+
+  listingsSnap.forEach((listingDoc) => {
+    const item = listingDoc.data();
+    if(item.sellerId === currentUser.uid){
+      myListingIds.push(listingDoc.id);
+    }
+  });
+
+  const requestsSnap = await getDocs(collection(db, "rentalRequests"));
+
+  requestsSnap.forEach((requestDoc) => {
+    const order = requestDoc.data();
+
+    if(myListingIds.includes(order.listingId)){
+      orders.push({
+        id: requestDoc.id,
+        ...order
+      });
+    }
+  });
+
+  renderOrders();
+}
+
+function money(value){
+  return "$" + Number(value || 0).toFixed(2);
+}
+
+function renderOrder(order){
+  const status = order.status || "pending";
+  const depositStatus = order.depositStatus || "held";
+
+  return `
+    <div class="order">
+      <h3>${order.itemName || "Rental Order"}</h3>
+
+      <p><strong>Buyer:</strong> ${order.buyerName || order.buyerEmail || "Unknown"}</p>
+      <p><strong>Dates:</strong> ${order.startDate || "N/A"} → ${order.endDate || "N/A"}</p>
+      <p><strong>Days:</strong> ${order.days || "N/A"}</p>
+
+      <p><strong>Total Paid:</strong> ${money(order.totalPrice || order.total)}</p>
+      <p><strong>Seller Earnings:</strong> ${money(order.sellerPayout)}</p>
+      <p><strong>Deposit:</strong> ${money(order.deposit)} (${depositStatus})</p>
+
+      <p><strong>Method:</strong> ${order.rentalMethod || "N/A"}</p>
+      <p><strong>Address:</strong> ${order.streetAddress || "N/A"}, ${order.city || ""} ${order.state || ""} ${order.zipCode || ""}</p>
+      <p><strong>Notes:</strong> ${order.deliveryNotes || "None"}</p>
+
+      <span class="badge">${status}</span>
+
+      <br><br>
+
+      ${status === "pending" ? `
+        <button data-action="approve" data-id="${order.id}">Approve</button>
+        <button class="danger" data-action="decline" data-id="${order.id}">Decline</button>
+      ` : ""}
+
+      ${status === "accepted" ? `
+        <button class="success" data-action="returned" data-id="${order.id}">Mark Returned</button>
+        <button class="secondary" data-action="message" data-listing="${order.listingId}">Message Buyer</button>
+      ` : ""}
+
+      ${status === "returned" ? `
+        <button class="success" data-action="refundDeposit" data-id="${order.id}">Deposit Refunded</button>
+        <button class="danger" data-action="claimDeposit" data-id="${order.id}">Claim Deposit</button>
+      ` : ""}
+    </div>
+  `;
+}
+
+function renderOrders(){
+  const pendingDiv = document.getElementById("pendingOrders");
+  const approvedDiv = document.getElementById("approvedOrders");
+  const completedDiv = document.getElementById("completedOrders");
+
+  pendingDiv.innerHTML = "";
+  approvedDiv.innerHTML = "";
+  completedDiv.innerHTML = "";
+
+  let pending = 0;
+  let approved = 0;
+  let returned = 0;
+  let depositTotal = 0;
+
+  orders.forEach((order) => {
+    const status = order.status || "pending";
+
+    if(order.depositStatus === "held"){
+      depositTotal += Number(order.deposit || 0);
+    }
+
+    if(status === "pending"){
+      pending++;
+      pendingDiv.innerHTML += renderOrder(order);
+    } else if(status === "accepted"){
+      approved++;
+      approvedDiv.innerHTML += renderOrder(order);
+    } else {
+      returned++;
+      completedDiv.innerHTML += renderOrder(order);
+    }
+  });
+
+  if(pending === 0) pendingDiv.innerHTML = `<div class="empty">No pending requests.</div>`;
+  if(approved === 0) approvedDiv.innerHTML = `<div class="empty">No active rentals.</div>`;
+  if(returned === 0) completedDiv.innerHTML = `<div class="empty">No completed rentals yet.</div>`;
+
+  document.getElementById("pendingCount").innerText = pending;
+  document.getElementById("approvedCount").innerText = approved;
+  document.getElementById("returnedCount").innerText = returned;
+  document.getElementById("depositTotal").innerText = money(depositTotal);
+
+  attachActions();
+}
+
+async function notifyBuyer(order, title, message){
+  if(!order.buyerId) return;
+
+  await addDoc(collection(db, "notifications"), {
+    userId: order.buyerId,
+    title,
+    message,
+    listingId: order.listingId || "",
+    itemName: order.itemName || "",
+    createdAt: new Date().toISOString(),
+    read: false
+  });
+}
+
+function getOrder(id){
+  return orders.find(o => o.id === id);
+}
+
+function attachActions(){
+  document.querySelectorAll("[data-action]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const action = button.dataset.action;
+      const id = button.dataset.id;
+      const order = getOrder(id);
+
+      if(action === "message"){
+        window.location.href = "messaging.html?listingId=" + button.dataset.listing;
+        return;
+      }
+
+      if(!order) return;
+
+      if(action === "approve"){
+        await updateDoc(doc(db, "rentalRequests", id), {
+          status: "accepted"
+        });
+
+        await notifyBuyer(
+          order,
+          "Rental Approved",
+          `Your rental for ${order.itemName || "this item"} was approved.`
+        );
+      }
+
+      if(action === "decline"){
+        if(!confirm("Decline this rental request?")) return;
+
+        await updateDoc(doc(db, "rentalRequests", id), {
+          status: "declined"
+        });
+
+        await notifyBuyer(
+          order,
+          "Rental Declined",
+          `Your rental request for ${order.itemName || "this item"} was declined.`
+        );
+      }
+
+      if(action === "returned"){
+        await updateDoc(doc(db, "rentalRequests", id), {
+          status: "returned",
+          returnStatus: "returned",
+          depositStatus: "ready for refund"
+        });
+
+        await notifyBuyer(
+          order,
+          "Item Marked Returned",
+          `${order.itemName || "Your rental"} was marked returned. Deposit review is next.`
+        );
+      }
+
+      if(action === "refundDeposit"){
+        await updateDoc(doc(db, "rentalRequests", id), {
+          depositStatus: "refunded"
+        });
+
+        await notifyBuyer(
+          order,
+          "Deposit Refunded",
+          `Your deposit for ${order.itemName || "your rental"} was marked refunded.`
+        );
+      }
+
+      if(action === "claimDeposit"){
+        if(!confirm("Claim this deposit because of damage or non-return?")) return;
+
+        await updateDoc(doc(db, "rentalRequests", id), {
+          depositStatus: "claimed"
+        });
+
+        await notifyBuyer(
+          order,
+          "Deposit Claimed",
+          `The deposit for ${order.itemName || "your rental"} was marked claimed.`
+        );
+      }
+
+      await loadSellerOrders();
+    });
+  });
+}
+</script>
+
+</body>
+</html>
