@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Browse Listings | ReFresh</title>
+<title>Item Details | ReFresh</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
@@ -17,7 +17,7 @@ body{
 }
 
 .page{
-  max-width:1200px;
+  max-width:1100px;
   margin:auto;
 }
 
@@ -49,178 +49,154 @@ body{
   margin-left:15px;
 }
 
-.hero{
+.item-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.image-box,.details-box,.rent-box,.seller-box{
   background:#1a1a1a;
   border:1px solid #333;
   border-radius:20px;
-  padding:30px;
-  margin-bottom:25px;
-  box-shadow:0 0 25px rgba(59,130,246,.18);
-}
-
-.hero h2{
-  font-size:32px;
-  color:#3B82F6;
-  margin-bottom:10px;
-}
-
-.hero p{
-  color:#bbb;
-}
-
-.member-note{
-  background:#101827;
-  border:1px solid #3B82F6;
-  color:#bfdbfe;
-  border-radius:16px;
-  padding:15px;
-  margin-bottom:20px;
-  display:none;
-}
-
-.member-note a{
-  color:white;
-  font-weight:bold;
-}
-
-.filters{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:25px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:15px;
-}
-
-input,select{
-  width:100%;
-  padding:14px;
-  background:#111;
-  border:1px solid #333;
-  border-radius:12px;
-  color:white;
-  font-size:15px;
-}
-
-input:focus,select:focus{
-  outline:none;
-  border-color:#3B82F6;
-}
-
-#listings{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-}
-
-.card{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:18px;
-  padding:22px;
-  box-shadow:0 0 20px rgba(59,130,246,.12);
+  padding:25px;
+  box-shadow:0 0 25px rgba(59,130,246,.15);
 }
 
 .fake-img{
-  height:180px;
+  height:420px;
   background:linear-gradient(135deg,#222,#333);
-  border-radius:14px;
-  margin-bottom:18px;
+  border-radius:18px;
   display:flex;
   justify-content:center;
   align-items:center;
   color:#3B82F6;
-  font-size:48px;
+  font-size:90px;
 }
 
-.listing-img{
+.main-photo{
   width:100%;
-  height:180px;
+  height:420px;
   object-fit:cover;
-  border-radius:14px;
-  margin-bottom:18px;
+  border-radius:18px;
+  background:#222;
 }
 
-.card h3{
-  font-size:24px;
-  margin-bottom:12px;
+.thumbnail-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(70px,1fr));
+  gap:10px;
+  margin-top:14px;
 }
 
-.card p{
+.thumb{
+  width:100%;
+  height:75px;
+  object-fit:cover;
+  border-radius:10px;
+  border:2px solid #333;
+  cursor:pointer;
+  opacity:.75;
+}
+
+.thumb:hover,.thumb.active{
+  border-color:#3B82F6;
+  opacity:1;
+}
+
+h2{
+  color:#3B82F6;
+  font-size:34px;
+  margin-bottom:15px;
+}
+
+p{
   color:#ccc;
-  margin-bottom:8px;
+  margin:10px 0;
 }
 
 .price{
-  color:#3B82F6;
-  font-size:20px;
-  font-weight:bold;
-  margin-top:12px;
-}
-
-.seller a{
+  font-size:26px;
   color:#3B82F6;
   font-weight:bold;
-  text-decoration:none;
 }
 
 .badge{
   display:inline-block;
   background:#222;
   color:#3B82F6;
-  padding:5px 9px;
-  border-radius:8px;
+  padding:7px 10px;
+  border-radius:10px;
   font-size:13px;
-  margin:4px 4px 8px 0;
+  margin:5px 5px 10px 0;
+  font-weight:bold;
 }
 
-.member-badge{
-  background:#064e3b;
-  color:#bbf7d0;
+input{
+  width:100%;
+  padding:14px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  color:white;
+  font-size:16px;
+  margin:10px 0;
 }
 
-.actions{
-  display:flex;
-  gap:10px;
-  margin-top:15px;
-}
-
-.rentBtn,.favoriteBtn{
-  flex:1;
-  padding:13px;
+button,.btn{
+  width:100%;
+  padding:15px;
+  background:#3B82F6;
+  color:white;
   border:none;
   border-radius:12px;
   font-weight:bold;
+  font-size:16px;
+  margin-top:12px;
   cursor:pointer;
+  display:block;
+  text-align:center;
+  text-decoration:none;
 }
 
-.rentBtn{
-  background:#3B82F6;
-  color:white;
-}
-
-.favoriteBtn{
+.secondary{
   background:#222;
-  color:white;
-  border:1px solid #444;
+  border:1px solid #3B82F6;
 }
 
-.empty{
-  color:#aaa;
-  margin-top:20px;
+.danger{
+  background:#333;
 }
 
-.count{
-  color:#aaa;
-  margin-bottom:15px;
+.total{
+  font-size:24px;
+  color:#3B82F6;
+  font-weight:bold;
 }
 
-@media(max-width:650px){
-  .top{flex-direction:column;gap:18px}
-  .nav a{display:inline-block;margin:8px}
-  .actions{flex-direction:column}
+.small{
+  color:#888;
+  font-size:13px;
+}
+
+@media(max-width:800px){
+  .item-layout{
+    grid-template-columns:1fr;
+  }
+
+  .top{
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .nav a{
+    display:inline-block;
+    margin:8px;
+  }
+
+  .main-photo,.fake-img{
+    height:330px;
+  }
 }
 </style>
 </head>
@@ -237,69 +213,70 @@ input:focus,select:focus{
 
     <div class="nav">
       <a href="index.html">Home</a>
-      <a href="dashboard.html">Sell</a>
-      <a href="membership.html">Membership</a>
+      <a href="browse.html">Browse</a>
       <a href="favorites.html">Favorites</a>
       <a href="my-rentals.html">My Rentals</a>
       <a href="profile.html">Profile</a>
-      <a href="login.html">Login</a>
     </div>
   </div>
 
-  <div class="hero">
-    <h2>Browse Listings</h2>
-    <p>Search and filter rentals from ReFresh sellers.</p>
-  </div>
+  <div class="item-layout">
 
-  <div id="memberNote" class="member-note">
-    💎 ReFresh Membership is required to save favorites and rent items.
-    <a href="membership.html">Become a member</a>
-  </div>
+    <div class="image-box">
+      <div id="photoArea">
+        <div class="fake-img">👕</div>
+      </div>
+    </div>
 
-  <div class="filters">
-    <input id="searchInput" type="text" placeholder="Search item, brand, seller...">
+    <div>
+      <div class="details-box">
+        <span class="badge" id="categoryBadge">Category</span>
+        <span class="badge" id="conditionBadge">Condition</span>
+        <span class="badge" id="statusBadge">Available</span>
 
-    <select id="categoryFilter">
-      <option value="">All Categories</option>
-      <option>Clothing</option>
-      <option>Shoes</option>
-      <option>Bags</option>
-      <option>Belts</option>
-      <option>Watches</option>
-      <option>Jewelry</option>
-      <option>Accessories</option>
-    </select>
+        <h2 id="itemName">Loading item...</h2>
+        <p id="brand"></p>
+        <p id="size"></p>
+        <p id="description"></p>
+        <p class="price" id="price"></p>
+      </div>
 
-    <select id="priceFilter">
-      <option value="">Any Price</option>
-      <option value="10">Under $10/day</option>
-      <option value="25">Under $25/day</option>
-      <option value="50">Under $50/day</option>
-      <option value="100">Under $100/day</option>
-    </select>
+      <br>
 
-    <input id="sizeFilter" type="text" placeholder="Size">
+      <div class="rent-box">
+        <h2>Rental Estimate</h2>
 
-    <select id="sortFilter">
-      <option value="newest">Newest</option>
-      <option value="low">Price: Low to High</option>
-      <option value="high">Price: High to Low</option>
-      <option value="az">A-Z</option>
-    </select>
-  </div>
+        <label>Number of days</label>
+        <input id="daysInput" type="number" min="1" value="1">
 
-  <p class="count" id="countText">Loading listings...</p>
+        <p>Daily Price: <span id="dailyPrice">$0</span></p>
+        <p class="total">Total: <span id="totalPrice">$0</span></p>
+        <p class="small">Requesting this item does not charge you yet.</p>
 
-  <div id="listings">
-    <p class="empty">Loading listings...</p>
+        <button id="requestBtn">Request To Rent</button>
+        <button id="favoriteBtn" class="secondary">♡ Save Item</button>
+        <button id="messageBtn" class="secondary">Message Seller</button>
+        <button id="reviewBtn" class="danger">Leave Review</button>
+        <button id="checkoutBtn">Checkout</button>
+      </div>
+
+      <br>
+
+      <div class="seller-box">
+        <h2>Seller</h2>
+        <p id="seller"></p>
+        <a id="sellerProfile" class="btn secondary" href="#">View Seller Profile</a>
+      </div>
+    </div>
+
   </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -315,213 +292,180 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-const listingsDiv = document.getElementById("listings");
-const countText = document.getElementById("countText");
+const params = new URLSearchParams(window.location.search);
+const itemId = params.get("id");
 
-const searchInput = document.getElementById("searchInput");
-const categoryFilter = document.getElementById("categoryFilter");
-const priceFilter = document.getElementById("priceFilter");
-const sizeFilter = document.getElementById("sizeFilter");
-const sortFilter = document.getElementById("sortFilter");
-const memberNote = document.getElementById("memberNote");
+let currentItem = null;
+let dailyPrice = 0;
 
-let allListings = [];
-let currentUser = null;
-let membershipActive = false;
+const daysInput = document.getElementById("daysInput");
 
-onAuthStateChanged(auth, async (user) => {
-  currentUser = user;
-
-  if(user){
-    const userSnap = await getDoc(doc(db, "users", user.uid));
-    const userData = userSnap.exists() ? userSnap.data() : {};
-    membershipActive = userData.membershipStatus === "active";
-  }
-
-  if(!membershipActive){
-    memberNote.style.display = "block";
-  } else {
-    memberNote.style.display = "none";
-  }
-});
-
-async function loadListings(){
-  listingsDiv.innerHTML = "";
-  allListings = [];
-
-  const querySnapshot = await getDocs(collection(db, "listings"));
-
-  querySnapshot.forEach((docSnap) => {
-    allListings.push({
-      id: docSnap.id,
-      ...docSnap.data()
-    });
-  });
-
-  applyFilters();
-}
-
-function applyFilters(){
-  let filtered = [...allListings];
-
-  const searchTerm = searchInput.value.toLowerCase();
-  const category = categoryFilter.value.toLowerCase();
-  const maxPrice = priceFilter.value;
-  const size = sizeFilter.value.toLowerCase();
-  const sort = sortFilter.value;
-
-  if(searchTerm){
-    filtered = filtered.filter((item) =>
-      (item.itemName || "").toLowerCase().includes(searchTerm) ||
-      (item.brand || "").toLowerCase().includes(searchTerm) ||
-      (item.sellerName || "").toLowerCase().includes(searchTerm) ||
-      (item.description || "").toLowerCase().includes(searchTerm)
-    );
-  }
-
-  if(category){
-    filtered = filtered.filter((item) =>
-      (item.category || "").toLowerCase() === category
-    );
-  }
-
-  if(maxPrice){
-    filtered = filtered.filter((item) =>
-      Number(item.price || 0) <= Number(maxPrice)
-    );
-  }
-
-  if(size){
-    filtered = filtered.filter((item) =>
-      (item.size || "").toLowerCase().includes(size)
-    );
-  }
-
-  if(sort === "low"){
-    filtered.sort((a,b) => Number(a.price || 0) - Number(b.price || 0));
-  }
-
-  if(sort === "high"){
-    filtered.sort((a,b) => Number(b.price || 0) - Number(a.price || 0));
-  }
-
-  if(sort === "az"){
-    filtered.sort((a,b) => (a.itemName || "").localeCompare(b.itemName || ""));
-  }
-
-  if(sort === "newest"){
-    filtered.sort((a,b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
-  }
-
-  displayListings(filtered);
-}
-
-function getListingPhoto(item){
-  const photos = item.photoUrls || item.photos || item.images || [];
-  return item.mainPhoto || item.photoURL || item.imageUrl || photos[0] || "";
-}
-
-function displayListings(listings){
-  listingsDiv.innerHTML = "";
-  countText.innerText = listings.length + " listings found";
-
-  if(listings.length === 0){
-    listingsDiv.innerHTML = "<p class='empty'>No listings found.</p>";
+async function loadItem(){
+  if(!itemId){
+    document.getElementById("itemName").innerText = "Item not found";
     return;
   }
 
-  listings.forEach((item) => {
-    const sellerProfileLink = "profile.html?seller=" + encodeURIComponent(item.sellerName || "Seller");
-    const photo = getListingPhoto(item);
+  const itemRef = doc(db, "listings", itemId);
+  const itemSnap = await getDoc(itemRef);
 
-    listingsDiv.innerHTML += `
-      <div class="card">
-        ${photo
-          ? `<img class="listing-img" src="${photo}" alt="${item.itemName || "Listing photo"}">`
-          : `<div class="fake-img">👕</div>`
-        }
+  if(itemSnap.exists()){
+    currentItem = itemSnap.data();
+    dailyPrice = Number(currentItem.price || 0);
 
-        <span class="badge">${item.category || "General"}</span>
-        <span class="badge">${item.condition || "Condition N/A"}</span>
-        ${item.verifiedSeller ? `<span class="badge member-badge">Verified Seller</span>` : ""}
+    loadPhotos(currentItem);
 
-        <h3>${item.itemName || "Untitled Item"}</h3>
+    document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
+    document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
+    document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
+    document.getElementById("description").innerText = "Description: " + (currentItem.description || "No description yet.");
+    document.getElementById("price").innerText = "$" + dailyPrice + "/day";
 
-        <p>Brand: ${item.brand || "N/A"}</p>
-        <p>Size: ${item.size || "N/A"}</p>
-        <p>${item.description || "No description yet."}</p>
+    document.getElementById("categoryBadge").innerText = currentItem.category || "General";
+    document.getElementById("conditionBadge").innerText = currentItem.condition || "Condition N/A";
+    document.getElementById("statusBadge").innerText = currentItem.inventoryStatus || "Available";
 
-        <p class="price">$${item.price || "0"}/day</p>
+    document.getElementById("seller").innerText = "Posted by: " + (currentItem.sellerName || "Seller");
+    document.getElementById("sellerProfile").href =
+      "profile.html?seller=" + encodeURIComponent(currentItem.sellerName || "Seller");
 
-        <p class="seller">
-          Posted by:
-          <a href="${sellerProfileLink}">${item.sellerName || "Seller"}</a>
-        </p>
+    updateTotal();
+  } else {
+    document.getElementById("itemName").innerText = "Item not found";
+  }
+}
 
-        <div class="actions">
-          <button class="rentBtn" data-rent="${item.id}">
-            Rent Now
-          </button>
+function loadPhotos(item){
+  const photoArea = document.getElementById("photoArea");
+  const photos = item.photoUrls || [];
 
-          <button class="favoriteBtn" data-id="${item.id}">
-            ♡ Save
-          </button>
-        </div>
-      </div>
-    `;
-  });
+  if(photos.length === 0){
+    photoArea.innerHTML = `<div class="fake-img">👕</div>`;
+    return;
+  }
 
-  document.querySelectorAll("[data-rent]").forEach((button) => {
-    button.addEventListener("click", () => {
-      if(!currentUser){
-        alert("Please log in to rent.");
-        window.location.href = "login.html";
-        return;
-      }
+  photoArea.innerHTML = `
+    <img id="mainPhoto" class="main-photo" src="${photos[0]}" alt="Listing photo">
 
-      if(!membershipActive){
-        alert("ReFresh Membership is required to rent.");
-        window.location.href = "membership.html";
-        return;
-      }
+    <div class="thumbnail-row">
+      ${photos.map((photo, index) => `
+        <img 
+          class="thumb ${index === 0 ? "active" : ""}" 
+          src="${photo}" 
+          data-photo="${photo}"
+          alt="Listing photo ${index + 1}">
+      `).join("")}
+    </div>
+  `;
 
-      window.location.href = "item.html?id=" + button.dataset.rent;
-    });
-  });
+  document.querySelectorAll(".thumb").forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      document.getElementById("mainPhoto").src = thumb.dataset.photo;
 
-  document.querySelectorAll(".favoriteBtn").forEach((button) => {
-    button.addEventListener("click", async () => {
-      if(!currentUser){
-        alert("Please log in to save favorites.");
-        window.location.href = "login.html";
-        return;
-      }
-
-      if(!membershipActive){
-        alert("ReFresh Membership is required to save favorites.");
-        window.location.href = "membership.html";
-        return;
-      }
-
-      await addDoc(collection(db, "favorites"), {
-        userId: currentUser.uid,
-        listingId: button.dataset.id,
-        createdAt: new Date().toISOString()
-      });
-
-      button.innerText = "Saved ✓";
-      alert("Saved to favorites!");
+      document.querySelectorAll(".thumb").forEach((t) => t.classList.remove("active"));
+      thumb.classList.add("active");
     });
   });
 }
 
-searchInput.addEventListener("input", applyFilters);
-categoryFilter.addEventListener("change", applyFilters);
-priceFilter.addEventListener("change", applyFilters);
-sizeFilter.addEventListener("input", applyFilters);
-sortFilter.addEventListener("change", applyFilters);
+function updateTotal(){
+  const days = Number(daysInput.value || 1);
+  const total = days * dailyPrice;
 
-loadListings();
+  document.getElementById("dailyPrice").innerText = "$" + dailyPrice;
+  document.getElementById("totalPrice").innerText = "$" + total.toFixed(2);
+}
+
+daysInput.addEventListener("input", updateTotal);
+
+document.getElementById("requestBtn").addEventListener("click", async () => {
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("Please log in to request this item.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if(!currentItem){
+    alert("Item not loaded yet.");
+    return;
+  }
+
+  const days = Number(daysInput.value || 1);
+  const totalPrice = days * dailyPrice;
+
+  try{
+    await addDoc(collection(db, "rentalRequests"), {
+      listingId: itemId,
+      itemName: currentItem.itemName || "",
+      brand: currentItem.brand || "",
+      size: currentItem.size || "",
+      price: dailyPrice,
+      days: days,
+      totalPrice: totalPrice,
+      sellerName: currentItem.sellerName || "Seller",
+      buyerId: user.uid,
+      buyerEmail: user.email,
+      status: "pending"
+    });
+
+    alert("Rental request sent!");
+  } catch(error){
+    alert(error.message);
+  }
+});
+
+document.getElementById("favoriteBtn").addEventListener("click", async () => {
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("Please log in to save favorites.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  try{
+    await addDoc(collection(db, "favorites"), {
+      userId: user.uid,
+      listingId: itemId
+    });
+
+    document.getElementById("favoriteBtn").innerText = "Saved ✓";
+    alert("Saved to favorites!");
+  } catch(error){
+    alert(error.message);
+  }
+});
+
+document.getElementById("messageBtn").addEventListener("click", () => {
+  if(!itemId){
+    alert("Item not loaded.");
+    return;
+  }
+
+  window.location.href = "messaging.html?listingId=" + itemId;
+});
+
+document.getElementById("reviewBtn").addEventListener("click", () => {
+  if(!currentItem){
+    alert("Item not loaded.");
+    return;
+  }
+
+  window.location.href = "reviews.html?seller=" + encodeURIComponent(currentItem.sellerName || "Seller");
+});
+
+document.getElementById("checkoutBtn").addEventListener("click", () => {
+  if(!itemId){
+    alert("Item not loaded.");
+    return;
+  }
+
+  window.location.href = "checkout.html?id=" + itemId;
+});
+
+loadItem();
 </script>
 
 </body>
