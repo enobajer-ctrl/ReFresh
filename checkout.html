@@ -7,32 +7,234 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#f4f7fb;color:#111;min-height:100vh;padding:25px}
-.page{max-width:1100px;margin:auto}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
-.logo{display:flex;align-items:center;gap:12px}
-.logo img{width:65px}
-.logo h1{color:#3B82F6}
-.nav a{color:#3B82F6;text-decoration:none;font-weight:bold;margin-left:15px}
-.checkout{display:grid;grid-template-columns:1fr 420px;gap:25px}
-.box{background:white;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:22px}
-.box h2{color:#3B82F6;margin-bottom:18px}
-.item-img{height:230px;max-height:230px;background:linear-gradient(135deg,#e5e7eb,#dbeafe);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:70px;color:#3B82F6;margin-bottom:20px;overflow:hidden}
-.item-img img{width:100%;height:100%;object-fit:cover;display:block}
-input,select,textarea{width:100%;padding:14px;margin-bottom:14px;border:1px solid #d1d5db;border-radius:12px;font-size:15px}
-textarea{min-height:85px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.row{display:flex;justify-content:space-between;gap:12px;margin:12px 0;color:#444}
-.total{border-top:1px solid #ddd;margin-top:15px;padding-top:15px;font-size:22px;font-weight:bold;color:#3B82F6}
-button{width:100%;padding:16px;background:#3B82F6;color:white;border:none;border-radius:14px;font-weight:bold;font-size:16px;cursor:pointer}
-button:disabled{background:#9ca3af;cursor:not-allowed}
-.badge{display:inline-block;background:#e0edff;color:#3B82F6;padding:7px 10px;border-radius:10px;font-size:13px;margin:5px 5px 10px 0;font-weight:bold}
-.small{color:#666;font-size:13px;margin-top:10px;line-height:1.5}
-.warning{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;padding:12px;border-radius:12px;margin-bottom:14px;font-size:14px}
-.deposit-note{background:#eef6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:12px;border-radius:12px;margin:12px 0;font-size:14px}
-.check{display:flex;gap:10px;align-items:flex-start;margin:15px 0;color:#444}
-.check input{width:auto;margin-top:3px}
-@media(max-width:850px){.checkout{grid-template-columns:1fr}.top{flex-direction:column;gap:15px}.two{grid-template-columns:1fr}}
+
+body{
+  background:#f4f7fb;
+  color:#111;
+  min-height:100vh;
+  padding:25px;
+}
+
+.page{
+  max-width:1100px;
+  margin:auto;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo img{
+  width:65px;
+}
+
+.logo h1{
+  color:#3B82F6;
+}
+
+.nav a{
+  color:#3B82F6;
+  text-decoration:none;
+  font-weight:bold;
+  margin-left:15px;
+}
+
+.checkout{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:25px;
+}
+
+.box{
+  background:white;
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+  margin-bottom:22px;
+}
+
+.box h2{
+  color:#3B82F6;
+  margin-bottom:18px;
+}
+
+.item-img{
+  height:230px;
+  max-height:230px;
+  background:linear-gradient(135deg,#e5e7eb,#dbeafe);
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
+  color:#3B82F6;
+  margin-bottom:20px;
+  overflow:hidden;
+}
+
+.item-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:14px;
+  margin-bottom:14px;
+  border:1px solid #d1d5db;
+  border-radius:12px;
+  font-size:15px;
+}
+
+textarea{
+  min-height:85px;
+}
+
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin:12px 0;
+  color:#444;
+}
+
+.total{
+  border-top:1px solid #ddd;
+  margin-top:15px;
+  padding-top:15px;
+  font-size:22px;
+  font-weight:bold;
+  color:#3B82F6;
+}
+
+button,.btn{
+  width:100%;
+  padding:16px;
+  background:#3B82F6;
+  color:white;
+  border:none;
+  border-radius:14px;
+  font-weight:bold;
+  font-size:16px;
+  cursor:pointer;
+  display:block;
+  text-align:center;
+  text-decoration:none;
+}
+
+button:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+.badge{
+  display:inline-block;
+  background:#e0edff;
+  color:#3B82F6;
+  padding:7px 10px;
+  border-radius:10px;
+  font-size:13px;
+  margin:5px 5px 10px 0;
+  font-weight:bold;
+}
+
+.member-badge{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.not-member{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.small{
+  color:#666;
+  font-size:13px;
+  margin-top:10px;
+  line-height:1.5;
+}
+
+.warning{
+  background:#fff7ed;
+  color:#9a3412;
+  border:1px solid #fed7aa;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:14px;
+  font-size:14px;
+}
+
+.member-warning{
+  background:#fee2e2;
+  color:#991b1b;
+  border:1px solid #fecaca;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:20px;
+  font-size:14px;
+  display:none;
+}
+
+.deposit-note{
+  background:#eef6ff;
+  color:#1d4ed8;
+  border:1px solid #bfdbfe;
+  padding:12px;
+  border-radius:12px;
+  margin:12px 0;
+  font-size:14px;
+}
+
+.check{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  margin:15px 0;
+  color:#444;
+}
+
+.check input{
+  width:auto;
+  margin-top:3px;
+}
+
+@media(max-width:850px){
+  .checkout{
+    grid-template-columns:1fr;
+  }
+
+  .top{
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .two{
+    grid-template-columns:1fr;
+  }
+
+  .nav a{
+    display:inline-block;
+    margin:7px;
+  }
+}
 </style>
 </head>
 
@@ -45,16 +247,27 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
       <img src="image-1.jpg" alt="ReFresh Logo">
       <h1>ReFresh Checkout</h1>
     </div>
+
     <div class="nav">
       <a href="index.html">Home</a>
       <a href="browse.html">Browse</a>
+      <a href="membership.html">Membership</a>
       <a href="dashboard.html">Dashboard</a>
     </div>
+  </div>
+
+  <div id="membershipWarning" class="member-warning">
+    <strong>💎 ReFresh Membership Required</strong>
+    <br><br>
+    You need an active ReFresh Membership to rent items.
+    <br><br>
+    <a href="membership.html" class="btn">Become a Member</a>
   </div>
 
   <div class="checkout">
 
     <div>
+
       <div class="box">
         <h2>Rental Item</h2>
 
@@ -62,6 +275,7 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
 
         <span class="badge" id="categoryBadge">Category</span>
         <span class="badge" id="conditionBadge">Condition</span>
+        <span class="badge" id="membershipBadge">Checking Membership...</span>
 
         <h2 id="itemName">Loading item...</h2>
         <p id="brand"></p>
@@ -115,6 +329,7 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
 
         <textarea id="deliveryNotes" placeholder="Apartment number, gate code, pickup notes, delivery instructions, etc."></textarea>
       </div>
+
     </div>
 
     <div>
@@ -146,6 +361,11 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
           <strong id="depositAmount">$0</strong>
         </div>
 
+        <div class="row">
+          <span>Deposit Status</span>
+          <strong>Held Until Return</strong>
+        </div>
+
         <div class="row total">
           <span>Total Due Today</span>
           <strong id="totalPrice">$0</strong>
@@ -160,17 +380,20 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
           The deposit is refundable after the item is returned on time and in good condition.
         </div>
 
-        <input id="promoCode" placeholder="Promo Code">
-
         <div class="check">
           <input id="terms" type="checkbox">
-          <label>I agree to the ReFresh rental terms and understand my payment will be processed securely by Stripe.</label>
+          <label>
+            I agree to the ReFresh rental terms, rental agreement, deposit policy,
+            and understand my payment will be processed securely by Stripe.
+          </label>
         </div>
 
         <button id="checkoutBtn">Proceed to Checkout</button>
 
         <p class="small">🔒 Secure checkout powered by Stripe.</p>
-        <p class="small">ReFresh charges a $2 platform fee. Sellers receive their rental total minus a 10% ReFresh commission.</p>
+        <p class="small">
+          ReFresh charges a $2 platform fee. Sellers receive their rental total minus a 10% ReFresh commission.
+        </p>
       </div>
     </div>
 
@@ -180,7 +403,15 @@ button:disabled{background:#9ca3af;cursor:not-allowed}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  addDoc,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -193,19 +424,38 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 const params = new URLSearchParams(window.location.search);
 const itemId = params.get("id");
 
+let currentUser = null;
+let userData = {};
 let currentItem = null;
 let dailyPrice = 0;
 let deposit = 0;
 let blockedRanges = [];
+let membershipActive = false;
 
 const startDate = document.getElementById("startDate");
 const endDate = document.getElementById("endDate");
 const checkoutBtn = document.getElementById("checkoutBtn");
+
+const draftFields = [
+  "startDate",
+  "endDate",
+  "buyerName",
+  "buyerEmail",
+  "buyerPhone",
+  "rentalMethod",
+  "streetAddress",
+  "city",
+  "state",
+  "zipCode",
+  "country",
+  "deliveryNotes"
+];
 
 function todayISO(){
   return new Date().toISOString().split("T")[0];
@@ -213,6 +463,101 @@ function todayISO(){
 
 startDate.min = todayISO();
 endDate.min = todayISO();
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user){
+    window.location.href = "login.html";
+    return;
+  }
+
+  currentUser = user;
+
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+  userData = userSnap.exists() ? userSnap.data() : {};
+
+  membershipActive = userData.membershipStatus === "active";
+
+  document.getElementById("buyerEmail").value = user.email || "";
+  document.getElementById("buyerName").value =
+    userData.fullName || userData.name || userData.username || "";
+  document.getElementById("buyerPhone").value = userData.phone || "";
+
+  updateMembershipUI();
+  loadDraft();
+
+  await loadItem();
+});
+
+function updateMembershipUI(){
+  const badge = document.getElementById("membershipBadge");
+  const warning = document.getElementById("membershipWarning");
+
+  if(membershipActive){
+    badge.innerText = "💎 ReFresh Member";
+    badge.classList.add("member-badge");
+    badge.classList.remove("not-member");
+    warning.style.display = "none";
+    checkoutBtn.disabled = false;
+    checkoutBtn.innerText = "Proceed to Checkout";
+  }else{
+    badge.innerText = "Membership Required";
+    badge.classList.add("not-member");
+    badge.classList.remove("member-badge");
+    warning.style.display = "block";
+    checkoutBtn.disabled = true;
+    checkoutBtn.innerText = "Membership Required";
+  }
+}
+
+function draftKey(){
+  return "refreshCheckoutDraft_" + (itemId || "unknown");
+}
+
+function saveDraft(){
+  const draft = {};
+
+  draftFields.forEach((id) => {
+    const el = document.getElementById(id);
+    if(el){
+      draft[id] = el.value;
+    }
+  });
+
+  localStorage.setItem(draftKey(), JSON.stringify(draft));
+}
+
+function loadDraft(){
+  const saved = localStorage.getItem(draftKey());
+
+  if(!saved) return;
+
+  try{
+    const draft = JSON.parse(saved);
+
+    draftFields.forEach((id) => {
+      const el = document.getElementById(id);
+
+      if(el && draft[id] !== undefined && draft[id] !== ""){
+        if(id === "buyerEmail" && currentUser?.email){
+          return;
+        }
+
+        el.value = draft[id];
+      }
+    });
+  }catch(error){
+    console.log("Draft could not be loaded.");
+  }
+}
+
+draftFields.forEach((id) => {
+  const el = document.getElementById(id);
+
+  if(el){
+    el.addEventListener("input", saveDraft);
+    el.addEventListener("change", saveDraft);
+  }
+});
 
 async function loadItem(){
   if(!itemId){
@@ -247,21 +592,28 @@ async function loadItem(){
         checkoutPhoto.innerHTML = `
           <img src="${photo}" alt="${currentItem.itemName || "Rental item"}">
         `;
-      } else {
+      }else{
         checkoutPhoto.innerHTML = "👕";
       }
 
-      document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
-      document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
-      document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
-      document.getElementById("seller").innerText = "Seller: " + (currentItem.sellerName || "Seller");
-      document.getElementById("categoryBadge").innerText = currentItem.category || "General";
-      document.getElementById("conditionBadge").innerText = currentItem.condition || "Condition N/A";
+      document.getElementById("itemName").innerText =
+        currentItem.itemName || "Untitled Item";
+      document.getElementById("brand").innerText =
+        "Brand: " + (currentItem.brand || "N/A");
+      document.getElementById("size").innerText =
+        "Size: " + (currentItem.size || "N/A");
+      document.getElementById("seller").innerText =
+        "Seller: " + (currentItem.sellerName || "Seller");
+
+      document.getElementById("categoryBadge").innerText =
+        currentItem.category || "General";
+      document.getElementById("conditionBadge").innerText =
+        currentItem.condition || "Condition N/A";
 
       await loadBlockedDates();
       updateTotals();
 
-    } else {
+    }else{
       document.getElementById("itemName").innerText = "Item not found";
     }
 
@@ -285,7 +637,8 @@ async function loadBlockedDates(){
     ){
       blockedRanges.push({
         start: r.startDate,
-        end: r.endDate
+        end: r.endDate,
+        status: r.status || "pending"
       });
     }
   });
@@ -295,8 +648,11 @@ async function loadBlockedDates(){
   if(blockedRanges.length > 0){
     bookedBox.style.display = "block";
     bookedBox.innerHTML =
-      "<strong>Unavailable dates:</strong><br>" +
-      blockedRanges.map(r => `${r.start} to ${r.end}`).join("<br>");
+      "<strong>Unavailable / Pending dates:</strong><br>" +
+      blockedRanges.map((r) => {
+        const label = r.status === "accepted" ? "Booked" : "Pending Approval";
+        return `${r.start} to ${r.end} — ${label}`;
+      }).join("<br>");
   }
 }
 
@@ -332,7 +688,15 @@ function getTotals(){
   const total = subtotal + serviceFee + deposit;
   const sellerPayout = subtotal - commission;
 
-  return { days, subtotal, serviceFee, commission, deposit, total, sellerPayout };
+  return {
+    days,
+    subtotal,
+    serviceFee,
+    commission,
+    deposit,
+    total,
+    sellerPayout
+  };
 }
 
 function updateTotals(){
@@ -349,14 +713,32 @@ function updateTotals(){
   document.getElementById("depositAmount").innerText = "$" + totals.deposit.toFixed(2);
   document.getElementById("totalPrice").innerText = "$" + totals.total.toFixed(2);
   document.getElementById("sellerPayout").innerText = "$" + totals.sellerPayout.toFixed(2);
+
+  saveDraft();
 }
 
 startDate.addEventListener("change", updateTotals);
 endDate.addEventListener("change", updateTotals);
 
 checkoutBtn.addEventListener("click", async () => {
+  if(!membershipActive){
+    window.location.href = "membership.html";
+    return;
+  }
+
+  if(!currentUser){
+    alert("Please log in first.");
+    window.location.href = "login.html";
+    return;
+  }
+
   if(!currentItem){
     alert("Item not loaded.");
+    return;
+  }
+
+  if(currentItem.sellerId === currentUser.uid){
+    alert("You cannot rent your own listing.");
     return;
   }
 
@@ -377,19 +759,37 @@ checkoutBtn.addEventListener("click", async () => {
     return;
   }
 
-  if(!document.getElementById("buyerName").value.trim()){
+  const buyerName = document.getElementById("buyerName").value.trim();
+  const buyerEmail = document.getElementById("buyerEmail").value.trim();
+  const buyerPhone = document.getElementById("buyerPhone").value.trim();
+  const rentalMethod = document.getElementById("rentalMethod").value;
+  const streetAddress = document.getElementById("streetAddress").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const state = document.getElementById("state").value.trim();
+  const zipCode = document.getElementById("zipCode").value.trim();
+  const country = document.getElementById("country").value.trim();
+  const deliveryNotes = document.getElementById("deliveryNotes").value.trim();
+
+  if(!buyerName){
     alert("Please enter your full name.");
     return;
   }
 
-  if(!document.getElementById("buyerEmail").value.trim()){
+  if(!buyerEmail){
     alert("Please enter your email.");
     return;
   }
 
-  if(!document.getElementById("rentalMethod").value){
+  if(!rentalMethod){
     alert("Please choose pickup or delivery.");
     return;
+  }
+
+  if(rentalMethod === "Delivery"){
+    if(!streetAddress || !city || !state || !zipCode){
+      alert("Please enter your delivery address.");
+      return;
+    }
   }
 
   if(!document.getElementById("terms").checked){
@@ -404,17 +804,19 @@ checkoutBtn.addEventListener("click", async () => {
     await addDoc(collection(db, "checkoutIntents"), {
       listingId: itemId,
       itemName: currentItem.itemName || "",
+      sellerId: currentItem.sellerId || "",
       sellerName: currentItem.sellerName || "",
-      buyerName: document.getElementById("buyerName").value,
-      buyerEmail: document.getElementById("buyerEmail").value,
-      buyerPhone: document.getElementById("buyerPhone").value,
-      rentalMethod: document.getElementById("rentalMethod").value,
-      streetAddress: document.getElementById("streetAddress").value,
-      city: document.getElementById("city").value,
-      state: document.getElementById("state").value,
-      zipCode: document.getElementById("zipCode").value,
-      country: document.getElementById("country").value,
-      deliveryNotes: document.getElementById("deliveryNotes").value,
+      buyerId: currentUser.uid,
+      buyerName,
+      buyerEmail,
+      buyerPhone,
+      rentalMethod,
+      streetAddress,
+      city,
+      state,
+      zipCode,
+      country,
+      deliveryNotes,
       startDate: startDate.value,
       endDate: endDate.value,
       days: totals.days,
@@ -425,6 +827,8 @@ checkoutBtn.addEventListener("click", async () => {
       commission: totals.commission,
       total: totals.total,
       sellerPayout: totals.sellerPayout,
+      membershipRequired: true,
+      membershipStatus: "active",
       status: "stripe checkout started",
       createdAt: new Date().toISOString()
     });
@@ -443,16 +847,42 @@ checkoutBtn.addEventListener("click", async () => {
       depositStatus: "held",
       commission: totals.commission,
       sellerPayout: totals.sellerPayout,
+      sellerId: currentItem.sellerId || "",
       sellerName: currentItem.sellerName || "Seller",
+      buyerId: currentUser.uid,
+      buyerName,
+      buyerEmail,
+      buyerPhone,
+      rentalMethod,
+      streetAddress,
+      city,
+      state,
+      zipCode,
+      country,
+      deliveryNotes,
       startDate: startDate.value,
       endDate: endDate.value,
-      status: "pending"
+      returnStatus: "not returned",
+      status: "pending",
+      createdAt: new Date().toISOString()
     });
 
+    if(currentItem.sellerId){
+      await addDoc(collection(db, "notifications"), {
+        userId: currentItem.sellerId,
+        title: "New Booking Request",
+        message: `${buyerName} requested to rent ${currentItem.itemName || "your item"}.`,
+        listingId: itemId,
+        itemName: currentItem.itemName || "",
+        createdAt: new Date().toISOString(),
+        read: false
+      });
+    }
+
     await addDoc(collection(db, "notifications"), {
-      userId: currentItem.sellerId,
-      title: "New Booking Request",
-      message: `${document.getElementById("buyerName").value} requested to rent ${currentItem.itemName}`,
+      userId: currentUser.uid,
+      title: "Rental Request Submitted",
+      message: `Your rental request for ${currentItem.itemName || "this item"} was submitted.`,
       listingId: itemId,
       itemName: currentItem.itemName || "",
       createdAt: new Date().toISOString(),
@@ -464,15 +894,18 @@ checkoutBtn.addEventListener("click", async () => {
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify({
         itemName: currentItem.itemName || "ReFresh Rental",
-        amount: Math.round(totals.total * 100)
+        amount: Math.round(totals.total * 100),
+        checkoutType: "rental",
+        buyerEmail
       })
     });
 
     const data = await response.json();
 
     if(data.url){
+      localStorage.removeItem(draftKey());
       window.location.href = data.url;
-    } else {
+    }else{
       alert(data.error || "Stripe checkout failed.");
       checkoutBtn.disabled = false;
       checkoutBtn.innerText = "Proceed to Checkout";
@@ -484,8 +917,6 @@ checkoutBtn.addEventListener("click", async () => {
     checkoutBtn.innerText = "Proceed to Checkout";
   }
 });
-
-loadItem();
 </script>
 
 </body>
