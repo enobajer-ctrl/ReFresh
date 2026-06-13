@@ -42,6 +42,12 @@ margin-bottom:25px;
 line-height:1.6;
 }
 
+.status{
+color:#aaa;
+font-size:14px;
+margin-bottom:20px;
+}
+
 .btn{
 display:inline-block;
 background:#3B82F6;
@@ -65,10 +71,55 @@ Welcome to ReFresh Membership.
 Your account now has access to member rentals and premium marketplace features.
 </p>
 
+<p class="status" id="statusText">Saving membership...</p>
+
 <a href="browse.html" class="btn">
 Start Browsing
 </a>
 </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
+  authDomain: "refresh-7b0b7.firebaseapp.com",
+  projectId: "refresh-7b0b7",
+  storageBucket: "refresh-7b0b7.firebasestorage.app",
+  messagingSenderId: "286051120509",
+  appId: "1:286051120509:web:596ed691578537e8ca0814",
+  measurementId: "G-NNGSL330VG"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async (user) => {
+  const statusText = document.getElementById("statusText");
+
+  if(!user){
+    statusText.innerText = "Please log in so we can save your membership.";
+    return;
+  }
+
+  try{
+    await setDoc(doc(db, "users", user.uid), {
+      email: user.email,
+      membershipStatus: "active",
+      membershipPlan: "ReFresh Buyer Membership",
+      membershipPrice: 8.99,
+      membershipStartedAt: new Date().toISOString()
+    }, { merge: true });
+
+    statusText.innerText = "Membership saved to your account ✓";
+  }catch(error){
+    statusText.innerText = "Membership payment worked, but saving failed. Contact support.";
+  }
+});
+</script>
 
 </body>
 </html>
