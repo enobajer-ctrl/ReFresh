@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -63,6 +63,21 @@ body{
   margin-bottom:15px;
 }
 
+.member-warning{
+  background:#7f1d1d;
+  color:#fecaca;
+  border:1px solid #991b1b;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:20px;
+  display:none;
+}
+
+.member-warning a{
+  color:white;
+  font-weight:bold;
+}
+
 .item-info{
   background:#111;
   border:1px solid #333;
@@ -112,6 +127,11 @@ button{
   cursor:pointer;
 }
 
+button:disabled{
+  background:#555;
+  cursor:not-allowed;
+}
+
 .small{
   color:#888;
   font-size:13px;
@@ -137,9 +157,17 @@ button{
     <div class="nav">
       <a href="index.html">Home</a>
       <a href="browse.html">Browse</a>
+      <a href="membership.html">Membership</a>
       <a href="dashboard.html">Dashboard</a>
       <a href="notifications.html">Notifications</a>
     </div>
+  </div>
+
+  <div id="memberWarning" class="member-warning">
+    <strong>Membership Required</strong>
+    <p>💎 You need an active ReFresh Membership to message sellers.</p>
+    <br>
+    <a href="membership.html">Become a Member</a>
   </div>
 
   <div class="box">
@@ -165,7 +193,16 @@ button{
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -186,8 +223,9 @@ const listingId = params.get("listingId");
 
 let currentUser = null;
 let currentItem = null;
+let membershipActive = false;
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   currentUser = user;
 
   if(!user){
@@ -196,8 +234,18 @@ onAuthStateChanged(auth, (user) => {
     return;
   }
 
-  loadItem();
-  loadMessages();
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+  const userData = userSnap.exists() ? userSnap.data() : {};
+  membershipActive = userData.membershipStatus === "active";
+
+  if(!membershipActive){
+    document.getElementById("memberWarning").style.display = "block";
+    document.getElementById("sendBtn").disabled = true;
+    document.getElementById("sendBtn").innerText = "Membership Required";
+  }
+
+  await loadItem();
+  await loadMessages();
 });
 
 async function loadItem(){
@@ -212,8 +260,10 @@ async function loadItem(){
   if(itemSnap.exists()){
     currentItem = itemSnap.data();
 
-    document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
-    document.getElementById("sellerName").innerText = "Seller: " + (currentItem.sellerName || "Seller");
+    document.getElementById("itemName").innerText =
+      currentItem.itemName || "Untitled Item";
+    document.getElementById("sellerName").innerText =
+      "Seller: " + (currentItem.sellerName || "Seller");
   } else {
     document.getElementById("itemName").innerText = "Item not found";
   }
@@ -260,6 +310,12 @@ document.getElementById("sendBtn").addEventListener("click", async () => {
     return;
   }
 
+  if(!membershipActive){
+    alert("ReFresh Membership is required to send messages.");
+    window.location.href = "membership.html";
+    return;
+  }
+
   if(!listingId || !currentItem){
     alert("Listing not loaded.");
     return;
@@ -276,11 +332,25 @@ document.getElementById("sendBtn").addEventListener("click", async () => {
     await addDoc(collection(db, "messages"), {
       listingId: listingId,
       itemName: currentItem.itemName || "",
+      sellerId: currentItem.sellerId || "",
       sellerName: currentItem.sellerName || "Seller",
+      senderId: currentUser.uid,
       senderEmail: currentUser.email,
       message: messageText,
       timestamp: new Date().toISOString()
     });
+
+    if(currentItem.sellerId && currentItem.sellerId !== currentUser.uid){
+      await addDoc(collection(db, "notifications"), {
+        userId: currentItem.sellerId,
+        title: "New Message",
+        message: `${currentUser.email} sent a message about ${currentItem.itemName || "your item"}.`,
+        listingId: listingId,
+        itemName: currentItem.itemName || "",
+        createdAt: new Date().toISOString(),
+        read: false
+      });
+    }
 
     alert("Message sent!");
     document.getElementById("messageText").value = "";
