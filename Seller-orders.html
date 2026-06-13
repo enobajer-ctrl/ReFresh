@@ -8,28 +8,35 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#0b0b0d;color:white;min-height:100vh;padding:25px}
-.page{max-width:1150px;margin:auto}
+.page{max-width:1200px;margin:auto}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
 .logo{display:flex;align-items:center;gap:12px}
 .logo img{width:65px}
 .logo h1{color:#3B82F6}
 .nav a{color:#3B82F6;text-decoration:none;font-weight:bold;margin-left:15px}
-.hero,.box,.order{background:#171717;border:1px solid #2b2b2b;border-radius:22px;padding:24px;margin-bottom:18px;box-shadow:0 0 18px rgba(59,130,246,.09)}
-.hero h2,.box h2,.order h3{color:#3B82F6}
+.hero,.box,.order,.stat{background:#171717;border:1px solid #2b2b2b;border-radius:22px;padding:24px;margin-bottom:18px;box-shadow:0 0 18px rgba(59,130,246,.09)}
+.hero{background:linear-gradient(135deg,#111827,#0b0b0d)}
+.hero h2,.box h2,.order h3,.stat h3{color:#3B82F6}
 .small{color:#aaa;font-size:14px;line-height:1.5;margin-top:6px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:20px}
-.stat{background:#171717;border:1px solid #2b2b2b;border-radius:18px;padding:20px}
-.stat h3{color:#3B82F6;margin-bottom:8px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:15px;margin-bottom:20px}
 .stat p{font-size:26px;font-weight:bold}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.tab{background:#171717;border:1px solid #333;color:white;padding:12px 16px;border-radius:12px;cursor:pointer;font-weight:bold}
+.tab.active{background:#3B82F6;border-color:#3B82F6}
 .order p{color:#ccc;margin:7px 0}
-.badge{display:inline-block;background:#222;color:#3B82F6;padding:6px 10px;border-radius:9px;font-size:13px;font-weight:bold;margin-top:7px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.info{background:#101010;border:1px solid #2e2e2e;border-radius:14px;padding:12px}
+.info strong{color:#3B82F6}
+.badge{display:inline-block;background:#222;color:#3B82F6;padding:6px 10px;border-radius:9px;font-size:13px;font-weight:bold;margin:6px 6px 8px 0}
+.good{background:#064e3b;color:#bbf7d0}
+.warn{background:#78350f;color:#fed7aa}
+.bad{background:#7f1d1d;color:#fecaca}
 button,.btn{background:#3B82F6;color:white;border:none;padding:12px 14px;border-radius:11px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;margin:6px 6px 0 0}
 .danger{background:#7f1d1d}
 .secondary{background:#222;border:1px solid #3B82F6}
 .success{background:#166534}
 .empty{text-align:center;color:#aaa;padding:30px}
-@media(max-width:800px){.top{flex-direction:column;gap:15px}.nav a{display:inline-block;margin:7px}.grid{grid-template-columns:1fr}}
+@media(max-width:800px){.top{flex-direction:column;gap:15px}.nav a{display:inline-block;margin:7px}.info-grid{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -46,6 +53,7 @@ button,.btn{background:#3B82F6;color:white;border:none;padding:12px 14px;border-
     <div class="nav">
       <a href="dashboard.html">Dashboard</a>
       <a href="browse.html">Browse</a>
+      <a href="payouts.html">Payouts</a>
       <a href="notifications.html">Notifications</a>
       <a href="profile.html">Profile</a>
     </div>
@@ -53,32 +61,32 @@ button,.btn{background:#3B82F6;color:white;border:none;padding:12px 14px;border-
 
   <section class="hero">
     <h2>Seller Orders</h2>
-    <p class="small">Approve rentals, view delivery details, manage returns, and track deposits.</p>
+    <p class="small">Approve rentals, manage pickup/shipping, track returns, and handle deposits.</p>
   </section>
 
   <section class="stats">
     <div class="stat"><h3>Pending</h3><p id="pendingCount">0</p></div>
-    <div class="stat"><h3>Approved</h3><p id="approvedCount">0</p></div>
+    <div class="stat"><h3>Active</h3><p id="activeCount">0</p></div>
     <div class="stat"><h3>Returned</h3><p id="returnedCount">0</p></div>
+    <div class="stat"><h3>Completed</h3><p id="completedCount">0</p></div>
     <div class="stat"><h3>Deposits Held</h3><p id="depositTotal">$0</p></div>
   </section>
 
-  <div class="grid">
-    <div class="box">
-      <h2>Pending Requests</h2>
-      <div id="pendingOrders">Loading...</div>
-    </div>
-
-    <div class="box">
-      <h2>Approved / Active Rentals</h2>
-      <div id="approvedOrders">Loading...</div>
-    </div>
+  <div class="tabs">
+    <button class="tab active" data-filter="all">All</button>
+    <button class="tab" data-filter="pending">Pending</button>
+    <button class="tab" data-filter="accepted">Approved</button>
+    <button class="tab" data-filter="picked up">Picked Up</button>
+    <button class="tab" data-filter="shipped">Shipped</button>
+    <button class="tab" data-filter="returned">Returned</button>
+    <button class="tab" data-filter="completed">Completed</button>
+    <button class="tab" data-filter="declined">Declined</button>
   </div>
 
-  <div class="box">
-    <h2>Completed / Returned</h2>
-    <div id="completedOrders">Loading...</div>
-  </div>
+  <section class="box">
+    <h2>Orders</h2>
+    <div id="ordersList">Loading...</div>
+  </section>
 
 </div>
 
@@ -104,6 +112,7 @@ const db = getFirestore(app);
 let currentUser = null;
 let myListingIds = [];
 let orders = [];
+let activeFilter = "all";
 
 onAuthStateChanged(auth, async (user) => {
   if(!user){
@@ -141,6 +150,7 @@ async function loadSellerOrders(){
     }
   });
 
+  orders.sort((a,b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
   renderOrders();
 }
 
@@ -148,91 +158,12 @@ function money(value){
   return "$" + Number(value || 0).toFixed(2);
 }
 
-function renderOrder(order){
-  const status = order.status || "pending";
-  const depositStatus = order.depositStatus || "held";
-
-  return `
-    <div class="order">
-      <h3>${order.itemName || "Rental Order"}</h3>
-
-      <p><strong>Buyer:</strong> ${order.buyerName || order.buyerEmail || "Unknown"}</p>
-      <p><strong>Dates:</strong> ${order.startDate || "N/A"} → ${order.endDate || "N/A"}</p>
-      <p><strong>Days:</strong> ${order.days || "N/A"}</p>
-
-      <p><strong>Total Paid:</strong> ${money(order.totalPrice || order.total)}</p>
-      <p><strong>Seller Earnings:</strong> ${money(order.sellerPayout)}</p>
-      <p><strong>Deposit:</strong> ${money(order.deposit)} (${depositStatus})</p>
-
-      <p><strong>Method:</strong> ${order.rentalMethod || "N/A"}</p>
-      <p><strong>Address:</strong> ${order.streetAddress || "N/A"}, ${order.city || ""} ${order.state || ""} ${order.zipCode || ""}</p>
-      <p><strong>Notes:</strong> ${order.deliveryNotes || "None"}</p>
-
-      <span class="badge">${status}</span>
-
-      <br><br>
-
-      ${status === "pending" ? `
-        <button data-action="approve" data-id="${order.id}">Approve</button>
-        <button class="danger" data-action="decline" data-id="${order.id}">Decline</button>
-      ` : ""}
-
-      ${status === "accepted" ? `
-        <button class="success" data-action="returned" data-id="${order.id}">Mark Returned</button>
-        <button class="secondary" data-action="message" data-listing="${order.listingId}">Message Buyer</button>
-      ` : ""}
-
-      ${status === "returned" ? `
-        <button class="success" data-action="refundDeposit" data-id="${order.id}">Deposit Refunded</button>
-        <button class="danger" data-action="claimDeposit" data-id="${order.id}">Claim Deposit</button>
-      ` : ""}
-    </div>
-  `;
-}
-
-function renderOrders(){
-  const pendingDiv = document.getElementById("pendingOrders");
-  const approvedDiv = document.getElementById("approvedOrders");
-  const completedDiv = document.getElementById("completedOrders");
-
-  pendingDiv.innerHTML = "";
-  approvedDiv.innerHTML = "";
-  completedDiv.innerHTML = "";
-
-  let pending = 0;
-  let approved = 0;
-  let returned = 0;
-  let depositTotal = 0;
-
-  orders.forEach((order) => {
-    const status = order.status || "pending";
-
-    if(order.depositStatus === "held"){
-      depositTotal += Number(order.deposit || 0);
-    }
-
-    if(status === "pending"){
-      pending++;
-      pendingDiv.innerHTML += renderOrder(order);
-    } else if(status === "accepted"){
-      approved++;
-      approvedDiv.innerHTML += renderOrder(order);
-    } else {
-      returned++;
-      completedDiv.innerHTML += renderOrder(order);
-    }
-  });
-
-  if(pending === 0) pendingDiv.innerHTML = `<div class="empty">No pending requests.</div>`;
-  if(approved === 0) approvedDiv.innerHTML = `<div class="empty">No active rentals.</div>`;
-  if(returned === 0) completedDiv.innerHTML = `<div class="empty">No completed rentals yet.</div>`;
-
-  document.getElementById("pendingCount").innerText = pending;
-  document.getElementById("approvedCount").innerText = approved;
-  document.getElementById("returnedCount").innerText = returned;
-  document.getElementById("depositTotal").innerText = money(depositTotal);
-
-  attachActions();
+function badgeClass(value){
+  const text = String(value || "").toLowerCase();
+  if(["accepted","picked up","shipped","returned","completed","refunded","paid"].includes(text)) return "good";
+  if(["pending","held","ready for refund"].includes(text)) return "warn";
+  if(["declined","claimed","withheld"].includes(text)) return "bad";
+  return "";
 }
 
 async function notifyBuyer(order, title, message){
@@ -247,6 +178,127 @@ async function notifyBuyer(order, title, message){
     createdAt: new Date().toISOString(),
     read: false
   });
+}
+
+function renderOrder(order){
+  const status = order.status || "pending";
+  const depositStatus = order.depositStatus || "held";
+  const payoutStatus = order.payoutStatus || "pending";
+
+  return `
+    <div class="order">
+      <h3>${order.itemName || "Rental Order"}</h3>
+
+      <span class="badge ${badgeClass(status)}">Rental: ${status}</span>
+      <span class="badge ${badgeClass(depositStatus)}">Deposit: ${depositStatus}</span>
+      <span class="badge ${badgeClass(payoutStatus)}">Payout: ${payoutStatus}</span>
+
+      <div class="info-grid">
+        <div class="info">
+          <p><strong>Buyer</strong></p>
+          <p>${order.buyerName || order.buyerEmail || "Unknown"}</p>
+          <p>${order.buyerPhone || ""}</p>
+        </div>
+
+        <div class="info">
+          <p><strong>Dates</strong></p>
+          <p>${order.startDate || "N/A"} → ${order.endDate || "N/A"}</p>
+          <p>${order.days || "N/A"} days</p>
+        </div>
+
+        <div class="info">
+          <p><strong>Money</strong></p>
+          <p>Total: ${money(order.totalPrice || order.total)}</p>
+          <p>You Earn: ${money(order.sellerPayout)}</p>
+          <p>Deposit: ${money(order.deposit)}</p>
+        </div>
+
+        <div class="info">
+          <p><strong>Delivery / Pickup</strong></p>
+          <p>${order.rentalMethod || "N/A"}</p>
+          <p>${order.streetAddress || "N/A"}, ${order.city || ""} ${order.state || ""} ${order.zipCode || ""}</p>
+        </div>
+      </div>
+
+      <p><strong>Notes:</strong> ${order.deliveryNotes || "None"}</p>
+
+      <div>
+        ${status === "pending" ? `
+          <button data-action="approve" data-id="${order.id}">Approve</button>
+          <button class="danger" data-action="decline" data-id="${order.id}">Decline</button>
+        ` : ""}
+
+        ${status === "accepted" ? `
+          <button class="success" data-action="pickedUp" data-id="${order.id}">Mark Picked Up</button>
+          <button class="success" data-action="shipped" data-id="${order.id}">Mark Shipped</button>
+          <button class="secondary" data-action="message" data-listing="${order.listingId}">Message Buyer</button>
+        ` : ""}
+
+        ${(status === "picked up" || status === "shipped") ? `
+          <button class="success" data-action="returned" data-id="${order.id}">Mark Returned</button>
+          <button class="secondary" data-action="message" data-listing="${order.listingId}">Message Buyer</button>
+        ` : ""}
+
+        ${status === "returned" ? `
+          <button class="success" data-action="refundDeposit" data-id="${order.id}">Refund Deposit</button>
+          <button class="danger" data-action="claimDeposit" data-id="${order.id}">Withhold Deposit</button>
+          <button class="secondary" data-action="complete" data-id="${order.id}">Complete Order</button>
+        ` : ""}
+
+        ${status === "completed" ? `
+          <button class="success" data-action="markPaid" data-id="${order.id}">Mark Payout Paid</button>
+          <button class="secondary" data-action="message" data-listing="${order.listingId}">Message Buyer</button>
+        ` : ""}
+      </div>
+    </div>
+  `;
+}
+
+function renderOrders(){
+  const list = document.getElementById("ordersList");
+  list.innerHTML = "";
+
+  let filtered = [...orders];
+
+  if(activeFilter !== "all"){
+    filtered = filtered.filter((o) => (o.status || "pending") === activeFilter);
+  }
+
+  let pending = 0;
+  let active = 0;
+  let returned = 0;
+  let completed = 0;
+  let depositTotal = 0;
+
+  orders.forEach((order) => {
+    const status = order.status || "pending";
+
+    if(status === "pending") pending++;
+    if(["accepted","picked up","shipped"].includes(status)) active++;
+    if(status === "returned") returned++;
+    if(status === "completed") completed++;
+
+    if((order.depositStatus || "held") === "held"){
+      depositTotal += Number(order.deposit || 0);
+    }
+  });
+
+  document.getElementById("pendingCount").innerText = pending;
+  document.getElementById("activeCount").innerText = active;
+  document.getElementById("returnedCount").innerText = returned;
+  document.getElementById("completedCount").innerText = completed;
+  document.getElementById("depositTotal").innerText = money(depositTotal);
+
+  if(filtered.length === 0){
+    list.innerHTML = `<div class="empty">No orders found.</div>`;
+    return;
+  }
+
+  filtered.forEach((order) => {
+    list.innerHTML += renderOrder(order);
+  });
+
+  attachActions();
 }
 
 function getOrder(id){
@@ -269,74 +321,105 @@ function attachActions(){
 
       if(action === "approve"){
         await updateDoc(doc(db, "rentalRequests", id), {
-          status: "accepted"
+          status: "accepted",
+          approvedAt: new Date().toISOString()
         });
 
-        await notifyBuyer(
-          order,
-          "Rental Approved",
-          `Your rental for ${order.itemName || "this item"} was approved.`
-        );
+        await notifyBuyer(order, "Rental Approved", `Your rental for ${order.itemName || "this item"} was approved.`);
       }
 
       if(action === "decline"){
         if(!confirm("Decline this rental request?")) return;
 
         await updateDoc(doc(db, "rentalRequests", id), {
-          status: "declined"
+          status: "declined",
+          declinedAt: new Date().toISOString()
         });
 
-        await notifyBuyer(
-          order,
-          "Rental Declined",
-          `Your rental request for ${order.itemName || "this item"} was declined.`
-        );
+        await notifyBuyer(order, "Rental Declined", `Your rental request for ${order.itemName || "this item"} was declined.`);
+      }
+
+      if(action === "pickedUp"){
+        await updateDoc(doc(db, "rentalRequests", id), {
+          status: "picked up",
+          fulfillmentStatus: "picked up",
+          pickedUpAt: new Date().toISOString()
+        });
+
+        await notifyBuyer(order, "Item Picked Up", `${order.itemName || "Your rental"} was marked picked up.`);
+      }
+
+      if(action === "shipped"){
+        await updateDoc(doc(db, "rentalRequests", id), {
+          status: "shipped",
+          fulfillmentStatus: "shipped",
+          shippedAt: new Date().toISOString()
+        });
+
+        await notifyBuyer(order, "Item Shipped", `${order.itemName || "Your rental"} was marked shipped.`);
       }
 
       if(action === "returned"){
         await updateDoc(doc(db, "rentalRequests", id), {
           status: "returned",
           returnStatus: "returned",
-          depositStatus: "ready for refund"
+          depositStatus: "ready for refund",
+          returnedAt: new Date().toISOString()
         });
 
-        await notifyBuyer(
-          order,
-          "Item Marked Returned",
-          `${order.itemName || "Your rental"} was marked returned. Deposit review is next.`
-        );
+        await notifyBuyer(order, "Item Marked Returned", `${order.itemName || "Your rental"} was marked returned. Deposit review is next.`);
       }
 
       if(action === "refundDeposit"){
         await updateDoc(doc(db, "rentalRequests", id), {
-          depositStatus: "refunded"
+          depositStatus: "refunded",
+          depositReturnedAt: new Date().toISOString()
         });
 
-        await notifyBuyer(
-          order,
-          "Deposit Refunded",
-          `Your deposit for ${order.itemName || "your rental"} was marked refunded.`
-        );
+        await notifyBuyer(order, "Deposit Refunded", `Your deposit for ${order.itemName || "your rental"} was marked refunded.`);
       }
 
       if(action === "claimDeposit"){
-        if(!confirm("Claim this deposit because of damage or non-return?")) return;
+        if(!confirm("Withhold this deposit because of damage or non-return?")) return;
 
         await updateDoc(doc(db, "rentalRequests", id), {
-          depositStatus: "claimed"
+          depositStatus: "withheld",
+          depositWithheldAt: new Date().toISOString()
         });
 
-        await notifyBuyer(
-          order,
-          "Deposit Claimed",
-          `The deposit for ${order.itemName || "your rental"} was marked claimed.`
-        );
+        await notifyBuyer(order, "Deposit Withheld", `The deposit for ${order.itemName || "your rental"} was marked withheld.`);
+      }
+
+      if(action === "complete"){
+        await updateDoc(doc(db, "rentalRequests", id), {
+          status: "completed",
+          completedAt: new Date().toISOString()
+        });
+
+        await notifyBuyer(order, "Rental Completed", `Your rental for ${order.itemName || "this item"} is complete.`);
+      }
+
+      if(action === "markPaid"){
+        await updateDoc(doc(db, "rentalRequests", id), {
+          payoutStatus: "paid",
+          payoutPaidAt: new Date().toISOString()
+        });
       }
 
       await loadSellerOrders();
     });
   });
 }
+
+document.querySelectorAll(".tab").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
+    button.classList.add("active");
+
+    activeFilter = button.dataset.filter;
+    renderOrders();
+  });
+});
 </script>
 
 </body>
