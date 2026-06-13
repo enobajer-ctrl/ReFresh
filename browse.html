@@ -68,6 +68,21 @@ body{
   color:#bbb;
 }
 
+.member-note{
+  background:#101827;
+  border:1px solid #3B82F6;
+  color:#bfdbfe;
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:20px;
+  display:none;
+}
+
+.member-note a{
+  color:white;
+  font-weight:bold;
+}
+
 .filters{
   background:#1a1a1a;
   border:1px solid #333;
@@ -119,6 +134,7 @@ input:focus,select:focus{
   color:#3B82F6;
   font-size:48px;
 }
+
 .listing-img{
   width:100%;
   height:180px;
@@ -126,6 +142,7 @@ input:focus,select:focus{
   border-radius:14px;
   margin-bottom:18px;
 }
+
 .card h3{
   font-size:24px;
   margin-bottom:12px;
@@ -157,6 +174,11 @@ input:focus,select:focus{
   border-radius:8px;
   font-size:13px;
   margin:4px 4px 8px 0;
+}
+
+.member-badge{
+  background:#064e3b;
+  color:#bbf7d0;
 }
 
 .actions{
@@ -216,6 +238,7 @@ input:focus,select:focus{
     <div class="nav">
       <a href="index.html">Home</a>
       <a href="dashboard.html">Sell</a>
+      <a href="membership.html">Membership</a>
       <a href="favorites.html">Favorites</a>
       <a href="my-rentals.html">My Rentals</a>
       <a href="profile.html">Profile</a>
@@ -226,6 +249,11 @@ input:focus,select:focus{
   <div class="hero">
     <h2>Browse Listings</h2>
     <p>Search and filter rentals from ReFresh sellers.</p>
+  </div>
+
+  <div id="memberNote" class="member-note">
+    💎 ReFresh Membership is required to save favorites and rent items.
+    <a href="membership.html">Become a member</a>
   </div>
 
   <div class="filters">
@@ -270,8 +298,8 @@ input:focus,select:focus{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -295,8 +323,27 @@ const categoryFilter = document.getElementById("categoryFilter");
 const priceFilter = document.getElementById("priceFilter");
 const sizeFilter = document.getElementById("sizeFilter");
 const sortFilter = document.getElementById("sortFilter");
+const memberNote = document.getElementById("memberNote");
 
 let allListings = [];
+let currentUser = null;
+let membershipActive = false;
+
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+
+  if(user){
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    const userData = userSnap.exists() ? userSnap.data() : {};
+    membershipActive = userData.membershipStatus === "active";
+  }
+
+  if(!membershipActive){
+    memberNote.style.display = "block";
+  } else {
+    memberNote.style.display = "none";
+  }
+});
 
 async function loadListings(){
   listingsDiv.innerHTML = "";
@@ -304,10 +351,10 @@ async function loadListings(){
 
   const querySnapshot = await getDocs(collection(db, "listings"));
 
-  querySnapshot.forEach((doc) => {
+  querySnapshot.forEach((docSnap) => {
     allListings.push({
-      id: doc.id,
-      ...doc.data()
+      id: docSnap.id,
+      ...docSnap.data()
     });
   });
 
@@ -369,6 +416,11 @@ function applyFilters(){
   displayListings(filtered);
 }
 
+function getListingPhoto(item){
+  const photos = item.photoUrls || item.photos || item.images || [];
+  return item.mainPhoto || item.photoURL || item.imageUrl || photos[0] || "";
+}
+
 function displayListings(listings){
   listingsDiv.innerHTML = "";
   countText.innerText = listings.length + " listings found";
@@ -380,16 +432,18 @@ function displayListings(listings){
 
   listings.forEach((item) => {
     const sellerProfileLink = "profile.html?seller=" + encodeURIComponent(item.sellerName || "Seller");
+    const photo = getListingPhoto(item);
 
     listingsDiv.innerHTML += `
       <div class="card">
-       ${item.mainPhoto 
-  ? `<img class="listing-img" src="${item.mainPhoto}" alt="${item.itemName || "Listing photo"}">`
-  : `<div class="fake-img">👕</div>`
-}
+        ${photo
+          ? `<img class="listing-img" src="${photo}" alt="${item.itemName || "Listing photo"}">`
+          : `<div class="fake-img">👕</div>`
+        }
 
         <span class="badge">${item.category || "General"}</span>
         <span class="badge">${item.condition || "Condition N/A"}</span>
+        ${item.verifiedSeller ? `<span class="badge member-badge">Verified Seller</span>` : ""}
 
         <h3>${item.itemName || "Untitled Item"}</h3>
 
@@ -405,7 +459,7 @@ function displayListings(listings){
         </p>
 
         <div class="actions">
-          <button class="rentBtn" onclick="window.location.href='item.html?id=${item.id}'">
+          <button class="rentBtn" data-rent="${item.id}">
             Rent Now
           </button>
 
@@ -417,19 +471,42 @@ function displayListings(listings){
     `;
   });
 
+  document.querySelectorAll("[data-rent]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if(!currentUser){
+        alert("Please log in to rent.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      if(!membershipActive){
+        alert("ReFresh Membership is required to rent.");
+        window.location.href = "membership.html";
+        return;
+      }
+
+      window.location.href = "item.html?id=" + button.dataset.rent;
+    });
+  });
+
   document.querySelectorAll(".favoriteBtn").forEach((button) => {
     button.addEventListener("click", async () => {
-      const user = auth.currentUser;
-
-      if(!user){
+      if(!currentUser){
         alert("Please log in to save favorites.");
         window.location.href = "login.html";
         return;
       }
 
+      if(!membershipActive){
+        alert("ReFresh Membership is required to save favorites.");
+        window.location.href = "membership.html";
+        return;
+      }
+
       await addDoc(collection(db, "favorites"), {
-        userId: user.uid,
-        listingId: button.dataset.id
+        userId: currentUser.uid,
+        listingId: button.dataset.id,
+        createdAt: new Date().toISOString()
       });
 
       button.innerText = "Saved ✓";
