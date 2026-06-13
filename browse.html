@@ -3,280 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Item Details | ReFresh</title>
+<title>Browse Listings | ReFresh</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
-body{
-  background:#111;
-  color:white;
-  min-height:100vh;
-  padding:25px;
-}
+body{background:#f7f9fc;color:#111;min-height:100vh}
+.top{height:72px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 35px;position:sticky;top:0;z-index:10}
+.logo{display:flex;align-items:center;gap:10px;font-size:25px;font-weight:bold;color:#2563eb}
+.logo img{width:42px}
+.nav a{color:#111;text-decoration:none;font-weight:bold;margin-left:22px}
+.nav a.active{color:#2563eb}
+.page{max-width:1400px;margin:auto;padding:35px}
+.hero{display:flex;justify-content:space-between;gap:25px;align-items:center;margin-bottom:28px}
+.hero h1{font-size:38px;margin-bottom:8px}
+.hero p{color:#555;font-size:17px}
+.member-note{background:#eef5ff;border:1px solid #bfdbfe;border-radius:14px;padding:16px 22px;color:#1e40af;min-width:360px}
+.member-note a{color:#2563eb;font-weight:bold;text-decoration:none}
 
-.page{
-  max-width:1100px;
-  margin:auto;
-}
+.filters{background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;margin-bottom:28px;box-shadow:0 8px 25px rgba(0,0,0,.05)}
+.filter-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:16px;margin-bottom:18px}
+input,select{width:100%;padding:15px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;background:white}
+.chips{display:flex;gap:12px;flex-wrap:wrap}
+.chip{padding:12px 28px;border:1px solid #d1d5db;border-radius:10px;background:white;font-weight:bold;cursor:pointer}
+.chip.active{background:#2563eb;color:white;border-color:#2563eb}
 
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:30px;
-}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;color:#444}
+#listings{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px}
+.card{background:white;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,.06);transition:.2s}
+.card:hover{transform:translateY(-3px)}
+.img-wrap{height:250px;background:#e5e7eb;position:relative}
+.listing-img{width:100%;height:100%;object-fit:cover}
+.fake-img{height:100%;display:flex;align-items:center;justify-content:center;font-size:70px;color:#2563eb}
+.save{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;border:none;background:white;font-size:22px;cursor:pointer}
+.info{padding:20px}
+.info h3{font-size:21px;margin-bottom:8px}
+.meta{color:#555;margin-bottom:8px}
+.price{color:#2563eb;font-size:19px;font-weight:bold;margin:12px 0}
+.stats{display:flex;justify-content:space-between;border-top:1px solid #eee;padding-top:12px;color:#555}
+.rentBtn{margin-top:16px;width:100%;padding:14px;background:#2563eb;color:white;border:none;border-radius:10px;font-weight:bold;font-size:15px;cursor:pointer}
+.empty{padding:30px;color:#666;background:white;border-radius:14px}
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.logo img{
-  width:70px;
-}
-
-.logo h1{
-  color:#3B82F6;
-}
-
-.nav a{
-  color:#3B82F6;
-  text-decoration:none;
-  font-weight:bold;
-  margin-left:15px;
-}
-
-.item-layout{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:25px;
-}
-
-.image-box,.details-box,.rent-box,.seller-box{
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 0 25px rgba(59,130,246,.15);
-}
-
-.fake-img{
-  height:420px;
-  background:linear-gradient(135deg,#222,#333);
-  border-radius:18px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#3B82F6;
-  font-size:90px;
-}
-
-.main-photo{
-  width:100%;
-  height:420px;
-  object-fit:cover;
-  border-radius:18px;
-  background:#222;
-}
-
-.thumbnail-row{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(70px,1fr));
-  gap:10px;
-  margin-top:14px;
-}
-
-.thumb{
-  width:100%;
-  height:75px;
-  object-fit:cover;
-  border-radius:10px;
-  border:2px solid #333;
-  cursor:pointer;
-  opacity:.75;
-}
-
-.thumb:hover,.thumb.active{
-  border-color:#3B82F6;
-  opacity:1;
-}
-
-h2{
-  color:#3B82F6;
-  font-size:34px;
-  margin-bottom:15px;
-}
-
-p{
-  color:#ccc;
-  margin:10px 0;
-}
-
-.price{
-  font-size:26px;
-  color:#3B82F6;
-  font-weight:bold;
-}
-
-.badge{
-  display:inline-block;
-  background:#222;
-  color:#3B82F6;
-  padding:7px 10px;
-  border-radius:10px;
-  font-size:13px;
-  margin:5px 5px 10px 0;
-  font-weight:bold;
-}
-
-input{
-  width:100%;
-  padding:14px;
-  background:#111;
-  border:1px solid #333;
-  border-radius:12px;
-  color:white;
-  font-size:16px;
-  margin:10px 0;
-}
-
-button,.btn{
-  width:100%;
-  padding:15px;
-  background:#3B82F6;
-  color:white;
-  border:none;
-  border-radius:12px;
-  font-weight:bold;
-  font-size:16px;
-  margin-top:12px;
-  cursor:pointer;
-  display:block;
-  text-align:center;
-  text-decoration:none;
-}
-
-.secondary{
-  background:#222;
-  border:1px solid #3B82F6;
-}
-
-.danger{
-  background:#333;
-}
-
-.total{
-  font-size:24px;
-  color:#3B82F6;
-  font-weight:bold;
-}
-
-.small{
-  color:#888;
-  font-size:13px;
-}
-
-@media(max-width:800px){
-  .item-layout{
-    grid-template-columns:1fr;
-  }
-
-  .top{
-    flex-direction:column;
-    gap:18px;
-  }
-
-  .nav a{
-    display:inline-block;
-    margin:8px;
-  }
-
-  .main-photo,.fake-img{
-    height:330px;
-  }
+@media(max-width:900px){
+  .top{height:auto;flex-direction:column;padding:18px;gap:15px}
+  .nav a{display:inline-block;margin:8px}
+  .hero{flex-direction:column;align-items:flex-start}
+  .member-note{min-width:100%;width:100%}
+  .filter-grid{grid-template-columns:1fr}
+  .page{padding:20px}
+  .img-wrap{height:280px}
 }
 </style>
 </head>
 
 <body>
 
+<div class="top">
+  <div class="logo">
+    <img src="image-1.jpg" alt="ReFresh">
+    ReFresh
+  </div>
+
+  <div class="nav">
+    <a class="active" href="browse.html">Browse</a>
+    <a href="dashboard.html">Sell</a>
+    <a href="membership.html">Membership</a>
+    <a href="favorites.html">Favorites</a>
+    <a href="my-rentals.html">My Rentals</a>
+    <a href="profile.html">Profile</a>
+  </div>
+</div>
+
 <div class="page">
 
-  <div class="top">
-    <div class="logo">
-      <img src="image-1.jpg" alt="ReFresh Logo">
-      <h1>ReFresh</h1>
+  <div class="hero">
+    <div>
+      <h1>Browse Listings</h1>
+      <p>Find simple, clean rentals from ReFresh sellers.</p>
     </div>
 
-    <div class="nav">
-      <a href="index.html">Home</a>
-      <a href="browse.html">Browse</a>
-      <a href="favorites.html">Favorites</a>
-      <a href="my-rentals.html">My Rentals</a>
-      <a href="profile.html">Profile</a>
+    <div id="memberNote" class="member-note">
+      💎 Membership required to save favorites and rent items.
+      <br><a href="membership.html">Become a member</a>
     </div>
   </div>
 
-  <div class="item-layout">
+  <div class="filters">
+    <div class="filter-grid">
+      <input id="searchInput" placeholder="Search item, brand, seller...">
 
-    <div class="image-box">
-      <div id="photoArea">
-        <div class="fake-img">👕</div>
-      </div>
+      <select id="categoryFilter">
+        <option value="">All Categories</option>
+        <option>Clothing</option>
+        <option>Shoes</option>
+        <option>Bags</option>
+        <option>Belts</option>
+        <option>Watches</option>
+        <option>Jewelry</option>
+        <option>Accessories</option>
+        <option>Electronics</option>
+        <option>Outdoor</option>
+        <option>Sports</option>
+        <option>Books</option>
+      </select>
+
+      <input id="brandFilter" placeholder="Brand">
+
+      <select id="conditionFilter">
+        <option value="">Any Condition</option>
+        <option>New</option>
+        <option>Like New</option>
+        <option>Good</option>
+        <option>Fair</option>
+      </select>
+
+      <select id="sortFilter">
+        <option value="newest">Newest</option>
+        <option value="popular">Most Popular</option>
+        <option value="low">Price Low</option>
+        <option value="high">Price High</option>
+        <option value="az">A-Z</option>
+      </select>
     </div>
 
-    <div>
-      <div class="details-box">
-        <span class="badge" id="categoryBadge">Category</span>
-        <span class="badge" id="conditionBadge">Condition</span>
-        <span class="badge" id="statusBadge">Available</span>
-
-        <h2 id="itemName">Loading item...</h2>
-        <p id="brand"></p>
-        <p id="size"></p>
-        <p id="description"></p>
-        <p class="price" id="price"></p>
-      </div>
-
-      <br>
-
-      <div class="rent-box">
-        <h2>Rental Estimate</h2>
-
-        <label>Number of days</label>
-        <input id="daysInput" type="number" min="1" value="1">
-
-        <p>Daily Price: <span id="dailyPrice">$0</span></p>
-        <p class="total">Total: <span id="totalPrice">$0</span></p>
-        <p class="small">Requesting this item does not charge you yet.</p>
-
-        <button id="requestBtn">Request To Rent</button>
-        <button id="favoriteBtn" class="secondary">♡ Save Item</button>
-        <button id="messageBtn" class="secondary">Message Seller</button>
-        <button id="reviewBtn" class="danger">Leave Review</button>
-        <button id="checkoutBtn">Checkout</button>
-      </div>
-
-      <br>
-
-      <div class="seller-box">
-        <h2>Seller</h2>
-        <p id="seller"></p>
-        <a id="sellerProfile" class="btn secondary" href="#">View Seller Profile</a>
-      </div>
+    <div class="chips">
+      <button class="chip active" data-category="">All</button>
+      <button class="chip" data-category="Clothing">Clothing</button>
+      <button class="chip" data-category="Shoes">Shoes</button>
+      <button class="chip" data-category="Accessories">Accessories</button>
+      <button class="chip" data-category="Electronics">Electronics</button>
+      <button class="chip" data-category="Outdoor">Outdoor</button>
+      <button class="chip" data-category="Sports">Sports</button>
+      <button class="chip" data-category="Books">Books</button>
     </div>
+  </div>
 
+  <div class="row">
+    <p id="countText">Loading listings...</p>
+    <p>Sort by: <strong id="sortText">Newest</strong></p>
+  </div>
+
+  <div id="listings">
+    <p class="empty">Loading listings...</p>
   </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS9MD_sBFCmGUnJehJ9OkVczgQcOePlWE",
@@ -292,180 +168,189 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-const params = new URLSearchParams(window.location.search);
-const itemId = params.get("id");
+let allListings = [];
+let currentUser = null;
+let membershipActive = false;
 
-let currentItem = null;
-let dailyPrice = 0;
+const listingsDiv = document.getElementById("listings");
+const countText = document.getElementById("countText");
+const sortText = document.getElementById("sortText");
+const memberNote = document.getElementById("memberNote");
 
-const daysInput = document.getElementById("daysInput");
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const brandFilter = document.getElementById("brandFilter");
+const conditionFilter = document.getElementById("conditionFilter");
+const sortFilter = document.getElementById("sortFilter");
 
-async function loadItem(){
-  if(!itemId){
-    document.getElementById("itemName").innerText = "Item not found";
-    return;
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+
+  if(user){
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    const userData = userSnap.exists() ? userSnap.data() : {};
+    membershipActive = userData.membershipStatus === "active";
   }
 
-  const itemRef = doc(db, "listings", itemId);
-  const itemSnap = await getDoc(itemRef);
+  memberNote.style.display = membershipActive ? "none" : "block";
+});
 
-  if(itemSnap.exists()){
-    currentItem = itemSnap.data();
-    dailyPrice = Number(currentItem.price || 0);
+async function loadListings(){
+  const snap = await getDocs(collection(db, "listings"));
+  allListings = [];
 
-    loadPhotos(currentItem);
+  snap.forEach((docSnap) => {
+    allListings.push({ id: docSnap.id, ...docSnap.data() });
+  });
 
-    document.getElementById("itemName").innerText = currentItem.itemName || "Untitled Item";
-    document.getElementById("brand").innerText = "Brand: " + (currentItem.brand || "N/A");
-    document.getElementById("size").innerText = "Size: " + (currentItem.size || "N/A");
-    document.getElementById("description").innerText = "Description: " + (currentItem.description || "No description yet.");
-    document.getElementById("price").innerText = "$" + dailyPrice + "/day";
-
-    document.getElementById("categoryBadge").innerText = currentItem.category || "General";
-    document.getElementById("conditionBadge").innerText = currentItem.condition || "Condition N/A";
-    document.getElementById("statusBadge").innerText = currentItem.inventoryStatus || "Available";
-
-    document.getElementById("seller").innerText = "Posted by: " + (currentItem.sellerName || "Seller");
-    document.getElementById("sellerProfile").href =
-      "profile.html?seller=" + encodeURIComponent(currentItem.sellerName || "Seller");
-
-    updateTotal();
-  } else {
-    document.getElementById("itemName").innerText = "Item not found";
-  }
+  applyFilters();
 }
 
-function loadPhotos(item){
-  const photoArea = document.getElementById("photoArea");
-  const photos = item.photoUrls || [];
+function getPhoto(item){
+  const photos = item.photoUrls || item.photos || item.images || [];
+  return item.mainPhoto || item.photoURL || item.imageUrl || photos[0] || "";
+}
 
-  if(photos.length === 0){
-    photoArea.innerHTML = `<div class="fake-img">👕</div>`;
+function applyFilters(){
+  let filtered = [...allListings];
+
+  const search = searchInput.value.toLowerCase();
+  const category = categoryFilter.value.toLowerCase();
+  const brand = brandFilter.value.toLowerCase();
+  const condition = conditionFilter.value.toLowerCase();
+  const sort = sortFilter.value;
+
+  if(search){
+    filtered = filtered.filter(item =>
+      (item.itemName || "").toLowerCase().includes(search) ||
+      (item.brand || "").toLowerCase().includes(search) ||
+      (item.sellerName || "").toLowerCase().includes(search) ||
+      (item.description || "").toLowerCase().includes(search)
+    );
+  }
+
+  if(category){
+    filtered = filtered.filter(item => (item.category || "").toLowerCase() === category);
+  }
+
+  if(brand){
+    filtered = filtered.filter(item => (item.brand || "").toLowerCase().includes(brand));
+  }
+
+  if(condition){
+    filtered = filtered.filter(item => (item.condition || "").toLowerCase() === condition);
+  }
+
+  if(sort === "popular"){
+    filtered.sort((a,b) =>
+      Number(b.views || 0) + Number(b.favoritesCount || 0) -
+      (Number(a.views || 0) + Number(a.favoritesCount || 0))
+    );
+  }
+
+  if(sort === "low"){
+    filtered.sort((a,b) => Number(a.price || 0) - Number(b.price || 0));
+  }
+
+  if(sort === "high"){
+    filtered.sort((a,b) => Number(b.price || 0) - Number(a.price || 0));
+  }
+
+  if(sort === "az"){
+    filtered.sort((a,b) => (a.itemName || "").localeCompare(b.itemName || ""));
+  }
+
+  if(sort === "newest"){
+    filtered.sort((a,b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+  }
+
+  sortText.innerText = sortFilter.options[sortFilter.selectedIndex].text;
+  displayListings(filtered);
+}
+
+function displayListings(listings){
+  listingsDiv.innerHTML = "";
+  countText.innerText = listings.length + " listings found";
+
+  if(listings.length === 0){
+    listingsDiv.innerHTML = `<p class="empty">No listings found.</p>`;
     return;
   }
 
-  photoArea.innerHTML = `
-    <img id="mainPhoto" class="main-photo" src="${photos[0]}" alt="Listing photo">
+  listings.forEach((item) => {
+    const photo = getPhoto(item);
 
-    <div class="thumbnail-row">
-      ${photos.map((photo, index) => `
-        <img 
-          class="thumb ${index === 0 ? "active" : ""}" 
-          src="${photo}" 
-          data-photo="${photo}"
-          alt="Listing photo ${index + 1}">
-      `).join("")}
-    </div>
-  `;
+    listingsDiv.innerHTML += `
+      <div class="card">
+        <div class="img-wrap">
+          ${photo ? `<img class="listing-img" src="${photo}" alt="${item.itemName || "Listing"}">` : `<div class="fake-img">👕</div>`}
+          <button class="save" data-save="${item.id}">♡</button>
+        </div>
 
-  document.querySelectorAll(".thumb").forEach((thumb) => {
-    thumb.addEventListener("click", () => {
-      document.getElementById("mainPhoto").src = thumb.dataset.photo;
+        <div class="info">
+          <h3>${item.itemName || "Untitled Item"}</h3>
+          <p class="meta">${item.category || "General"} ${item.size ? " • Size: " + item.size : ""}</p>
+          <p class="price">$${item.price || "0"} / day</p>
+          <p class="meta">Posted by: ${item.sellerName || "Seller"}</p>
 
-      document.querySelectorAll(".thumb").forEach((t) => t.classList.remove("active"));
-      thumb.classList.add("active");
+          <div class="stats">
+            <span>👁 ${item.views || 0}</span>
+            <span>♡ ${item.favoritesCount || 0}</span>
+          </div>
+
+          <button class="rentBtn" data-rent="${item.id}">View Item</button>
+        </div>
+      </div>
+    `;
+  });
+
+  document.querySelectorAll("[data-rent]").forEach(button => {
+    button.addEventListener("click", () => {
+      window.location.href = "item.html?id=" + button.dataset.rent;
+    });
+  });
+
+  document.querySelectorAll("[data-save]").forEach(button => {
+    button.addEventListener("click", async () => {
+      if(!currentUser){
+        alert("Please log in to save favorites.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      if(!membershipActive){
+        alert("ReFresh Membership is required to save favorites.");
+        window.location.href = "membership.html";
+        return;
+      }
+
+      await addDoc(collection(db, "favorites"), {
+        userId: currentUser.uid,
+        listingId: button.dataset.save,
+        createdAt: new Date().toISOString()
+      });
+
+      button.innerText = "♥";
+      alert("Saved!");
     });
   });
 }
 
-function updateTotal(){
-  const days = Number(daysInput.value || 1);
-  const total = days * dailyPrice;
-
-  document.getElementById("dailyPrice").innerText = "$" + dailyPrice;
-  document.getElementById("totalPrice").innerText = "$" + total.toFixed(2);
-}
-
-daysInput.addEventListener("input", updateTotal);
-
-document.getElementById("requestBtn").addEventListener("click", async () => {
-  const user = auth.currentUser;
-
-  if(!user){
-    alert("Please log in to request this item.");
-    window.location.href = "login.html";
-    return;
-  }
-
-  if(!currentItem){
-    alert("Item not loaded yet.");
-    return;
-  }
-
-  const days = Number(daysInput.value || 1);
-  const totalPrice = days * dailyPrice;
-
-  try{
-    await addDoc(collection(db, "rentalRequests"), {
-      listingId: itemId,
-      itemName: currentItem.itemName || "",
-      brand: currentItem.brand || "",
-      size: currentItem.size || "",
-      price: dailyPrice,
-      days: days,
-      totalPrice: totalPrice,
-      sellerName: currentItem.sellerName || "Seller",
-      buyerId: user.uid,
-      buyerEmail: user.email,
-      status: "pending"
-    });
-
-    alert("Rental request sent!");
-  } catch(error){
-    alert(error.message);
-  }
+[searchInput, categoryFilter, brandFilter, conditionFilter, sortFilter].forEach(el => {
+  el.addEventListener("input", applyFilters);
+  el.addEventListener("change", applyFilters);
 });
 
-document.getElementById("favoriteBtn").addEventListener("click", async () => {
-  const user = auth.currentUser;
-
-  if(!user){
-    alert("Please log in to save favorites.");
-    window.location.href = "login.html";
-    return;
-  }
-
-  try{
-    await addDoc(collection(db, "favorites"), {
-      userId: user.uid,
-      listingId: itemId
-    });
-
-    document.getElementById("favoriteBtn").innerText = "Saved ✓";
-    alert("Saved to favorites!");
-  } catch(error){
-    alert(error.message);
-  }
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    categoryFilter.value = chip.dataset.category;
+    applyFilters();
+  });
 });
 
-document.getElementById("messageBtn").addEventListener("click", () => {
-  if(!itemId){
-    alert("Item not loaded.");
-    return;
-  }
-
-  window.location.href = "messaging.html?listingId=" + itemId;
-});
-
-document.getElementById("reviewBtn").addEventListener("click", () => {
-  if(!currentItem){
-    alert("Item not loaded.");
-    return;
-  }
-
-  window.location.href = "reviews.html?seller=" + encodeURIComponent(currentItem.sellerName || "Seller");
-});
-
-document.getElementById("checkoutBtn").addEventListener("click", () => {
-  if(!itemId){
-    alert("Item not loaded.");
-    return;
-  }
-
-  window.location.href = "checkout.html?id=" + itemId;
-});
-
-loadItem();
+loadListings();
 </script>
 
 </body>
